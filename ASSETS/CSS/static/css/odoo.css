@@ -1,0 +1,87 @@
+/***************************
+* Cusom Fonts
+* 1. Droid Arabic Kufi, by Google
+* 2. Droid Arabic Naskh, also by Google
+* 3. Beutiful Amiri, Opensource.
+****************************/
+.set-grey{
+  background: #aaa !important;
+}
+
+@font-face {
+  font-family: 'Droid Arabic Kufi';
+  font-style: normal;
+  font-weight: 400;
+  src: url(../fonts/DroidKufi-Regular.eot);
+  src: url(../fonts/DroidKufi-Regular.woff2) format('woff2'),
+       url(../fonts/DroidKufi-Regular.woff) format('woff'),
+       url(../fonts/DroidKufi-Regular.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Droid Arabic Kufi';
+  font-style: normal;
+  font-weight: 700;
+  src: url(../fonts/DroidKufi-Bold.eot);
+  src: url(../fonts/DroidKufi-Bold.woff2) format('woff2'),
+       url(../fonts/DroidKufi-Bold.woff) format('woff'),
+       url(../fonts/DroidKufi-Bold.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'Droid Arabic Naskh';
+  font-style: normal;
+  font-weight: 400;
+  src: url(../fonts/DroidNaskh-Regular.eot);
+  src: url(../fonts/DroidNaskh-Regular.woff2) format('woff2'),
+       url(../fonts/DroidNaskh-Regular.woff) format('woff'),
+       url(../fonts/DroidNaskh-Regular.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Droid Arabic Naskh';
+  font-style: normal;
+  font-weight: 700;
+  src: url(../fonts/DroidNaskh-Bold.eot);
+  src: url(../fonts/DroidNaskh-Bold.woff2) format('woff2'),
+       url(../fonts/DroidNaskh-Bold.woff) format('woff'),
+       url(../fonts/DroidNaskh-Bold.ttf) format('truetype');
+}
+
+/* 
+ * Amiri (Arabic) http://www.google.com/fonts/earlyaccess
+ */
+@font-face {
+  font-family: 'Amiri';
+  font-style: italic;
+  font-weight: 400;
+  src: url(../fonts/Amiri-Slanted.eot);
+  src: url(../fonts/Amiri-Slanted.woff2) format('woff2'),
+       url(../fonts/Amiri-Slanted.woff) format('woff');
+       url(../fonts/Amiri-Slanted.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Amiri';
+  font-style: normal;
+  font-weight: 400;
+  src: url(../fonts/Amiri-Regular.eot);
+  src: url(../fonts/Amiri-Regular.woff2) format('woff2'),
+       url(../fonts/Amiri-Regular.woff) format('woff'),
+       url(../fonts/Amiri-Regular.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Amiri';
+  font-style: italic;
+  font-weight: 700;
+  src: url(../fonts/Amiri-BoldSlanted.eot);
+  src: url(../fonts/Amiri-BoldSlanted.woff2) format('woff2'),
+       url(../fonts/Amiri-BoldSlanted.woff) format('woff'),
+       url(../fonts/Amiri-BoldSlanted.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Amiri';
+  font-style: normal;
+  font-weight: 700;
+  src: url(../fonts/Amiri-Bold.eot);
+  src: url(../fonts/Amiri-Bold.woff2) format('woff2'),
+       url(../fonts/Amiri-Bold.woff) format('woff'),
+       url(../fonts/Amiri-Bold.ttf) format('truetype');
+}

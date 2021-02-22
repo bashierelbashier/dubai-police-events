@@ -1,0 +1,14 @@
+/* font converted using font-converter.net. thank you! */
+@font-face {
+  font-family: "Cairo-Regular";
+  src: url("./fonts/Cairo-Regular.eot"); /* IE9 Compat Modes */
+  src: url("./fonts/Cairo-Regular.eot?#iefix") format("embedded-opentype"), /* IE6-IE8 */
+    url("./fonts/Cairo-Regular.otf") format("opentype"), /* Open Type Font */
+    url("./fonts/Cairo-Regular.svg") format("svg"), /* Legacy iOS */
+    url("./fonts/Cairo-Regular.ttf") format("truetype"), /* Safari, Android, iOS */
+    url("./fonts/Cairo-Regular.woff") format("woff"), /* Modern Browsers */
+    url("./fonts/Cairo-Regular.woff2") format("woff2"); /* Modern Browsers */
+  font-weight: normal;
+  font-style: normal;
+  font-size: medium;
+}
