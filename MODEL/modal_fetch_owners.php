@@ -48,5 +48,3 @@ if (mysqli_num_rows($ores)>0) {
     $output = "<br/><br/><br/><br/> <br/><h1 align='center'> لاتوجد بيانات <i class='fa fa-frown-o'> </i>  </h1>";
 }
 echo $output;
-
-?>

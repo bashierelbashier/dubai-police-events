@@ -1,14 +1,32 @@
 html,
 body {
   height: 100%;
-  font-family: "Droid Arabic Kufi", serif;
 }
-
 label,
 .form-control {
   font-size: medium;
 }
-
-.ui-datepicker {
-  z-index: 10000 !important;
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  font-family: "Droid Arabic Kufi", serif;
+  font-size: large;
+}
+h1 {
+  font-family: "Droid Arabic Kufi", serif;
+  font-size: xx-large;
+  color: #1a237e;
+}
+button,
+.btn {
+  border-radius: 0px;
+  font-family: "Droid Arabic Kufi", serif;
+  font-size: large;
+}
+li {
+  font-size: x-large;
+  color: white;
 }

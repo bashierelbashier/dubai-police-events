@@ -156,7 +156,6 @@ $pages = ceil($cw['COUN'] / 10);
         <?php
 
         if ($_SESSION['PRIVILEGE'] != 5 && $_SESSION['PRIVILEGE'] != 4)
-
             echo '<a href="new_land.php"><button style="margin-top: 20px;" class="btn btn-default col-xs-4 pull-right"> تسجيل بيانات قطعة أرض <i class="fa fa-plus-square"></i></button></a>';
 
         ?>

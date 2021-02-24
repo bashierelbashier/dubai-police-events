@@ -95,7 +95,7 @@ if (!isset($_SESSION['USER_NO'])) {
             <ul class="col-xs-3 dropdown-menu dropdown" style="margin:0px;border-radius:0px;">
                 <li style="margin-top: 3px;">
                     <a href="MODEL/logout.php">
-                        <p class="text-center" style="color:#6a6a6a;font-family: 'Droid Arabic Kufi', serif;font-size: medium;color:#1b5e20;"> <i class="fa fa-lock"></i> تسجيل الخروج </p>
+                        <p class="text-center" style="color:#6a6a6a;color:#1b5e20;"> <i class="fa fa-lock"></i> تسجيل الخروج </p>
                     </a>
                 </li>
             </ul>
@@ -107,18 +107,7 @@ if (!isset($_SESSION['USER_NO'])) {
 
 
     <div class="col-xs-10 navbar-fixed-top pull-right" style="padding-top:2px;margin-right: 16.7%;height:70px;border-bottom-style: outset;border-bottom-width: 1px;border-bottom-color: lightgray;  background-color: #ffffff;margin-top:55px; ">
-        <img src="ASSETS/logo.jpg" class="img col-xs-1 pull-left" height="60" />
-        <img src="ASSETS/khartoum.jpg" class="img col-xs-1  pull-left" height="60" />
-        <img src="ASSETS/logo.jpg" class="img col-xs-1 pull-left" height="60" />
-        <img src="ASSETS/khartoum.jpg" class="img col-xs-1  pull-left" height="60" />
-        <img src="ASSETS/logo.jpg" class="img col-xs-1 pull-left" height="60" />
-        <img src="ASSETS/khartoum.jpg" class="img col-xs-1  pull-left" height="60" />
-        <img src="ASSETS/logo.jpg" class="img col-xs-1 pull-left" height="60" />
-        <img src="ASSETS/khartoum.jpg" class="img col-xs-1  pull-left" height="60" />
-        <img src="ASSETS/logo.jpg" class="img col-xs-1 pull-left" height="60" />
-        <img src="ASSETS/khartoum.jpg" class="img col-xs-1  pull-left" height="60" />
-        <img src="ASSETS/logo.jpg" class="img col-xs-1 pull-left" height="60" />
-        <img src="ASSETS/khartoum.jpg" class="img col-xs-1  pull-left" height="60" />
+        <img src="ASSETS/IMAGES/image.png" style="width: 100%;height:100%;" />
     </div>
 
     </div>

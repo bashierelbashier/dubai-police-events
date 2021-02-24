@@ -45,7 +45,3 @@ while ($row=mysqli_fetch_array($res))
 
 $output .='</table>';
 echo $output;
-
-
-
-?>

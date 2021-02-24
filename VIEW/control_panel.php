@@ -19,7 +19,7 @@ include "../MODEL/connect.php";
 
     <meta charset="utf-8" />
     <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0" />
-    <title style="font-family: 'Droid Arabic Naskh', serif">System</title>
+    <title>System</title>
     <script src="../ASSETS/SCANNER/jquery-1.js"></script> <!-- optional -->
     <script src="../ASSETS/SCANNER/jquery-migrate-1.js"></script>
     <link href="../ASSETS/CSS/bootstrap.min.css" rel="stylesheet"> <!-- optional -->
@@ -52,7 +52,7 @@ include "../MODEL/connect.php";
     }
 </style>
 
-<body dir="rtl" style="font-family: 'Droid Arabic Naskh', serif">
+<body dir="rtl">
     <div class="col-xs-2 navbar-fixed-top pull-right" style="background-color:black;min-height: 100%;">
 
         <ul style="margin-top: 55px;" class="nav nav-pills nav-stacked col-md-12">
@@ -93,15 +93,12 @@ include "../MODEL/connect.php";
 
         <ul style="margin-top:3px; background-color: #ffffff; border-radius:0px;border-bottom-width: 1px;border-bottom-color: cornflowerblue" id="tabs" class="nav nav-tabs col-xs-12 pull-right" data-tabs="tabs" dir="rtl">
 
-            <li class="active"><a href="#tab1" data-toggle="tab">
-                    <p size="4" color="black"> <i class="fa fa-dashboard"></i> لوحة المعلومات </p>
-                </a></li>
-            <li><a href="#tab2" data-toggle="tab">
-                    <p size="4" color="black"> <i class="fa fa-hdd-o"></i> النسخ والإسترجاع </p>
-                </a></li>
-            <li><a id="Users" href="#tab3" data-toggle="tab">
+
+            <li class="active">
+                <a id="Users" href="#tab3" data-toggle="tab">
                     <p size="4" color="black"> <i class="fa fa-users"></i> المستخدمين والصلاحيات </p>
-                </a></li>
+                </a>
+            </li>
 
         </ul>
 
@@ -191,7 +188,7 @@ include "../MODEL/connect.php";
 
         <div id="my-tab-content" style="margin-top:80px;" class="tab-content">
 
-            <div class="tab-pane active" id="tab1">
+            <div class="tab-pane" id="tab1">
 
                 <div style="cursor: pointer;margin:10px;box-shadow: 1px 1px 1px 1px lightgrey;background-color:white;" class="col-xs-3 pull-right">
                     <h1 align="center"><i class="fa fa-server"></i></h1>
@@ -302,7 +299,7 @@ include "../MODEL/connect.php";
 
             <!--------------------------------------------------------------------------------->
 
-            <div class="tab-pane" id="tab3">
+            <div class="tab-pane active" id="tab3">
                 <button style="margin-bottom:20px;left:20px;" id="add_user" class="btn btn-success pull-left"><i class="fa fa-plus"></i> إضافة مستخدم </button>
                 <div class="col-xs-12 pull-right" style="height:460px;overflow:scroll;background-color:white;" id="users_table">
 

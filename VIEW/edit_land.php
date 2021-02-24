@@ -81,7 +81,7 @@ if (mysqli_num_rows($r) > 0) {
     }
 </style>
 
-<body style="font-family: 'Droid Arabic Naskh', serif">
+<body>
     <input type="text" hidden id="status" value="<?php echo $row['STATUS']; ?>" />
     <div class="col-xs-2 navbar-fixed-top pull-right" style="background-color:black;min-height: 100%;">
         <ul style="margin-top: 55px;" class="nav nav-pills nav-stacked col-md-12">
