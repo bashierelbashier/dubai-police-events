@@ -46,10 +46,10 @@ if (isset($_SESSION['USER_NO'])) {
 
 </head>
 <style>
-    button,
-    .btn {
-        border-radius: 0px;
-    }
+button,
+.btn {
+    border-radius: 0px;
+}
 </style>
 
 <body dir="rtl" style="background-image: url('../ASSETS/IMAGES/dubai-police-bg.jpg');background-size: 100% 100%;">
@@ -76,7 +76,8 @@ if (isset($_SESSION['USER_NO'])) {
                         <label style="margin-bottom: 2rem;" class="control-label" for="username">الرقم العسكري</label>
                         <br />
                         <div class="col-xs-10 input-group">
-                            <input autofocus type="text" id="username" class="form-control text-center" placeholder="الرقم العسكري" dir="ltr" style="border-radius: 0px" />
+                            <input autofocus type="text" id="username" class="form-control text-center"
+                                placeholder="الرقم العسكري" dir="ltr" style="border-radius: 0px" />
                             <span id="user_validation" style="border-radius:0px;" class="input-group-addon">
 
                             </span>
@@ -87,7 +88,8 @@ if (isset($_SESSION['USER_NO'])) {
                         <br />
                         <div class="col-xs-10 input-group">
 
-                            <input type="password" id="password" class="form-control text-center" placeholder="كلمة المرور" dir="ltr" style="border-radius: 0px" />
+                            <input type="password" id="password" class="form-control text-center"
+                                placeholder="كلمة المرور" dir="ltr" style="border-radius: 0px" />
                             <span id="pass_validation" style="border-radius:0px;" class="input-group-addon">
 
                             </span>
@@ -101,7 +103,10 @@ if (isset($_SESSION['USER_NO'])) {
                     <br />
                     <div class="form-group">
                         <div class="col-xs-1"></div>
-                        <button type="submit" style="border-top-right-radius: 10px;border-bottom-left-radius: 10px;margin-right:5px;" id="sign-in" class="btn btn-success col-xs-10 btn-lg"> تسجيل الدخول <i class="fa fa-sign-in"></i> </button>
+                        <button type="submit"
+                            style="border-top-right-radius: 10px;border-bottom-left-radius: 10px;margin-right:5px;"
+                            id="sign-in" class="btn btn-success col-xs-10 btn-lg"> تسجيل الدخول <i
+                                class="fa fa-sign-in"></i> </button>
                         <div class="col-xs-1"></div>
                     </div>
                 </form>
@@ -115,76 +120,82 @@ if (isset($_SESSION['USER_NO'])) {
 </html>
 
 <script>
-    $(document).ready(function() {
+$(document).ready(function() {
 
-        $("#username").focus();
-        $("#user_validation").hide();
-        $("#pass_validation").hide();
-        $("#login-form").submit(function(e) {
-            e.preventDefault();
-            var username = $("#username").val();
-            var password = $("#password").val();
+    $("#username").focus();
+    $("#user_validation").hide();
+    $("#pass_validation").hide();
+    $("#login-form").submit(function(e) {
+        e.preventDefault();
+        var username = $("#username").val();
+        var password = $("#password").val();
 
-            if ($.trim(username).length > 0 && $.trim(password).length > 0) {
+        if ($.trim(username).length > 0 && $.trim(password).length > 0) {
 
-                $("#user_validation").hide();
-                $("#pass_validation").hide();
-                $.ajax({
-                    url: "../MODEL/login_script.php",
-                    method: "POST",
-                    data: {
-                        username: username,
-                        password: password
-                    },
-                    beforeSend: function() {
-                        $("#sign-in").html("جاري تسجيل الدخول .....");
-                    },
-                    success: function(data)
+            $("#user_validation").hide();
+            $("#pass_validation").hide();
+            $.ajax({
+                url: "../MODEL/login_script.php",
+                method: "POST",
+                data: {
+                    username: username,
+                    password: password
+                },
+                beforeSend: function() {
+                    $("#sign-in").html("جاري تسجيل الدخول .....");
+                },
+                success: function(data)
 
-                    {
+                {
+                    if (data == 'EVENTS') {
+                        window.location = "events.php";
+                    } else if (data == "INDEX") {
+                        window.location = "../index.php";
+                    } else if (data == 'INACTIVE') {
 
-                        if (data == 'GRANTED') {
+                        alertify.defaults.glossary.title = '<h6>  تنبيه ! </h6>';
+                        alertify.defaults.glossary.ok = 'حسناً';
+                        alertify.alert(
+                            "<h4 style='color:red;font-size:large;'>  هذا الحساب غير نشط الرجاء مراجعة الآدمن  <i class='fa fa-info'></i> </h4>"
+                        );
 
-                            window.location = "../index.php";
+                        $("#invalid_cred").html(
+                            "<h3> حساب غير نشط  <i class='fa fa-hand-stop-o'></i> </h3>");
+                        $("#sign-in").html(' تسجيل الدخول <i class="fa fa-sign-in"></i> ');
 
-                        } else if (data == 'INACTIVE') {
+                    } else {
 
-                            alertify.defaults.glossary.title = '<h6>  تنبيه ! </h6>';
-                            alertify.defaults.glossary.ok = 'حسناً';
-                            alertify.alert("<h4 style='color:red;font-size:large;'>  هذا الحساب غير نشط الرجاء مراجعة الآدمن  <i class='fa fa-info'></i> </h4>");
-
-                            $("#invalid_cred").html("<h3> حساب غير نشط  <i class='fa fa-hand-stop-o'></i> </h3>");
-                            $("#sign-in").html(' تسجيل الدخول <i class="fa fa-sign-in"></i> ');
-
-                        } else {
-
-                            $("#invalid_cred").html("<h3>  خطأ في إسم المستخدم أو كلمة المرور  <i class='fa fa-warning'></i></h3>");
-                            $("#sign-in").html(' تسجيل الدخول <i class="fa fa-sign-in"></i> ');
-
-                        }
+                        $("#invalid_cred").html(
+                            "<h3>  خطأ في إسم المستخدم أو كلمة المرور  <i class='fa fa-warning'></i></h3>"
+                        );
+                        $("#sign-in").html(' تسجيل الدخول <i class="fa fa-sign-in"></i> ');
 
                     }
 
-                });
-            } else {
-                $("#user_validation").hide();
-                if ($.trim(username).length == 0) {
-
-                    $("#pass_validation").hide();
-                    $("#user_validation").show();
-                    $("#user_validation").html("<i class='fa fa-warning' style='font-size:large;color:red;'></i>");
                 }
 
-                if ($.trim(password).length == 0) {
+            });
+        } else {
+            $("#user_validation").hide();
+            if ($.trim(username).length == 0) {
 
-
-                    $("#pass_validation").show();
-                    $("#pass_validation").html("<i class='fa fa-warning' style='font-size:large;color:red;'></i>");
-                }
-
-
+                $("#pass_validation").hide();
+                $("#user_validation").show();
+                $("#user_validation").html(
+                    "<i class='fa fa-warning' style='font-size:large;color:red;'></i>");
             }
 
-        });
+            if ($.trim(password).length == 0) {
+
+
+                $("#pass_validation").show();
+                $("#pass_validation").html(
+                    "<i class='fa fa-warning' style='font-size:large;color:red;'></i>");
+            }
+
+
+        }
+
     });
+});
 </script>

@@ -42,14 +42,14 @@ include "../MODEL/connect.php";
 
 </head>
 <style>
-    .form-control {
-        border-radius: 0px;
-    }
+.form-control {
+    border-radius: 0px;
+}
 
-    html,
-    body {
-        height: 100%;
-    }
+html,
+body {
+    height: 100%;
+}
 </style>
 
 <body dir="rtl">
@@ -65,11 +65,13 @@ include "../MODEL/connect.php";
 
     <div class="col-md-12 navbar-fixed-top" style="height:55px;background-color: #1b5e20 ;padding-left: 0px;">
         <a class="col-xs-9 pull-right" style="cursor:pointer;">
-            <p class="col-xs-12 pull-right" style="margin-top:0.5%;color:white;font-size:x-large"><b> <i class="fa fa-gears"></i> لوحة التحكم </b></p>
+            <p class="col-xs-12 pull-right" style="margin-top:0.5%;color:white;font-size:x-large"><b> <i
+                        class="fa fa-gears"></i> لوحة التحكم </b></p>
         </a>
 
         <div style="position:relative;z-index: 999;">
-            <button style="border-width:0px;height:55px;background-color: #1b5e20;" class="btn col-xs-3 btn-success pull-left dropdown-toggle" data-toggle="dropdown">
+            <button style="border-width:0px;height:55px;background-color: #1b5e20;"
+                class="btn col-xs-3 btn-success pull-left dropdown-toggle" data-toggle="dropdown">
 
                 <div>
                     <i style="margin: 5px;" class="fa fa-user-circle fa-lg"></i>
@@ -80,7 +82,8 @@ include "../MODEL/connect.php";
 
             <ul class="col-xs-3 dropdown-menu dropdown" style="margin:0px;border-radius:0px;">
                 <li style="margin-top: 3px;"><a href="../MODEL/logout.php">
-                        <p style="color:#6a6a6a;font-family: 'Droid Arabic Naskh', serif;font-size: medium;color:#1b5e20;" align="center"> <i class="fa fa-lock"></i> تسجيل الخروج </p>
+                        <p style="color:#6a6a6a;font-family: 'Droid Arabic Naskh', serif;font-size: medium;color:#1b5e20;"
+                            align="center"> <i class="fa fa-lock"></i> تسجيل الخروج </p>
                     </a></li>
             </ul>
         </div>
@@ -89,9 +92,11 @@ include "../MODEL/connect.php";
 
 
 
-    <div class="col-xs-10 navbar-fixed-top pull-right" style="margin-right: 16.7%;height:70px;border-bottom-style: outset;border-bottom-width: 1px;border-bottom-color: lightgray;  background-color: #ffffff;margin-top:55px; ">
+    <div class="col-xs-10 navbar-fixed-top pull-right"
+        style="margin-right: 16.7%;height:70px;border-bottom-style: outset;border-bottom-width: 1px;border-bottom-color: lightgray;  background-color: #ffffff;margin-top:55px; ">
 
-        <ul style="margin-top:3px; background-color: #ffffff; border-radius:0px;border-bottom-width: 1px;border-bottom-color: cornflowerblue" id="tabs" class="nav nav-tabs col-xs-12 pull-right" data-tabs="tabs" dir="rtl">
+        <ul style="margin-top:3px; background-color: #ffffff; border-radius:0px;border-bottom-width: 1px;border-bottom-color: cornflowerblue"
+            id="tabs" class="nav nav-tabs col-xs-12 pull-right" data-tabs="tabs" dir="rtl">
 
 
             <li class="active">
@@ -124,13 +129,15 @@ include "../MODEL/connect.php";
                                     <label>الإسم</label>
                                 </td>
                                 <td>
-                                    <input type="text" required class="form-control text-center" id="full_name" name="full_name" autocomplete="off" />
+                                    <input type="text" required class="form-control text-center" id="full_name"
+                                        name="full_name" autocomplete="off" />
                                 </td>
                                 <td>
-                                    <label>إسم المستخدم (للتعريف)</label>
+                                    <label>الرقم العسكري (للتعريف)</label>
                                 </td>
                                 <td>
-                                    <input type="text" required class="form-control text-center" id="user_name" name="user_name" autocomplete="off" />
+                                    <input type="text" required class="form-control text-center" id="user_name"
+                                        name="user_name" autocomplete="off" />
                                 </td>
                             </tr>
                             <tr>
@@ -138,7 +145,8 @@ include "../MODEL/connect.php";
                                     <label>كلمة المرور</label>
                                 </td>
                                 <td>
-                                    <input required type="text" required class="form-control text-center" id="password" name="password" autocomplete="off" />
+                                    <input required type="text" required class="form-control text-center" id="password"
+                                        name="password" autocomplete="off" />
                                 </td>
                                 <td>
                                     <label>درجة الصلاحية</label>
@@ -147,10 +155,7 @@ include "../MODEL/connect.php";
 
                                     <select id="privilege" name="privilege" class="form-control text-center">
                                         <option value="1"> كامل الصلاحيات (آدمن) </option>
-                                        <option value="2"> مشرف أرشيف </option>
-                                        <option value="3"> موظف أرشيف </option>
-                                        <option value="4"> إستعلامات وتقارير </option>
-                                        <option value="5"> أمين الأرشيف </option>
+                                        <option value="2"> ضابط </option>
                                     </select>
 
                                 </td>
@@ -172,8 +177,10 @@ include "../MODEL/connect.php";
                 <div class="modal-footer">
 
                     <button type="button" class="btn btn-warning pull-left" data-dismiss="modal">إغلاق</button>
-                    <button type="submit" form="users_form" class="btn btn-primary pull-left" id="user_submit"><i class="fa fa-save"></i> حفظ </button>
-                    <button type="button" form="users_form" class="btn btn-success pull-left" id="user_update"><i class="fa fa-edit"></i> حفظ التعديلات </button>
+                    <button type="submit" form="users_form" class="btn btn-primary pull-left" id="user_submit"><i
+                            class="fa fa-save"></i> حفظ </button>
+                    <button type="button" form="users_form" class="btn btn-success pull-left" id="user_update"><i
+                            class="fa fa-edit"></i> حفظ التعديلات </button>
 
                 </div>
             </div>
@@ -190,7 +197,8 @@ include "../MODEL/connect.php";
 
             <div class="tab-pane" id="tab1">
 
-                <div style="cursor: pointer;margin:10px;box-shadow: 1px 1px 1px 1px lightgrey;background-color:white;" class="col-xs-3 pull-right">
+                <div style="cursor: pointer;margin:10px;box-shadow: 1px 1px 1px 1px lightgrey;background-color:white;"
+                    class="col-xs-3 pull-right">
                     <h1 align="center"><i class="fa fa-server"></i></h1>
                     <h6 align="center"> تفاصيل خادم الملفات </h6>
                     <hr>
@@ -200,7 +208,8 @@ include "../MODEL/connect.php";
                 </div>
 
 
-                <div style="cursor: pointer;margin:10px;box-shadow: 1px 1px 1px 1px lightgrey;background-color:white;" class="col-xs-3 pull-right">
+                <div style="cursor: pointer;margin:10px;box-shadow: 1px 1px 1px 1px lightgrey;background-color:white;"
+                    class="col-xs-3 pull-right">
                     <h1 align="center"><i class="fa fa-users"></i></h1>
                     <h6 align="center"> عدد المستخدمين النشطين </h6>
                     <hr>
@@ -222,7 +231,8 @@ include "../MODEL/connect.php";
                 </div>
 
 
-                <div style="cursor: pointer;margin:10px;box-shadow: 1px 1px 1px 1px lightgrey;background-color:white;" class="col-xs-3 pull-right">
+                <div style="cursor: pointer;margin:10px;box-shadow: 1px 1px 1px 1px lightgrey;background-color:white;"
+                    class="col-xs-3 pull-right">
                     <h1 align="center"><i class="fa fa-database"></i></h1>
                     <h6 align="center"> إجمالي حجم المستندات المخزنة </h6>
                     <hr>
@@ -245,7 +255,8 @@ include "../MODEL/connect.php";
                 </div>
 
 
-                <div style="cursor: pointer;margin:10px;box-shadow: 1px 1px 1px 1px lightgrey;background-color:white;" class="col-xs-2 pull-right">
+                <div style="cursor: pointer;margin:10px;box-shadow: 1px 1px 1px 1px lightgrey;background-color:white;"
+                    class="col-xs-2 pull-right">
                     <h1 align="center"><i class="fa fa-globe"></i></h1>
                     <h6 align="center"> عدد الأراضي المسجلة </h6>
                     <hr>
@@ -260,7 +271,8 @@ include "../MODEL/connect.php";
                     </h6>
                 </div>
 
-                <div style="cursor: pointer;margin:10px;box-shadow: 1px 1px 1px 1px lightgrey;background-color:white;" class="col-xs-3 pull-right">
+                <div style="cursor: pointer;margin:10px;box-shadow: 1px 1px 1px 1px lightgrey;background-color:white;"
+                    class="col-xs-3 pull-right">
                     <h1 align="center"><i class="fa fa-file"></i></h1>
                     <h6 align="center"> عدد المستندات المخزنة </h6>
                     <hr>
@@ -287,12 +299,14 @@ include "../MODEL/connect.php";
 
             <div class="tab-pane" id="tab2">
                 <div class="col-xs-12">
-                    <a href="../MODEL/backup.php" type="button" class="btn btn-default col-xs-4 pull-right"><img class="img-responsive" src="../ASSETS/backup.png" /> نسخ مستندات وبيانات الأراضي </a>
+                    <a href="../MODEL/backup.php" type="button" class="btn btn-default col-xs-4 pull-right"><img
+                            class="img-responsive" src="../ASSETS/backup.png" /> نسخ مستندات وبيانات الأراضي </a>
                     <div class="col-xs-8">
                         <label> إسترجاع البيانات من ملف إحتياطي </label>
                         <input type="file" class="form-control" id="backup_file" name="backup_file" />
                         <br />
-                        <button type="button" class="btn btn-primary btn-block" disabled id="restore"> بدء عملية الإسترجاع <i class="fa fa-play-circle-o fa-lg"></i></button>
+                        <button type="button" class="btn btn-primary btn-block" disabled id="restore"> بدء عملية
+                            الإسترجاع <i class="fa fa-play-circle-o fa-lg"></i></button>
                     </div>
                 </div>
             </div>
@@ -300,8 +314,10 @@ include "../MODEL/connect.php";
             <!--------------------------------------------------------------------------------->
 
             <div class="tab-pane active" id="tab3">
-                <button style="margin-bottom:20px;left:20px;" id="add_user" class="btn btn-success pull-left"><i class="fa fa-plus"></i> إضافة مستخدم </button>
-                <div class="col-xs-12 pull-right" style="height:460px;overflow:scroll;background-color:white;" id="users_table">
+                <button style="margin-bottom:20px;left:20px;" id="add_user" class="btn btn-success pull-left"><i
+                        class="fa fa-plus"></i> إضافة مستخدم </button>
+                <div class="col-xs-12 pull-right" style="height:460px;overflow:scroll;background-color:white;"
+                    id="users_table">
 
                 </div>
             </div>
@@ -316,121 +332,121 @@ include "../MODEL/connect.php";
 
 </html>
 <script>
-    $(document).ready(function() {
+$(document).ready(function() {
 
-        var user_no = '';
+    var user_no = '';
+    $("#user_update").hide();
+
+    $(document).on('click', '.user-row', function(e) {
+
+        var id = $(this).attr("id");
+        user_no = id;
+        $.ajax({
+
+            url: "../MODEL/fetch_user_data.php",
+            method: "POST",
+            data: {
+                id: id
+            },
+            success: function(data) {
+                $("#users_form").html(data);
+            }
+
+        });
+
+        $("#user_modal_title").html(" بيانات مستخدم ");
+        $("#user_submit").hide();
+        $("#user_update").show();
+        $("#UserModal").modal("show");
+
+    });
+
+    $(document).on('click', '#add_user', function(e) {
+
+        var full_name = $("#full_name").val('');
+        var user_name = $("#user_name").val('');
+        var password = $("#password").val('');
+        var privilege = $("#privilege").val(1);
+        var active = $("#active").val();
+
+        $("#user_modal_title").html(" إضافة مستخدم جديد ");
+        $("#user_submit").show();
         $("#user_update").hide();
+        $("#UserModal").modal("show");
 
-        $(document).on('click', '.user-row', function(e) {
-
-            var id = $(this).attr("id");
-            user_no = id;
-            $.ajax({
-
-                url: "../MODEL/fetch_user_data.php",
-                method: "POST",
-                data: {
-                    id: id
-                },
-                success: function(data) {
-                    $("#users_form").html(data);
-                }
-
-            });
-
-            $("#user_modal_title").html(" بيانات مستخدم ");
-            $("#user_submit").hide();
-            $("#user_update").show();
-            $("#UserModal").modal("show");
-
-        });
-
-        $(document).on('click', '#add_user', function(e) {
-
-            var full_name = $("#full_name").val('');
-            var user_name = $("#user_name").val('');
-            var password = $("#password").val('');
-            var privilege = $("#privilege").val(1);
-            var active = $("#active").val();
-
-            $("#user_modal_title").html(" إضافة مستخدم جديد ");
-            $("#user_submit").show();
-            $("#user_update").hide();
-            $("#UserModal").modal("show");
-
-        });
+    });
 
 
-        $("#user_update").click(function() {
+    $("#user_update").click(function() {
 
-            var full_name = $("#full_name").val();
-            var user_name = $("#user_name").val();
-            var password = $("#password").val();
-            var privilege = $("#privilege").val();
-            var active = $("input[name=active]:checked").val();
-
-            $.ajax({
-                url: "../MODEL/update_user.php",
-                method: "POST",
-                data: {
-                    full_name: full_name,
-                    user_name: user_name,
-                    user_no: user_no,
-                    active: active,
-                    privilege: privilege,
-                    password: password
-                },
-                success: function(data) {
-                    $.ajax({
-                        url: "../MODEL/fetch_users.php",
-                        method: "POST",
-                        success: function(data) {
-
-                            $("#users_table").html(data);
-                            $("#UserModal").modal("hide");
-
-                        }
-                    });
-                }
-            });
-
-        });
-
-        $("#users_form").submit(function(e) {
-
-            e.preventDefault();
-
-            $.ajax({
-                url: "../MODEL/insert_user.php",
-                method: "POST",
-                data: new FormData(this),
-                processData: false,
-                contentType: false,
-                success: function(data) {
-                    $("#users_form")[0].reset();
-                    $("#UserModal").modal("hide");
-
-                    $.ajax({
-                        url: "../MODEL/fetch_users.php",
-                        method: "POST",
-                        success: function(data) {
-
-                            $("#users_table").html(data);
-
-                        }
-                    });
-                }
-            });
-
-        });
+        var full_name = $("#full_name").val();
+        var user_name = $("#user_name").val();
+        var password = $("#password").val();
+        var privilege = $("#privilege").val();
+        var active = $("input[name=active]:checked").val();
 
         $.ajax({
-            url: "../MODEL/fetch_users.php",
+            url: "../MODEL/update_user.php",
             method: "POST",
+            data: {
+                full_name: full_name,
+                user_name: user_name,
+                user_no: user_no,
+                active: active,
+                privilege: privilege,
+                password: password
+            },
             success: function(data) {
-                $("#users_table").html(data);
+                $.ajax({
+                    url: "../MODEL/fetch_users.php",
+                    method: "POST",
+                    success: function(data) {
+
+                        $("#users_table").html(data);
+                        $("#UserModal").modal("hide");
+
+                    }
+                });
             }
         });
 
     });
+
+    $("#users_form").submit(function(e) {
+
+        e.preventDefault();
+
+        $.ajax({
+            url: "../MODEL/insert_user.php",
+            method: "POST",
+            data: new FormData(this),
+            processData: false,
+            contentType: false,
+            success: function(data) {
+                $("#users_form")[0].reset();
+                $("#UserModal").modal("hide");
+
+                $.ajax({
+                    url: "../MODEL/fetch_users.php",
+                    method: "POST",
+                    success: function(data) {
+
+                        $("#users_table").html(data);
+
+                    }
+                });
+            }
+        });
+
+    });
+
+    $.ajax({
+        url: "../MODEL/fetch_users.php",
+        method: "POST",
+        success: function(data) {
+            $("#users_table").html(data);
+        }
+    });
+
+});
 </script>

@@ -4,11 +4,11 @@ include "connect.php";
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-$query = "CREATE DATABASE ARCHIVE CHARACTER SET utf8 COLLATE utf8_general_ci";
+$query = "CREATE DATABASE EVENTS CHARACTER SET utf8 COLLATE utf8_general_ci";
 
 mysqli_query($connect, $query) or die("");
 
-mysqli_select_db($connect, "ARCHIVE") or die("");
+mysqli_select_db($connect, "EVENTS") or die("");
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -31,30 +31,24 @@ mysqli_query($connect, $query) or die("");
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-$query = "CREATE TABLE T_TRANSACTION(
+$query = "CREATE TABLE T_EVENT(
 ID INT(20),
-LAND_NO VARCHAR(40),
-DISTRICT_NO INT(6),
-SEC_LAND_NO VARCHAR(40),
-TRANSACTION_NO INT(2),
-TRANS_DATE DATE,
-RENEWAL_TERM INT(1),
-PERIOD DOUBLE,
-MONTHS_OR_YEARS INT(1),
-AREA DOUBLE,
-FIRST_PARTY INT(9),
-SEC_PARTY INT(9),
-ON_BEHALF_NAME VARCHAR(50),
-ON_BEHALF_ID_TYPE INT(1),
-ON_BEHALF_ID VARCHAR(15),
-ON_BEHALF_PHONE VARCHAR(15),
+EVENT_TYPE VARCHAR(40),
+CLASSIFICATION VARCHAR(1);
+EVENT_NAME VARCHAR(60),
+ORGANIZER VARCHAR(40),
+EVENT_LOCATION VARCHAR(40),
+EXPECTED_AUDIENCE INT(8),
+POLICE_COUNT INT(8),
+EVENT_DATE DATETIME,
+EVENT_DAY VARCHAR(10),
+VIPS_EXIST BOOLEAN,
 DATE_CREATED DATETIME,
 CREATOR_ID INT(3),
 DATE_MODIFIED DATETIME,
 MODIFIER_ID INT(3),
 FOREIGN KEY (CREATOR_ID) REFERENCES T_USERS(USER_NO),
 FOREIGN KEY (MODIFIER_ID) REFERENCES T_USERS(USER_NO),
-FOREIGN KEY (LAND_NO,DISTRICT_NO) REFERENCES T_LANDS(LAND_NO,DISTRICT_NO),
 PRIMARY KEY (ID)) CHARACTER SET utf8 ENGINE=InnoDB COLLATE utf8_general_ci";
 mysqli_query($connect, $query) or die("");
 

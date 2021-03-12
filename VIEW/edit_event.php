@@ -66,19 +66,19 @@ if (mysqli_num_rows($r) > 0) {
 </head>
 
 <style>
-    .owner-row:hover {
-        background-color: #b8daff;
-    }
+.owner-row:hover {
+    background-color: #b8daff;
+}
 
-    .form-control {
-        border-radius: 0px;
-    }
+.form-control {
+    border-radius: 0px;
+}
 
-    html,
-    body {
-        height: 100%;
-        font-size: large;
-    }
+html,
+body {
+    height: 100%;
+    font-size: large;
+}
 </style>
 
 <body>
@@ -95,11 +95,14 @@ if (mysqli_num_rows($r) > 0) {
 
     <div class="col-md-12 navbar-fixed-top" style="height:55px;background-color: #1b5e20 ;padding-left: 0px;">
         <a style="cursor:pointer;" class="col-xs-9 pull-right">
-            <p class="col-xs-12 pull-right" id="lands" style="margin-top:0.5%;color:white;font-size:x-large"><b> الأراضي <i class="fa fa-arrow-left"></i> قطعة أرض <i class="fa fa-arrow-left"></i> <?php echo $row['DISTRICT_NAME'] . " - قطعة رقم : " . $row['LAND_NO'];  ?> </b></p>
+            <p class="col-xs-12 pull-right" id="lands" style="margin-top:0.5%;color:white;font-size:x-large"><b> الأراضي
+                    <i class="fa fa-arrow-left"></i> قطعة أرض <i class="fa fa-arrow-left"></i>
+                    <?php echo $row['DISTRICT_NAME'] . " - قطعة رقم : " . $row['LAND_NO'];  ?> </b></p>
         </a>
 
         <div style="position:relative;z-index: 999;">
-            <button id="user_button" style="border-width:0px;height:55px;background-color: #1b5e20;" class="btn col-xs-3 btn-success pull-left dropdown-toggle" data-toggle="dropdown">
+            <button id="user_button" style="border-width:0px;height:55px;background-color: #1b5e20;"
+                class="btn col-xs-3 btn-success pull-left dropdown-toggle" data-toggle="dropdown">
 
                 <div>
                     <i style="margin: 5px;" class="fa fa-user-circle fa-lg"></i>
@@ -110,7 +113,8 @@ if (mysqli_num_rows($r) > 0) {
 
             <ul class="col-xs-3 dropdown-menu dropdown" style="margin:0px;border-radius:0px;">
                 <li style="margin-top: 3px;"><a href="../MODEL/logout.php">
-                        <p style="color:#6a6a6a;font-family: 'Droid Arabic Naskh', serif;font-size: medium;color:#1b5e20;" align="center"> <i class="fa fa-lock"></i> تسجيل الخروج </p>
+                        <p style="color:#6a6a6a;font-family: 'Droid Arabic Naskh', serif;font-size: medium;color:#1b5e20;"
+                            align="center"> <i class="fa fa-lock"></i> تسجيل الخروج </p>
                     </a></li>
             </ul>
         </div>
@@ -118,12 +122,20 @@ if (mysqli_num_rows($r) > 0) {
     </div>
 
 
-    <div id="buttons_div" class="col-xs-10 navbar-fixed-top pull-right" style="margin-right: 16.7%;height:70px;border-bottom-style: outset;border-bottom-width: 1px;border-bottom-color: lightgray;  background-color: #ffffff;margin-top:55px; ">
-        <a href="lands.php" style="margin-top: 20px;margin-right:5px;" class="btn btn-default col-xs-2 pull-right"><i class="fa fa-long-arrow-right"></i> رجوع </a>
-        <button type="submit" form="lands_form" style="margin-top: 20px;margin-right:5px;" class="btn btn-success col-xs-2 pull-right"><i class="fa fa-pencil-square-o"></i> حفظ التعديلات </button>
-        <button id="delete_record" style="margin-top: 20px;margin-right:5px;" class="btn btn-danger col-xs-2 pull-right"><i class="fa fa-trash-o"></i> حذف </button>
-        <a href="add_files.php?land_no=<?php echo $row['LAND_NO'] . '&district_no=' . $row['DISTRICT_NO']; ?>"><button id="add_docs" style="margin-top: 20px;margin-right:5px;" class="btn btn-info col-xs-3 pull-right"><i class="fa fa-plus"></i> إضافة مستندات لقطعة الأرض </button> </a>
-        <a href="new_transaction.php?land_no=<?php echo $row['LAND_NO'] . '&district_no=' . $row['DISTRICT_NO']; ?>"><button id="add_trans" style="margin-top: 20px;margin-right:5px;" class="btn btn-warning col-xs-2 pull-right"> <i class="fa fa-plus"></i> إضافة معاملة </button> </a>
+    <div id="buttons_div" class="col-xs-10 navbar-fixed-top pull-right"
+        style="margin-right: 16.7%;height:70px;border-bottom-style: outset;border-bottom-width: 1px;border-bottom-color: lightgray;  background-color: #ffffff;margin-top:55px; ">
+        <a href="lands.php" style="margin-top: 20px;margin-right:5px;" class="btn btn-default col-xs-2 pull-right"><i
+                class="fa fa-long-arrow-right"></i> رجوع </a>
+        <button type="submit" form="lands_form" style="margin-top: 20px;margin-right:5px;"
+            class="btn btn-success col-xs-2 pull-right"><i class="fa fa-pencil-square-o"></i> حفظ التعديلات </button>
+        <button id="delete_record" style="margin-top: 20px;margin-right:5px;"
+            class="btn btn-danger col-xs-2 pull-right"><i class="fa fa-trash-o"></i> حذف </button>
+        <a href="add_files.php?land_no=<?php echo $row['LAND_NO'] . '&district_no=' . $row['DISTRICT_NO']; ?>"><button
+                id="add_docs" style="margin-top: 20px;margin-right:5px;" class="btn btn-info col-xs-3 pull-right"><i
+                    class="fa fa-plus"></i> إضافة مستندات لقطعة الأرض </button> </a>
+        <a href="new_transaction.php?land_no=<?php echo $row['LAND_NO'] . '&district_no=' . $row['DISTRICT_NO']; ?>"><button
+                id="add_trans" style="margin-top: 20px;margin-right:5px;" class="btn btn-warning col-xs-2 pull-right">
+                <i class="fa fa-plus"></i> إضافة معاملة </button> </a>
         <br />
         <br />
     </div>
@@ -131,7 +143,8 @@ if (mysqli_num_rows($r) > 0) {
     <input type="text" hidden id="privilege" value="<?php echo $_SESSION['PRIVILEGE']; ?>" />
 
 
-    <div class="col-xs-10" id="data_div" style="min-height:81.5%;margin-top:125px;background-image: url('../ASSETS/form_sheetbg.png');">
+    <div class="col-xs-10" id="data_div"
+        style="min-height:81.5%;margin-top:125px;background-image: url('../ASSETS/form_sheetbg.png');">
         <br />
         <div class="panel panel-default" style="border-radius: 0px;box-shadow: 1px 1px 1px 1px darkgrey;">
             <div class="panel-heading">
@@ -150,22 +163,28 @@ if (mysqli_num_rows($r) > 0) {
                                         <label class="control-label">رقم القطعة</label>
                                     </td>
                                     <td class="col-xs-2">
-                                        <input type="text" readonly class="form-control" value="<?php echo $row['LAND_NO']; ?>" name="land_no" id="land_no" placeholder="رقم القطعة" />
+                                        <input type="text" readonly class="form-control"
+                                            value="<?php echo $row['LAND_NO']; ?>" name="land_no" id="land_no"
+                                            placeholder="رقم القطعة" />
                                     </td>
                                     <td class="col-xs-2">
                                         <label class="control-label">المحلية</label>
                                     </td>
                                     <td class="col-xs-2">
-                                        <input value="<?php echo $row['LOCALE_NO']; ?>" name="locale" id="locale" hidden />
-                                        <input required class="form-control " readonly value="<?php echo $row['LOCALE_NAME']; ?>" />
+                                        <input value="<?php echo $row['LOCALE_NO']; ?>" name="locale" id="locale"
+                                            hidden />
+                                        <input required class="form-control " readonly
+                                            value="<?php echo $row['LOCALE_NAME']; ?>" />
                                     </td>
                                     <td class="col-xs-2">
                                         <label class="control-label">المربوع</label>
                                     </td>
                                     <td class="col-xs-2">
 
-                                        <input value="<?php echo $row['DISTRICT_NO']; ?>" name="district" id="district" hidden />
-                                        <input required class="form-control " readonly value="<?php echo $row['DISTRICT_NAME']; ?>" />
+                                        <input value="<?php echo $row['DISTRICT_NO']; ?>" name="district" id="district"
+                                            hidden />
+                                        <input required class="form-control " readonly
+                                            value="<?php echo $row['DISTRICT_NAME']; ?>" />
                                     </td>
 
                                 </tr>
@@ -182,7 +201,8 @@ if (mysqli_num_rows($r) > 0) {
                                         <label class="control-label">المساحة</label>
                                     </td>
                                     <td class="col-xs-2">
-                                        <input type="text" class="form-control" value="<?php echo $row['AREA']; ?>" name="area" placeholder="مثلاً 20 كيلومتر مربع" />
+                                        <input type="text" class="form-control" value="<?php echo $row['AREA']; ?>"
+                                            name="area" placeholder="مثلاً 20 كيلومتر مربع" />
                                     </td>
                                     <td class="col-xs-2">
                                         <label>التصنيف</label>
@@ -223,19 +243,23 @@ if (mysqli_num_rows($r) > 0) {
                                         <label> المكتب </label>
                                     </td>
                                     <td>
-                                        <input type="text" class="form-control" value="<?php echo $row['OFFICE_NO']; ?>" id="office_no" name="office_no" />
+                                        <input type="text" class="form-control" value="<?php echo $row['OFFICE_NO']; ?>"
+                                            id="office_no" name="office_no" />
                                     </td>
                                     <td>
                                         <label> الدولاب </label>
                                     </td>
                                     <td>
-                                        <input type="text" class="form-control" value="<?php echo $row['CUPBOARD_NO']; ?>" id="cupboard_no" name="cupboard_no" />
+                                        <input type="text" class="form-control"
+                                            value="<?php echo $row['CUPBOARD_NO']; ?>" id="cupboard_no"
+                                            name="cupboard_no" />
                                     </td>
                                     <td>
                                         <label> الوحدة </label>
                                     </td>
                                     <td>
-                                        <input type="text" class="form-control" value="<?php echo $row['UNIT_NO']; ?>" id="unit_no" name="unit_no" />
+                                        <input type="text" class="form-control" value="<?php echo $row['UNIT_NO']; ?>"
+                                            id="unit_no" name="unit_no" />
                                     </td>
                                 </tr>
                                 <tr>
@@ -243,19 +267,22 @@ if (mysqli_num_rows($r) > 0) {
                                         <label> الرف </label>
                                     </td>
                                     <td>
-                                        <input type="text" class="form-control" value="<?php echo $row['SHELF_NO']; ?>" id="shelf_no" name="shelf_no" />
+                                        <input type="text" class="form-control" value="<?php echo $row['SHELF_NO']; ?>"
+                                            id="shelf_no" name="shelf_no" />
                                     </td>
                                     <td>
                                         <label> الصندوق </label>
                                     </td>
                                     <td>
-                                        <input type="text" class="form-control" id="box_no" value="<?php echo $row['BOX_NO']; ?>" name="box_no" />
+                                        <input type="text" class="form-control" id="box_no"
+                                            value="<?php echo $row['BOX_NO']; ?>" name="box_no" />
                                     </td>
                                     <td>
                                         <label> المجلد </label>
                                     </td>
                                     <td>
-                                        <input type="text" class="form-control" id="folder_no" value="<?php echo $row['FOLDER_NO']; ?>" name="folder_no" />
+                                        <input type="text" class="form-control" id="folder_no"
+                                            value="<?php echo $row['FOLDER_NO']; ?>" name="folder_no" />
                                     </td>
                                 </tr>
                                 <div class="FileStatusDiv">
@@ -369,11 +396,14 @@ if (mysqli_num_rows($r) > 0) {
                             إستعراض نسخة من ملف قطعة الأرض <i class="fa fa-hand-o-left"></i>
                         </h2>
                         <a>
-                            <a href="../REPORTS/land_file.php?land_no=<?php echo $_GET['LAND_NO'] . '&district_no=' . $_GET['DISTRICT_NO']; ?>"><img height="150" src="../ASSETS/folder_icon.png" /></a>
+                            <a
+                                href="../REPORTS/land_file.php?land_no=<?php echo $_GET['LAND_NO'] . '&district_no=' . $_GET['DISTRICT_NO']; ?>"><img
+                                    height="150" src="../ASSETS/folder_icon.png" /></a>
                         </a>
 
                     </div>
-                    <input type="text" hidden value="<?php echo $row['DISTRICT_NO']; ?>" id="district_no" name="district_no" />
+                    <input type="text" hidden value="<?php echo $row['DISTRICT_NO']; ?>" id="district_no"
+                        name="district_no" />
                 </form>
             </div>
 
@@ -447,10 +477,12 @@ if (mysqli_num_rows($r) > 0) {
                             <tr>
                                 <td colspan="3">
                                     <div class="input-group col-xs-12">
-                                        <span class="input-group-addon" style="background-color:white;border-radius: 0px;border-width:0px;">
+                                        <span class="input-group-addon"
+                                            style="background-color:white;border-radius: 0px;border-width:0px;">
                                             <i class="fa fa-filter"></i>
                                         </span>
-                                        <input type="search" id="owner_search_txt" class="form-control" placeholder="الإسم أو رقم إثبات الشخصية ..." />
+                                        <input type="search" id="owner_search_txt" class="form-control"
+                                            placeholder="الإسم أو رقم إثبات الشخصية ..." />
                                     </div>
                                 </td>
                             </tr>
@@ -468,7 +500,8 @@ if (mysqli_num_rows($r) > 0) {
 
                 <div class="modal-footer">
 
-                    <button data-dismiss="modal" class="btn btn-warning pull-left"> <i class="fa fa-window-close"></i> إغلاق </button>
+                    <button data-dismiss="modal" class="btn btn-warning pull-left"> <i class="fa fa-window-close"></i>
+                        إغلاق </button>
                 </div>
             </div>
         </div>
@@ -489,9 +522,11 @@ if (mysqli_num_rows($r) > 0) {
                 <div class="modal-body" dir="rtl">
                     <form id="BorrowForm">
 
-                        <input hidden value="<?php echo $_GET['LAND_NO']; ?>" name="b_land_no" class="borrow-input" id="b_land_no" />
+                        <input hidden value="<?php echo $_GET['LAND_NO']; ?>" name="b_land_no" class="borrow-input"
+                            id="b_land_no" />
 
-                        <input value="<?php echo $_GET['DISTRICT_NO']; ?>" name="b_district" class="borrow-input" id="b_district" hidden />
+                        <input value="<?php echo $_GET['DISTRICT_NO']; ?>" name="b_district" class="borrow-input"
+                            id="b_district" hidden />
 
                         <table class="table table-responsive">
 
@@ -500,13 +535,15 @@ if (mysqli_num_rows($r) > 0) {
                                     <label>إسم المستلف</label>
                                 </td>
                                 <td>
-                                    <input required type="text" class="borrow-input form-control" id="borrower" name="borrower" />
+                                    <input required type="text" class="borrow-input form-control" id="borrower"
+                                        name="borrower" />
                                 </td>
                                 <td>
                                     <label>إدارة المستلف</label>
                                 </td>
                                 <td>
-                                    <input required type="text" class="borrow-input form-control" id="management" name="management" />
+                                    <input required type="text" class="borrow-input form-control" id="management"
+                                        name="management" />
                                 </td>
                             </tr>
 
@@ -515,13 +552,15 @@ if (mysqli_num_rows($r) > 0) {
                                     <label>غرض الإستلاف</label>
                                 </td>
                                 <td>
-                                    <input required type="text" class="borrow-input form-control" id="purpose" name="purpose" />
+                                    <input required type="text" class="borrow-input form-control" id="purpose"
+                                        name="purpose" />
                                 </td>
                                 <td>
                                     <label>تاريخ الإستلاف</label>
                                 </td>
                                 <td>
-                                    <input required type="text" class="borrow-input form-control" id="borrow_date" name="borrow_date" />
+                                    <input required type="text" class="borrow-input form-control" id="borrow_date"
+                                        name="borrow_date" />
                                 </td>
                             </tr>
                             <tr>
@@ -529,15 +568,18 @@ if (mysqli_num_rows($r) > 0) {
                                     <label>مُسِّلف الملف</label>
                                 </td>
                                 <td>
-                                    <input required type="text" value="<?php echo $_SESSION['FULL_NAME']; ?>" class="borrow-input form-control" id="hander" name="hander" />
+                                    <input required type="text" value="<?php echo $_SESSION['FULL_NAME']; ?>"
+                                        class="borrow-input form-control" id="hander" name="hander" />
                                 </td>
                             </tr>
                         </table>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button data-dismiss="modal" class="btn borrow-input btn-warning pull-left"> <i class="fa fa-window-close"></i> إغلاق </button>
-                    <button type="submit" form="BorrowForm" class="btn borrow-input btn-primary pull-left"> <i class="fa fa-save"></i> حفظ </button>
+                    <button data-dismiss="modal" class="btn borrow-input btn-warning pull-left"> <i
+                            class="fa fa-window-close"></i> إغلاق </button>
+                    <button type="submit" form="BorrowForm" class="btn borrow-input btn-primary pull-left"> <i
+                            class="fa fa-save"></i> حفظ </button>
                 </div>
             </div>
         </div>
@@ -564,9 +606,11 @@ if (mysqli_num_rows($r) > 0) {
                                     </label>
                                 </td>
                                 <td colspan="3">
-                                    <input class="col-xs-2 pull-right" checked type="radio" id="individual" value="1" name="owner_type">
+                                    <input class="col-xs-2 pull-right" checked type="radio" id="individual" value="1"
+                                        name="owner_type">
                                     <label class="col-xs-2 pull-right">فرد</label>
-                                    <input class="col-xs-2 pull-right" type="radio" id="org" value="2" name="owner_type">
+                                    <input class="col-xs-2 pull-right" type="radio" id="org" value="2"
+                                        name="owner_type">
                                     <label class="col-xs-2 pull-right">مؤسسة</label>
                                 </td>
                             </tr>
@@ -575,7 +619,8 @@ if (mysqli_num_rows($r) > 0) {
                                     <label class="control-label">الإسم </label>
                                 </td>
                                 <td class="col-xs-3" colspan="4">
-                                    <input autocomplete="off" required type="text" class="text-center form-control" name="owner_name" placeholder="إسم المالك ....." />
+                                    <input autocomplete="off" required type="text" class="text-center form-control"
+                                        name="owner_name" placeholder="إسم المالك ....." />
                                 </td>
                             </tr>
                             <tr>
@@ -583,14 +628,16 @@ if (mysqli_num_rows($r) > 0) {
                                     <label class="control-label">رقم الهاتف 1</label>
                                 </td>
                                 <td class="col-xs-3">
-                                    <input dir="ltr" type="tel" class="form-control text-center" placeholder="رقم الهاتف 1" id="phone1" name="phone1" />
+                                    <input dir="ltr" type="tel" class="form-control text-center"
+                                        placeholder="رقم الهاتف 1" id="phone1" name="phone1" />
                                 </td>
 
                                 <td class="col-xs-3">
                                     <label class="control-label">رقم الهاتف 2</label>
                                 </td>
                                 <td class="col-xs-3">
-                                    <input dir="ltr" type="tel" class="form-control text-center" placeholder="رقم الهاتف 2" id="phone2" name="phone2" />
+                                    <input dir="ltr" type="tel" class="form-control text-center"
+                                        placeholder="رقم الهاتف 2" id="phone2" name="phone2" />
                                 </td>
                             </tr>
                             <tr id="id_row">
@@ -610,7 +657,8 @@ if (mysqli_num_rows($r) > 0) {
                                     <label class="control-label">رقم إثبات الشخصية</label>
                                 </td>
                                 <td class="col-xs-3">
-                                    <input dir="ltr" type="text" class="form-control text-center" placeholder="رقم إثبات الشخصية" id="idno" name="idno" />
+                                    <input dir="ltr" type="text" class="form-control text-center"
+                                        placeholder="رقم إثبات الشخصية" id="idno" name="idno" />
                                 </td>
                             </tr>
                             <tr>
@@ -618,15 +666,18 @@ if (mysqli_num_rows($r) > 0) {
                                     <label>ملاحظات</label>
                                 </td>
                                 <td colspan="3">
-                                    <textarea name="notes" style="resize: none" rows="4" class="form-control col-xs-12"></textarea>
+                                    <textarea name="notes" style="resize: none" rows="4"
+                                        class="form-control col-xs-12"></textarea>
                                 </td>
                             </tr>
                         </table>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button data-dismiss="modal" class="btn btn-warning pull-left"> <i class="fa fa-window-close"></i> إغلاق </button>
-                    <button type="submit" form="owner_form" class="btn btn-primary pull-left"> <i class="fa fa-save"></i> حفظ </button>
+                    <button data-dismiss="modal" class="btn btn-warning pull-left"> <i class="fa fa-window-close"></i>
+                        إغلاق </button>
+                    <button type="submit" form="owner_form" class="btn btn-primary pull-left"> <i
+                            class="fa fa-save"></i> حفظ </button>
                 </div>
             </div>
         </div>
@@ -635,291 +686,262 @@ if (mysqli_num_rows($r) > 0) {
 
 </html>
 <script>
-    $(document).ready(function() {
+$(document).ready(function() {
 
 
 
-        $("#individual").click(function() {
-            $("#id_row").show();
+    $("#individual").click(function() {
+        $("#id_row").show();
+    });
+
+    $("#org").click(function() {
+        $("#id_row").hide();
+        $("#id_type").val(0);
+        $("#idno").val('');
+    });
+
+
+    var status = $("#status").val();
+
+
+    if ($("#privilege").val() != 1 && $("#privilege").val() != 2) {
+        $("input").prop('disabled', true);
+        $("select").prop('disabled', true);
+        $("button").prop('disabled', true);
+
+    }
+
+
+    if ($("#privilege").val() == 5) {
+        $(".borrow-input").prop('disabled', false);
+        $("#borrow").prop('disabled', false);
+        $("#receive").prop('disabled', false);
+    }
+
+    if ($("#privilege").val() == 3) {
+        $("#add_trans").prop('disabled', false);
+        $("#add_docs").prop('disabled', false);
+    }
+
+    if (status == 1) {
+        $("input").prop('disabled', true);
+        $("select").prop('disabled', true);
+        $("button").prop('disabled', true);
+        alertify.set('notifier', 'position', 'bottom-center');
+        alertify.error("<h3> هذه القطعة قد تم تغيير غرضها من زراعي إلى سكني ولا يمكن تعديل بياناتها </h3>");
+    } else if (status == 2) {
+        $("input").prop('disabled', true);
+        $("select").prop('disabled', true);
+        $("button").prop('disabled', true);
+        alertify.set('notifier', 'position', 'bottom-center');
+        alertify.error("<h3> هذه القطعة قد تم ضمها إلى قطعة أخرى ولا يمكن تعديل بياناتها </h3>");
+
+    } else if (status == 3) {
+        $("input").prop('disabled', true);
+        $("select").prop('disabled', true);
+        $("button").prop('disabled', true);
+        alertify.set('notifier', 'position', 'bottom-center');
+        alertify.error(
+        "<h3> هذه القطعة قد تم نزعها لمصلحة حكومة جمهورية السودان ولا يمكن تعديل بياناتها </h3>");
+
+    }
+
+    window.onbeforeunload = function() {
+        window.confirm();
+        if (change_flag == true)
+            return "";
+        else
+            return;
+    };
+
+    $("#user_button").prop('disabled', false);
+
+    $("#receive").click(function() {
+
+        var land = $("#b_land_no").val();
+        var district = $("#b_district").val();
+        $.ajax({
+
+            url: '../MODEL/return_land_file.php',
+            method: 'POST',
+            data: {
+                land: land,
+                district: district
+            },
+            success: function(data) {
+                if (data)
+                    window.location = window.location.href;
+            }
+
         });
 
-        $("#org").click(function() {
-            $("#id_row").hide();
-            $("#id_type").val(0);
-            $("#idno").val('');
-        });
+    });
+
+    $.datepicker.setDefaults({
+        changeYear: true,
+        changeMonth: true,
+        dateFormat: 'yy-mm-dd'
+    });
 
 
-        var status = $("#status").val();
+    $("#borrow").click(function() {
+        $("#BorrowModal").modal("show");
+    });
 
 
-        if ($("#privilege").val() != 1 && $("#privilege").val() != 2) {
-            $("input").prop('disabled', true);
-            $("select").prop('disabled', true);
-            $("button").prop('disabled', true);
+    var change_flag = false;
 
-        }
+    $("input").change(function() {
+        change_flag = true;
+    });
+
+    $("select").change(function() {
+        change_flag = true;
+    });
+
+    var owners = [];
+
+    $("#land_owners_list option").each(function() {
+        owners.push($(this).val());
+    });
+
+    $("#register_owner").click(function() {
+        $("#NewOwnerModal").modal("show");
+    });
 
 
-        if ($("#privilege").val() == 5) {
-            $(".borrow-input").prop('disabled', false);
-            $("#borrow").prop('disabled', false);
-            $("#receive").prop('disabled', false);
-        }
+    $("#owner_form").submit(function(e) {
+        e.preventDefault();
 
-        if ($("#privilege").val() == 3) {
-            $("#add_trans").prop('disabled', false);
-            $("#add_docs").prop('disabled', false);
-        }
+        $.ajax({
+            url: '../MODEL/insert_owner.php',
+            method: 'POST',
+            data: new FormData(this),
+            processData: false,
+            contentType: false,
+            success: function(data) {
 
-        if (status == 1) {
-            $("input").prop('disabled', true);
-            $("select").prop('disabled', true);
-            $("button").prop('disabled', true);
-            alertify.set('notifier', 'position', 'bottom-center');
-            alertify.error("<h3> هذه القطعة قد تم تغيير غرضها من زراعي إلى سكني ولا يمكن تعديل بياناتها </h3>");
-        } else if (status == 2) {
-            $("input").prop('disabled', true);
-            $("select").prop('disabled', true);
-            $("button").prop('disabled', true);
-            alertify.set('notifier', 'position', 'bottom-center');
-            alertify.error("<h3> هذه القطعة قد تم ضمها إلى قطعة أخرى ولا يمكن تعديل بياناتها </h3>");
+                if (data) {
 
-        } else if (status == 3) {
-            $("input").prop('disabled', true);
-            $("select").prop('disabled', true);
-            $("button").prop('disabled', true);
-            alertify.set('notifier', 'position', 'bottom-center');
-            alertify.error("<h3> هذه القطعة قد تم نزعها لمصلحة حكومة جمهورية السودان ولا يمكن تعديل بياناتها </h3>");
+                    var land = $("#land_no").val();
+                    var district = $("#district").val();
+                    var owner = data;
+                    owners.push(owner);
 
-        }
+                    $.ajax({
+                        url: "../MODEL/insert_land_owners.php",
+                        method: "POST",
+                        data: {
+                            owner: owner,
+                            land: land,
+                            district: district
+                        },
+                        success: function(data) {
+                            $("#owners_table").html(data);
+                        }
+                    });
 
-        window.onbeforeunload = function() {
-            window.confirm();
-            if (change_flag == true)
-                return "";
-            else
-                return;
-        };
+                    $("#NewOwnerModal").modal("hide");
+                    $("#owner_form")[0].reset();
 
-        $("#user_button").prop('disabled', false);
+                    $.ajax({
+                        url: "../MODEL/modal_fetch_owners.php",
+                        method: "POST",
+                        data: {},
+                        success: function(data) {
+                            $("#modal-owners-data").html(data);
+                        }
 
-        $("#receive").click(function() {
+                    });
 
-            var land = $("#b_land_no").val();
-            var district = $("#b_district").val();
-            $.ajax({
-
-                url: '../MODEL/return_land_file.php',
-                method: 'POST',
-                data: {
-                    land: land,
-                    district: district
-                },
-                success: function(data) {
-                    if (data)
-                        window.location = window.location.href;
+                    change_flag = true;
+                } else {
+                    swal("لم يتم حفظ البيانات ! الرجاء التحقق من صحتها");
                 }
 
-            });
-
+            }
         });
-
-        $.datepicker.setDefaults({
-            changeYear: true,
-            changeMonth: true,
-            dateFormat: 'yy-mm-dd'
-        });
-
-
-        $("#borrow").click(function() {
-            $("#BorrowModal").modal("show");
-        });
-
-
-        var change_flag = false;
-
-        $("input").change(function() {
-            change_flag = true;
-        });
-
-        $("select").change(function() {
-            change_flag = true;
-        });
-
-        var owners = [];
-
-        $("#land_owners_list option").each(function() {
-            owners.push($(this).val());
-        });
-
-        $("#register_owner").click(function() {
-            $("#NewOwnerModal").modal("show");
-        });
-
-
-        $("#owner_form").submit(function(e) {
-            e.preventDefault();
-
-            $.ajax({
-                url: '../MODEL/insert_owner.php',
-                method: 'POST',
-                data: new FormData(this),
-                processData: false,
-                contentType: false,
-                success: function(data) {
-
-                    if (data) {
-
-                        var land = $("#land_no").val();
-                        var district = $("#district").val();
-                        var owner = data;
-                        owners.push(owner);
-
-                        $.ajax({
-                            url: "../MODEL/insert_land_owners.php",
-                            method: "POST",
-                            data: {
-                                owner: owner,
-                                land: land,
-                                district: district
-                            },
-                            success: function(data) {
-                                $("#owners_table").html(data);
-                            }
-                        });
-
-                        $("#NewOwnerModal").modal("hide");
-                        $("#owner_form")[0].reset();
-
-                        $.ajax({
-                            url: "../MODEL/modal_fetch_owners.php",
-                            method: "POST",
-                            data: {},
-                            success: function(data) {
-                                $("#modal-owners-data").html(data);
-                            }
-
-                        });
-
-                        change_flag = true;
-                    } else {
-                        swal("لم يتم حفظ البيانات ! الرجاء التحقق من صحتها");
-                    }
-
-                }
-            });
-        });
+    });
 
 
 
-        $(function() {
-            $("#borrow_date").datepicker();
-        });
+    $(function() {
+        $("#borrow_date").datepicker();
+    });
+
+    $.ajax({
+        url: "../MODEL/modal_fetch_owners.php",
+        method: "POST",
+        data: {},
+        success: function(data) {
+            $("#modal-owners-data").html(data);
+        }
+    });
+
+
+    $("#add_owner").click(function() {
+        $("#SelectOwnerModal").modal("show");
+    });
+
+    $("#owner_search_txt").keyup(function(e) {
+
+        var txt = $("#owner_search_txt").val();
 
         $.ajax({
             url: "../MODEL/modal_fetch_owners.php",
             method: "POST",
-            data: {},
+            data: {
+                txt: txt
+            },
             success: function(data) {
                 $("#modal-owners-data").html(data);
             }
         });
+    });
 
 
-        $("#add_owner").click(function() {
-            $("#SelectOwnerModal").modal("show");
-        });
+    $("#BorrowForm").submit(function(e) {
 
-        $("#owner_search_txt").keyup(function(e) {
+        e.preventDefault();
+        $.ajax({
+            url: '../MODEL/insert_borrow.php',
+            method: 'POST',
+            data: new FormData(this),
+            processData: false,
+            contentType: false,
+            success: function(data) {
 
-            var txt = $("#owner_search_txt").val();
-
-            $.ajax({
-                url: "../MODEL/modal_fetch_owners.php",
-                method: "POST",
-                data: {
-                    txt: txt
-                },
-                success: function(data) {
-                    $("#modal-owners-data").html(data);
+                if (data) {
+                    change_flag = false;
+                    window.location = window.location.href;
                 }
-            });
+            }
         });
 
+    });
 
-        $("#BorrowForm").submit(function(e) {
+    $(document).on('click', '.owner-remove', function(e) {
 
-            e.preventDefault();
-            $.ajax({
-                url: '../MODEL/insert_borrow.php',
-                method: 'POST',
-                data: new FormData(this),
-                processData: false,
-                contentType: false,
-                success: function(data) {
+        var owner = $(this).attr("id");
 
-                    if (data) {
-                        change_flag = false;
-                        window.location = window.location.href;
-                    }
-                }
-            });
+        var removedIndex = owners.indexOf(owner);
 
-        });
+        swal({
+            title: "تأكيد",
+            text: "هل تريد حذف هذا السجل",
+            type: "question",
 
-        $(document).on('click', '.owner-remove', function(e) {
+            confirmButtonColor: "red",
+            showCancelButton: true,
+            cancelButtonColor: "green",
+            cancelButtonText: "لا أريد الحذف <i class='fa fa-thumbs-up'></i>",
+            confirmButtonText: "نعم <i class='fa fa-trash'></i>"
+        }).then(function(isConfirm) {
+            if (isConfirm) {
 
-            var owner = $(this).attr("id");
+                if (removedIndex > -1)
+                    owners.splice(removedIndex, 1);
 
-            var removedIndex = owners.indexOf(owner);
-
-            swal({
-                title: "تأكيد",
-                text: "هل تريد حذف هذا السجل",
-                type: "question",
-
-                confirmButtonColor: "red",
-                showCancelButton: true,
-                cancelButtonColor: "green",
-                cancelButtonText: "لا أريد الحذف <i class='fa fa-thumbs-up'></i>",
-                confirmButtonText: "نعم <i class='fa fa-trash'></i>"
-            }).then(function(isConfirm) {
-                if (isConfirm) {
-
-                    if (removedIndex > -1)
-                        owners.splice(removedIndex, 1);
-
-                    $.ajax({
-                        url: "../MODEL/fetch_new_land_owners.php",
-                        method: "POST",
-                        data: {
-                            owners: owners
-                        },
-                        success: function(data) {
-                            $("#owners_table").html(data);
-                            $("#SelectOwnerModal").modal("hide");
-                            change_flag = true;
-                        }
-                    });
-
-                }
-            });
-
-        });
-
-
-
-        $(document).on('click', '.owner-row', function(e) {
-
-            var owner = $(this).attr("id");
-            var flag = false;
-            for (var i = 0; i < owners.length; i++)
-                if (owners[i] == owner)
-                    flag = true;
-
-            if (flag == false) {
-                owners.push(owner);
                 $.ajax({
                     url: "../MODEL/fetch_new_land_owners.php",
                     method: "POST",
@@ -932,154 +954,187 @@ if (mysqli_num_rows($r) > 0) {
                         change_flag = true;
                     }
                 });
-            }
-        });
-
-
-        function fetchDistricts() {
-
-            var locale_no = $("#locale").val();
-            $.ajax({
-                url: '../MODEL/fetch_districts.php',
-                method: "POST",
-                data: {
-                    locale_no: locale_no
-                },
-                success: function(data) {
-                    $("#district").html(data);
-                }
-
-            });
-        }
-
-
-
-        $("#locale").change(function() {
-            fetchDistricts();
-        });
-
-
-
-        $("#lands_form").submit(function(e) {
-            e.preventDefault();
-
-            if (change_flag == true) {
-                $.ajax({
-                    url: '../MODEL/update_land.php',
-                    method: 'POST',
-                    data: new FormData(this),
-                    processData: false,
-                    contentType: false,
-                    success: function(data) {
-                        if (data) {
-
-                            var land = $("#land_no").val();
-                            var district = $("#district").val();
-
-                            $.ajax({
-                                url: '../MODEL/insert_land_owners.php',
-                                method: 'POST',
-                                data: {
-                                    owners: owners,
-                                    land: land,
-                                    district: district
-                                },
-
-                                success: function(data) {
-                                    $("#scan_land_no").val($("#land_no").val());
-                                    $("#scan_district_no").val($("#district").val());
-
-                                    alertify.success("<h4>  <i class='fa fa-check'></i> تم حفظ التعديلات بنجاح </h4>");
-                                    change_flag = false;
-                                }
-
-                            });
-
-                        } else {
-                            swal("لم يتم حفظ البيانات ! الرجاء التحقق من صحتها");
-                        }
-                    }
-                });
-            } else {
-
-                alertify.message("<h4><i class='fa fa-info'></i> ليست هناك تعديلات لحفظها </h4>");
 
             }
         });
-
-
-
-
-        var c = $("#class_no").val();
-        $("#classification").val(c);
-        var c = $("#owner_no").val();
-        $("#owner").val(c);
-        var c = $("#locale_no").val();
-        $("#locale").val(c);
-        var c = $("#measure_unit_no").val();
-        $("#measure_unit").val(c);
-        var c = $("#type_no").val();
-        $("#land_type").val(c);
-
-
-
-
-
-        $("#delete_record").click(function() {
-            swal({
-                title: "تأكيد",
-                text: "هل تريد حذف هذا السجل",
-                type: "question",
-
-                confirmButtonColor: "red",
-                showCancelButton: true,
-                cancelButtonColor: "green",
-                cancelButtonText: "لا أريد الحذف <i class='fa fa-thumbs-up'></i>",
-                confirmButtonText: "نعم <i class='fa fa-trash'></i>"
-            }).then(function(isConfirm) {
-                if (isConfirm) {
-
-                    var land_no = $("#land_no").val();
-                    var district_no = $("#district").val();
-
-
-                    $.ajax({
-                        url: "../MODEL/delete_land.php",
-                        method: "POST",
-                        data: {
-                            land_no: land_no,
-                            district_no: district_no
-                        },
-                        success: function(data) {
-
-                            if (data) {
-
-                                swal({
-                                    title: "تم !",
-                                    text: "تم الحذف بنجاح",
-                                    type: "success",
-                                    confirmButtonColor: "skyblue",
-                                    confirmButtonText: "حسنا"
-                                }).then(function() {
-                                    window.location = "lands.php";
-                                });
-                            } else {
-                                swal("لم يتم حذف السجل لإرتباطه بسجلات أخرى");
-                            }
-
-                        }
-                    });
-
-                } else {
-
-                }
-            });
-        });
-
-        fetchDistricts();
-        var c = $("#district_no").val();
-        $("#district").val(c);
-
 
     });
+
+
+
+    $(document).on('click', '.owner-row', function(e) {
+
+        var owner = $(this).attr("id");
+        var flag = false;
+        for (var i = 0; i < owners.length; i++)
+            if (owners[i] == owner)
+                flag = true;
+
+        if (flag == false) {
+            owners.push(owner);
+            $.ajax({
+                url: "../MODEL/fetch_new_land_owners.php",
+                method: "POST",
+                data: {
+                    owners: owners
+                },
+                success: function(data) {
+                    $("#owners_table").html(data);
+                    $("#SelectOwnerModal").modal("hide");
+                    change_flag = true;
+                }
+            });
+        }
+    });
+
+
+    function fetchDistricts() {
+
+        var locale_no = $("#locale").val();
+        $.ajax({
+            url: '../MODEL/fetch_districts.php',
+            method: "POST",
+            data: {
+                locale_no: locale_no
+            },
+            success: function(data) {
+                $("#district").html(data);
+            }
+
+        });
+    }
+
+
+
+    $("#locale").change(function() {
+        fetchDistricts();
+    });
+
+
+
+    $("#lands_form").submit(function(e) {
+        e.preventDefault();
+
+        if (change_flag == true) {
+            $.ajax({
+                url: '../MODEL/update_land.php',
+                method: 'POST',
+                data: new FormData(this),
+                processData: false,
+                contentType: false,
+                success: function(data) {
+                    if (data) {
+
+                        var land = $("#land_no").val();
+                        var district = $("#district").val();
+
+                        $.ajax({
+                            url: '../MODEL/insert_land_owners.php',
+                            method: 'POST',
+                            data: {
+                                owners: owners,
+                                land: land,
+                                district: district
+                            },
+
+                            success: function(data) {
+                                $("#scan_land_no").val($("#land_no").val());
+                                $("#scan_district_no").val($("#district")
+                            .val());
+
+                                alertify.success(
+                                    "<h4>  <i class='fa fa-check'></i> تم حفظ التعديلات بنجاح </h4>"
+                                    );
+                                change_flag = false;
+                            }
+
+                        });
+
+                    } else {
+                        swal("لم يتم حفظ البيانات ! الرجاء التحقق من صحتها");
+                    }
+                }
+            });
+        } else {
+
+            alertify.message("<h4><i class='fa fa-info'></i> ليست هناك تعديلات لحفظها </h4>");
+
+        }
+    });
+
+
+
+
+    var c = $("#class_no").val();
+    $("#classification").val(c);
+    var c = $("#owner_no").val();
+    $("#owner").val(c);
+    var c = $("#locale_no").val();
+    $("#locale").val(c);
+    var c = $("#measure_unit_no").val();
+    $("#measure_unit").val(c);
+    var c = $("#type_no").val();
+    $("#land_type").val(c);
+
+
+
+
+
+    $("#delete_record").click(function() {
+        swal({
+            title: "تأكيد",
+            text: "هل تريد حذف هذا السجل",
+            type: "question",
+
+            confirmButtonColor: "red",
+            showCancelButton: true,
+            cancelButtonColor: "green",
+            cancelButtonText: "لا أريد الحذف <i class='fa fa-thumbs-up'></i>",
+            confirmButtonText: "نعم <i class='fa fa-trash'></i>"
+        }).then(function(isConfirm) {
+            if (isConfirm) {
+
+                var land_no = $("#land_no").val();
+                var district_no = $("#district").val();
+
+
+                $.ajax({
+                    url: "../MODEL/delete_land.php",
+                    method: "POST",
+                    data: {
+                        land_no: land_no,
+                        district_no: district_no
+                    },
+                    success: function(data) {
+
+                        if (data) {
+
+                            swal({
+                                title: "تم !",
+                                text: "تم الحذف بنجاح",
+                                type: "success",
+                                confirmButtonColor: "skyblue",
+                                confirmButtonText: "حسنا"
+                            }).then(function() {
+                                window.location = "lands.php";
+                            });
+                        } else {
+                            swal("لم يتم حذف السجل لإرتباطه بسجلات أخرى");
+                        }
+
+                    }
+                });
+
+            } else {
+
+            }
+        });
+    });
+
+    fetchDistricts();
+    var c = $("#district_no").val();
+    $("#district").val(c);
+
+
+});
 </script>

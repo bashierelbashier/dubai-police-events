@@ -2,16 +2,16 @@
 
 include "connect.php";
 
-$query = "SELECT * FROM T_USERS WHERE USER_NO = ".$_POST['id'];
+$query = "SELECT * FROM T_USERS WHERE USER_NO = " . $_POST['id'];
 
-$result= mysqli_query($connect,$query);
+$result = mysqli_query($connect, $query);
 
 $row = mysqli_fetch_array($result);
 
 $output = '';
 $radio = '';
 $select = '';
-if ($row['ACTIVE']==TRUE)
+if ($row['ACTIVE'] == TRUE)
     $radio = '
                   <input checked type="radio" name="active" id="active" value="1">
                   <label>نشط</label>
@@ -27,46 +27,17 @@ else
               ';
 
 
-if ($row['PRIVILEGE_NO']==1)
+if ($row['PRIVILEGE_NO'] == 1)
     $select = '<select id="privilege" name="privilege" class="form-control text-center">
                                     <option value="1" selected> كامل الصلاحيات (آدمن) </option>
-                                    <option value="2"> مشرف أرشيف </option>
-                                    <option value="3"> موظف أرشيف </option>
-                                    <option value="4"> إستعلامات وتقارير </option>
-                                    <option value="5"> أمين الأرشيف </option>
+                                    <option value="2"> ضابط </option>
                                 </select>';
-else if ($row['PRIVILEGE_NO']==2)
+else if ($row['PRIVILEGE_NO'] == 2)
     $select = '<select id="privilege" name="privilege" class="form-control text-center">
                                     <option value="1"> كامل الصلاحيات (آدمن) </option>
-                                    <option value="2" selected> مشرف أرشيف </option>
-                                    <option value="3"> موظف أرشيف </option>
-                                    <option value="4"> إستعلامات وتقارير </option>
-                                    <option value="5"> أمين الأرشيف </option>
+                                    <option value="2" selected> ضابط </option>
                                 </select>';
-else if ($row['PRIVILEGE_NO']==3)
-    $select = '<select id="privilege" name="privilege" class="form-control text-center">
-                                    <option value="1"> كامل الصلاحيات (آدمن) </option>
-                                    <option value="2"> مشرف أرشيف </option>
-                                    <option value="3" selected> موظف أرشيف </option>
-                                    <option value="4"> إستعلامات وتقارير </option>
-                                    <option value="5"> أمين الأرشيف </option>
-                                </select>';
-else if ($row['PRIVILEGE_NO']==4)
-    $select = '<select id="privilege" name="privilege" class="form-control text-center">
-                                    <option value="1"> كامل الصلاحيات (آدمن) </option>
-                                    <option value="2"> مشرف أرشيف </option>
-                                    <option value="3"> موظف أرشيف </option>
-                                    <option value="4" selected> إستعلامات وتقارير </option>
-                                    <option value="5"> أمين الأرشيف </option>
-                                </select>';
-else
-    $select = '<select id="privilege" name="privilege" class="form-control text-center">
-                                    <option value="1"> كامل الصلاحيات (آدمن) </option>
-                                    <option value="2"> مشرف أرشيف </option>
-                                    <option value="3"> موظف أرشيف </option>
-                                    <option value="4"> إستعلامات وتقارير </option>
-                                    <option value="5" selected> أمين الأرشيف </option>
-                                </select>';
+
 
 
 $output .=
@@ -77,13 +48,13 @@ $output .=
                                 <label>الإسم</label>
                             </td>
                             <td>
-                                <input type="text" value="'.$row['FULL_NAME'].'" required class="form-control text-center" id = "full_name" name="full_name" autocomplete="off"/>
+                                <input type="text" value="' . $row['FULL_NAME'] . '" required class="form-control text-center" id = "full_name" name="full_name" autocomplete="off"/>
                             </td>
                             <td>
-                                <label>إسم المستخدم (للتعريف)</label>
+                                <label>الرقم العسكري (للتعريف)</label>
                             </td>
                             <td>
-                                <input type="text" value="'.$row['USER_NAME'].'" required class="form-control text-center" id="user_name" name="user_name" autocomplete="off"/>
+                                <input type="text" value="' . $row['USER_NAME'] . '" required class="form-control text-center" id="user_name" name="user_name" autocomplete="off"/>
                             </td>
                         </tr>
                         <tr>
@@ -97,7 +68,7 @@ $output .=
                                 <label>درجة الصلاحية</label>
                             </td>
                             <td>
-                                '.$select.'
+                                ' . $select . '
                             </td>
                         </tr>
                         <tr>
@@ -105,7 +76,7 @@ $output .=
                                 <label>نشط ؟</label>
                             </td>
                             <td>
-                                '.$radio.'
+                                ' . $radio . '
                             </td>
                         </tr>
                     </table>
@@ -113,4 +84,3 @@ $output .=
 
 
 echo $output;
-?>
