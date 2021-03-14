@@ -56,16 +56,6 @@ $row = mysqli_fetch_array($res);
 .owner-row:hover {
     background-color: #b8daff;
 }
-
-.form-control {
-    border-radius: 0px;
-}
-
-html,
-body {
-    height: 100%;
-    font-size: large;
-}
 </style>
 
 <body>
