@@ -4,7 +4,7 @@ session_start();
 
 include "../MODEL/connect.php";
 
-if (!mysqli_select_db($connect, "ARCHIVE")) {
+if (!mysqli_select_db($connect, "EVENTS")) {
     header("location:../MODEL/database.php");
 }
 

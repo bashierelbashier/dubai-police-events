@@ -14,23 +14,9 @@ if ($_SESSION['PRIVILEGE'] == 4)
 
 include "../MODEL/connect.php";
 
-$sql = "SELECT *,T_LANDS.CREATOR_ID AS CREATED_BY,T_LANDS.MODIFIER_ID AS MODIFIED_BY,
-T_LANDS.DATE_CREATED AS CREATION_DATE, T_LANDS.DATE_MODIFIED AS MOD_DATE
- FROM T_LANDS JOIN T_LOCALES USING (LOCALE_NO) 
-  JOIN T_DISTRICTS USING (DISTRICT_NO) WHERE LAND_NO='" . $_GET['LAND_NO'] . "' AND DISTRICT_NO = " . $_GET['DISTRICT_NO'];
+$sql = "SELECT * FROM T_EVENT JOIN T_EVENT_INFO ON T_EVENT.ID = T_EVENT_INFO.EVENT_ID JOIN T_EVENT_PARTICIPANTS ON T_EVENT.ID = T_EVENT_PARTICIPANTS.EVENT_ID JOIN T_EVENT_NEEDS ON T_EVENT.ID = T_EVENT_NEEDS.EVENT_ID JOIN T_EVENT_TRANSPORTATION ON T_EVENT.ID = T_EVENT_TRANSPORTATION.EVENT_ID JOIN T_EVENT_REPORT ON T_EVENT.ID = T_EVENT_REPORT.EVENT_ID WHERE T_EVENT.ID = " . $_GET['ID'];
 $res = mysqli_query($connect, $sql);
 $row = mysqli_fetch_array($res);
-
-$q = "SELECT * FROM T_LANDS JOIN T_BORROW_LAND_FILE
- USING (LAND_NO,DISTRICT_NO) 
- WHERE LAND_NO='" . $_GET['LAND_NO'] . "' AND DISTRICT_NO = " . $_GET['DISTRICT_NO'] . " AND RETURNED = FALSE";
-
-$r = mysqli_query($connect, $q);
-
-if (mysqli_num_rows($r) > 0) {
-    $land_file_exist = FALSE;
-}
-
 
 ?>
 
@@ -42,7 +28,7 @@ if (mysqli_num_rows($r) > 0) {
 
     <meta charset="utf-8" />
     <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0" />
-    <title style="font-family: 'Droid Arabic Naskh', serif">System</title>
+    <title>System</title>
     <script src="../ASSETS/SCANNER/jquery-1.js"></script> <!-- optional -->
     <script src="../ASSETS/SCANNER/jquery-migrate-1.js"></script>
     <link href="../ASSETS/CSS/bootstrap.min.css" rel="stylesheet"> <!-- optional -->
@@ -58,6 +44,7 @@ if (mysqli_num_rows($r) > 0) {
     <script src="../ASSETS/SCANNER/popper.min.js"></script> <!-- optional -->
     <script src="../ASSETS/SCANNER/sweetalert2.min.js"></script> <!-- optional -->
     <script src="../ASSETS/CSS/alertifyjs/alertify.js"></script> <!-- optional -->
+    <script src="../ASSETS/SCANNER/moment.min.js"></script> <!-- optional -->
     <link rel="stylesheet" href="../ASSETS/CSS/alertifyjs/css/alertify.rtl.min.css" /> <!-- optional -->
     <link rel="stylesheet" href="../ASSETS/CSS/alertifyjs/css/themes/default.rtl.min.css" /> <!-- optional -->
     <link rel="stylesheet" href="../ASSETS/CSS/mystyle.css">
@@ -94,10 +81,10 @@ body {
 
 
     <div class="col-md-12 navbar-fixed-top" style="height:55px;background-color: #1b5e20 ;padding-left: 0px;">
-        <a style="cursor:pointer;" class="col-xs-9 pull-right">
-            <p class="col-xs-12 pull-right" id="lands" style="margin-top:0.5%;color:white;font-size:x-large"><b> الأراضي
-                    <i class="fa fa-arrow-left"></i> قطعة أرض <i class="fa fa-arrow-left"></i>
-                    <?php echo $row['DISTRICT_NAME'] . " - قطعة رقم : " . $row['LAND_NO'];  ?> </b></p>
+    <a style="cursor:pointer;" class="col-xs-9 pull-right">
+            <p class="col-xs-12 pull-right" id="lands" style="margin-top:0.5%;color:white;font-size:x-large"><b> الفعاليات
+                    <i class="fa fa-arrow-left"></i> الفعالية <i class="fa fa-arrow-left"></i>
+                    <?php echo $row['EVENT_NAME'];  ?> </b></p>
         </a>
 
         <div style="position:relative;z-index: 999;">
@@ -122,115 +109,661 @@ body {
     </div>
 
 
-    <div id="buttons_div" class="col-xs-10 navbar-fixed-top pull-right"
+    <div id="buttons_div" class="col-xs-10 navbar-fixed-top"
         style="margin-right: 16.7%;height:70px;border-bottom-style: outset;border-bottom-width: 1px;border-bottom-color: lightgray;  background-color: #ffffff;margin-top:55px; ">
-        <a href="lands.php" style="margin-top: 20px;margin-right:5px;" class="btn btn-default col-xs-2 pull-right"><i
+        <a href="events.php" style="margin-top: 20px;margin-right:5px;" class="btn btn-default col-xs-2 pull-right"><i
                 class="fa fa-long-arrow-right"></i> رجوع </a>
-        <button type="submit" form="lands_form" style="margin-top: 20px;margin-right:5px;"
+        <button type="submit" form="event_form" style="margin-top: 20px;margin-right:5px;"
             class="btn btn-success col-xs-2 pull-right"><i class="fa fa-pencil-square-o"></i> حفظ التعديلات </button>
-        <button id="delete_record" style="margin-top: 20px;margin-right:5px;"
+        <button id="delete_event" style="margin-top: 20px;margin-right:5px;"
             class="btn btn-danger col-xs-2 pull-right"><i class="fa fa-trash-o"></i> حذف </button>
-        <a href="add_files.php?land_no=<?php echo $row['LAND_NO'] . '&district_no=' . $row['DISTRICT_NO']; ?>"><button
+        <!-- <a href="add_files.php?land_no=<?php echo $row['LAND_NO'] . '&district_no=' . $row['DISTRICT_NO']; ?>"><button
                 id="add_docs" style="margin-top: 20px;margin-right:5px;" class="btn btn-info col-xs-3 pull-right"><i
                     class="fa fa-plus"></i> إضافة مستندات لقطعة الأرض </button> </a>
         <a href="new_transaction.php?land_no=<?php echo $row['LAND_NO'] . '&district_no=' . $row['DISTRICT_NO']; ?>"><button
                 id="add_trans" style="margin-top: 20px;margin-right:5px;" class="btn btn-warning col-xs-2 pull-right">
-                <i class="fa fa-plus"></i> إضافة معاملة </button> </a>
+                <i class="fa fa-plus"></i> إضافة معاملة </button> </a> -->
         <br />
         <br />
     </div>
 
     <input type="text" hidden id="privilege" value="<?php echo $_SESSION['PRIVILEGE']; ?>" />
 
-
     <div class="col-xs-10" id="data_div"
         style="min-height:81.5%;margin-top:125px;background-image: url('../ASSETS/form_sheetbg.png');">
         <br />
         <div class="panel panel-default" style="border-radius: 0px;box-shadow: 1px 1px 1px 1px darkgrey;">
             <div class="panel-heading">
-                <h1 class="panel-title" align="center"> بيانات قطعة الأرض </h1>
+                <h1 class="panel-title" align="center"> بيانات الفعالية</h1>
             </div>
             <div class="panel-body">
-                <form id="lands_form" name="lands_form">
+                <form id="event_form" name="event_form">
+                    <input type="hidden" name="event_id" value="<?php echo $_GET['ID']; ?>">
                     <div class="panel panel-success">
                         <div class="panel-heading">
-                            <h3 align="center" class="panel-title"> البيانات الأساسية لقطعة الأرض</h3>
+                            <h3 align="center" class="panel-title"> البيانات الأساسية للفعالية</h3>
                         </div>
                         <div class="panel-body">
                             <table class="table table-responsive">
                                 <tr>
-                                    <td class="col-xs-2">
-                                        <label class="control-label">رقم القطعة</label>
+                                    <td class="col-xs-2 text-center">
+                                        <label class="control-label">إسم الفعالية</label>
                                     </td>
                                     <td class="col-xs-2">
-                                        <input type="text" readonly class="form-control"
-                                            value="<?php echo $row['LAND_NO']; ?>" name="land_no" id="land_no"
-                                            placeholder="رقم القطعة" />
+                                        <input type="text" class="form-control"
+                                            value="<?php echo $row['EVENT_NAME']; ?>" name="event_name" id="event_name"
+                                            placeholder="إسم الفعالية" />
+                                    </td>
+                                    <td class="col-xs-2 text-center">
+                                        <label class="control-label text-center">نوع الفعالية</label>
                                     </td>
                                     <td class="col-xs-2">
-                                        <label class="control-label">المحلية</label>
+                                        <select required class="form-control" id="event_type" name="event_type">
+                                            <option value="0" disabled>نوع الفعالية</option>
+                                            <option value="1" <?php echo $row['EVENT_TYPE'] == 1 ? 'selected' : ''; ?>>بطولة رياضية </option>
+                                            <option value="2" <?php echo $row['EVENT_TYPE'] == 2 ? 'selected' : ''; ?>>مباراة</option>
+                                            <option value="3" <?php echo $row['EVENT_TYPE'] == 3 ? 'selected' : ''; ?>>سباق</option>
+                                            <option value="4" <?php echo $row['EVENT_TYPE'] == 4 ? 'selected' : ''; ?>>أخرى</option>
+                                        </select>
+                                    </td>
+                                    <td class="col-xs-2 text-center">
+                                        <label class="control-label text-center">تصنيف الفعالية</label>
                                     </td>
                                     <td class="col-xs-2">
-                                        <input value="<?php echo $row['LOCALE_NO']; ?>" name="locale" id="locale"
-                                            hidden />
-                                        <input required class="form-control " readonly
-                                            value="<?php echo $row['LOCALE_NAME']; ?>" />
-                                    </td>
-                                    <td class="col-xs-2">
-                                        <label class="control-label">المربوع</label>
-                                    </td>
-                                    <td class="col-xs-2">
-
-                                        <input value="<?php echo $row['DISTRICT_NO']; ?>" name="district" id="district"
-                                            hidden />
-                                        <input required class="form-control " readonly
-                                            value="<?php echo $row['DISTRICT_NAME']; ?>" />
+                                        <select required class="form-control" id="event_classification" name="event_classification">
+                                            <option value="0" disabled>تصنيف الفعالية</option>
+                                            <option value="A" <?php echo $row['CLASSIFICATION'] == 'A' ? 'selected' : ''; ?>>A</option>
+                                            <option value="B" <?php echo $row['CLASSIFICATION'] == 'B' ? 'selected' : ''; ?>>B</option>
+                                            <option value="C" <?php echo $row['CLASSIFICATION'] == 'C' ? 'selected' : ''; ?>>C</option>
+                                        </select>
                                     </td>
 
                                 </tr>
                                 <tr>
-                                    <td class="col-xs-2">
-                                        <label class="control-label">قياس المساحة</label>
+                                    <td class="col-xs-2 text-center">
+                                        <label class="control-label text-center">الجهة المنظمة</label>
                                     </td>
                                     <td class="col-xs-2">
-                                        <select class="form-control" name="measure_unit" id="measure_unit">
-                                            <option value="2">بالأفدنة</option>
-                                        </select>
+                                        <input type="text" class="form-control"
+                                            value="<?php echo $row['ORGANIZER']; ?>" name="event_organizer" id="event_organizer"
+                                            placeholder="الجهة المنظمة" />
+                                    </td>
+                                    <td class="col-xs-2 text-center">
+                                        <label class="control-label text-center">موقع الفعالية</label>
                                     </td>
                                     <td class="col-xs-2">
-                                        <label class="control-label">المساحة</label>
+                                        <input type="text" class="form-control" value="<?php echo $row['EVENT_LOCATION']; ?>"
+                                            name="event_location" id="event_location" placeholder="موقع الفعالية" />
+                                    </td>
+                                    <td class="col-xs-2 text-center">
+                                        <label>تاريخ الفعالية</label>
                                     </td>
                                     <td class="col-xs-2">
-                                        <input type="text" class="form-control" value="<?php echo $row['AREA']; ?>"
-                                            name="area" placeholder="مثلاً 20 كيلومتر مربع" />
-                                    </td>
-                                    <td class="col-xs-2">
-                                        <label>التصنيف</label>
-                                    </td>
-                                    <td class="col-xs-2">
-                                        <select class="form-control" id="classification" name="classification">
-                                            <?php
-                                            include "../MODEL/fetch_classifications.php";
-                                            ?>
-                                        </select>
+                                        <input type="text" class="form-control" value="<?php echo date('Y-m-d', strtotime($row['EVENT_DATE'])); ?>"
+                                            name="event_date" id="event_date" placeholder="تاريخ الفعالية" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td class="col-xs-2">
-                                        <label>نوع قطعة الأرض</label>
+                                    <td class="col-xs-2 text-center">
+                                        <label>يوم الفعالية</label>
                                     </td>
                                     <td class="col-xs-2">
-                                        <select required class="form-control" id="land_type" name="land_type">
-                                            <?php
-                                            include "../MODEL/fetch_land_types.php";
-                                            ?>
-                                        </select>
+                                        <input type="text" readonly class="form-control" value="<?php echo $row['EVENT_DAY']; ?>"
+                                            name="event_day" id="event_day" placeholder="يوم الفعالية"/>
+                                    </td>
+                                    <td class="col-xs-2 text-center">
+                                        <label>عدد الحضور المتوقع</label>
+                                    </td>
+                                    <td class="col-xs-2">
+                                        <input type="number" class="form-control" value="<?php echo $row['EXPECTED_AUDIENCE']; ?>"
+                                            name="expected_audience" id="expected_audience" placeholder="عدد الحضور المتوقع" />
+                                    </td>
+                                    <td class="col-xs-2 text-center">
+                                        <label>عدد أفراد الشرطة</label>
+                                    </td>
+                                    <td class="col-xs-2">
+                                        <input type="number" class="form-control" value="<?php echo $row['POLICE_COUNT']; ?>"
+                                            name="police_count" id="police_count" placeholder="عدد أفراد الشرطة" />
                                     </td>
                                 </tr>
                             </table>
                         </div>
                     </div>
                     <div class="panel panel-success">
+
+                        <div class="panel-heading">
+                            <h3 align="center" class="panel-title">حضور التنسيق والمعاينة</h3>
+                        </div>
+
+                        <div class="panel-body">
+                            <!-- <div id="owners_table"> -->
+                            <div id="coordinators_table">
+                                <table align="center" class="table table-bordered">
+                                    <thead>
+                                        <tr align="center" style="background-color: #0c5460;color:white">
+                                            <td> متسلسل # </td>
+                                            <td> الإسم </td>
+                                            <td> الجهة </td>
+                                            <td> المنصب </td>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                            <button type="button" id="add_coordinator" class="btn btn-info pull-left">
+                                <i class="fa fa-user-plus"> </i> إضافة
+                            </button>
+                        </div>
+                    </div>
+                    <div class="panel panel-success">
+                        <div class="panel-heading">
+                            <h5 align="center" class="panel-title">
+                                بيانات أخرى عن الفعالية
+                            </h5>
+                        </div>
+                        <div class="panel-body">
+                            <table class="table table-responsive">
+                                <tr>
+                                    <td class="col-xs-2">
+                                        <input class="form-check-input" type="checkbox" name="vips_exist" id="vips_exist" <?php echo $row['VIPS_EXIST'] == 1 ? 'checked' : ''; ?> value="1">
+                                        <label class="form-check-label" for="vips_exist">شخصيات هامة</label>
+                                    </td>
+                                    <td class="col-xs-2">
+                                        <input class="form-check-input" type="checkbox" name="other_event" id="other_event" <?php echo $row['OTHER_EVENT'] == 1 ? 'checked' : ''; ?> value="1">
+                                        <label class="form-check-label" for="other_event">فعالية مصاحبة</label>
+                                    </td>
+                                    <td class="col-xs-2">
+                                        <input class="form-check-input" type="checkbox" name="hotels" id="hotels" <?php echo $row['HOTELS'] == 1 ? 'checked' : ''; ?> value="1">
+                                        <label class="form-check-label" for="hotels">فنادق إقامة</label>
+                                    </td>
+                                    <td class="col-xs-2">
+                                        <input class="form-check-input" type="checkbox" name="operation_room" id="operation_room" <?php echo $row['OPERATION_ROOM'] == 1 ? 'checked' : ''; ?> value="1">
+                                        <label class="form-check-label" for="operation_room">غرفة عمليات</label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-xs-2">
+                                        <input class="form-check-input" type="checkbox" name="police_office" id="police_office" <?php echo $row['POLICE_OFFICE'] == 1 ? 'checked' : ''; ?> value="1">
+                                        <label class="form-check-label" for="police_office">مكتب للشرطة</label>
+                                    </td>
+                                    <td class="col-xs-2">
+                                        <input class="form-check-input" type="checkbox" name="heliports" id="heliports" <?php echo $row['HELIPORTS'] == 1 ? 'checked' : ''; ?> value="1">
+                                        <label class="form-check-label" for="heliports">مهبط طائرة</label>
+                                    </td>
+                                    <td class="col-xs-2" colspan="2">
+                                        <input class="form-check-input" type="checkbox" name="media" id="media" <?php echo $row['MEDIA'] == 1 ? 'checked' : ''; ?> value="1">
+                                        <label class="form-check-label" for="media">جهات إعلامية</label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-xs-2 text-center">
+                                        <label class="control-label">موقع غرفة العمليات</label>
+                                    </td>
+                                    <td class="col-xs-2">
+                                        <input autocomplete="off" id="operation_room_location" type="text" class="form-control" name="operation_room_location" placeholder="موقع غرفة العمليات" value="<?php echo $row['OPERATION_ROOM_LOCATION'] ?>"/>
+                                    </td>
+                                    <td class="col-xs-2 text-center">
+                                        <label class="control-label">هل غرفة العمليات تغطي الحدث:</label>
+                                    </td>
+                                    <td class="col-xs-2">
+                                        <input class="form-check-input" type="checkbox" name="operation_room_covering" id="operation_room_covering_yes" <?php echo $row['OPERATION_ROOM_COVERING'] == 1 ? 'checked' : ''; ?> value="1">
+                                        <label class="form-check-label" for="operation_room_covering_yes">نعم</label>
+                                        <input class="form-check-input" type="checkbox" name="operation_room_covering" id="operation_room_covering_no" <?php echo $row['OPERATION_ROOM_COVERING'] == 0 ? 'checked' : ''; ?> value="0">
+                                        <label class="form-check-label" for="operation_room_covering_no">لا</label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-xs-2 text-center">
+                                        <label class="control-label">عدد الكاميرات </label>
+                                    </td>
+                                    <td class="col-xs-2">
+                                        <input autocomplete="off" type="number" class="form-control"
+                                            name="cameras_number" id="cameras_number" min="0" value="<?php echo $row['CAMERAS_NUMBER']; ?>"/>
+                                    </td>
+                                    <td class="col-xs-2 text-center">
+                                        <label class="control-label">هل الكاميرات تقوم بعملية التسجيل :</label>
+                                    </td>
+                                    <td class="col-xs-2">
+                                        <input class="form-check-input" type="checkbox" name="camaeras_recording" id="camaeras_recording_yes" <?php echo $row['CAMERAS_RECORDING'] == 1 ? 'checked' : ''; ?> value="1">
+                                        <label class="form-check-label" for="camaeras_recording_yes">نعم</label>
+                                        <input class="form-check-input" type="checkbox" name="camaeras_recording" id="camaeras_recording_no" <?php echo $row['CAMERAS_RECORDING'] == 0 ? 'checked' : ''; ?> value="0">
+                                        <label class="form-check-label" for="camaeras_recording_no">لا</label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-xs-2 text-center">
+                                        <label class="control-label">عدد المداخل الفرعية </label>
+                                    </td>
+                                    <td class="col-xs-2">
+                                        <input autocomplete="off" type="number" class="form-control"
+                                            name="sub_entries" id="sub_entries" min="0" value="<?php echo $row['SUB_ENTRIES'] ?>"/>
+                                    </td>
+                                    <td class="col-xs-2 text-center">
+                                        <label class="control-label">عدد المداخل الرئيسية</label>
+                                    </td>
+                                    <td class="col-xs-2">
+                                        <input autocomplete="off" type="number" class="form-control"
+                                            name="main_entries" id="main_entries" min="0" value="<?php echo $row['MAIN_ENTRIES'] ?>"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-xs-2 text-center">
+                                        <label class="control-label">أخرى</label>
+                                    </td>
+                                    <td class="col-xs-2">
+                                        <input  type="text" name="other_exist" id="other_exist" class="form-control" placeholder="أخرى" autocomplete="off" value="<?php echo $row['OTHER_INFO'] ?>"/>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="panel panel-success">
+                        <div class="panel-heading">
+                            <h5 align="center" class="panel-title">
+                                الفنادق المخصصة للمشاركين في الفعالية
+                            </h5>
+                        </div>
+                        <div class="panel-body">
+                            <table class="table table-responsive">
+                                <tr>
+                                    <td class="col-xs-2 text-center">
+                                        <label class="control-label">اسم الفندق</label>
+                                    </td>
+                                    <td class="col-xs-2">
+                                        <input  type="text" name="hotel_name" id="hotel_name" class="form-control" placeholder="اسم الفندق" autocomplete="off" value="<?php echo $row['HOTEL_NAME']; ?>"/>
+                                    </td>
+                                    <td class="col-xs-2 text-center">
+                                        <label class="control-label">الموقع</label>
+                                    </td>
+                                    <td class="col-xs-2">
+                                        <input  type="text" name="hotel_location" id="hotel_location" class="form-control" placeholder="الموقع" autocomplete="off" value="<?php echo $row['HOTEL_LOCATION']; ?>"/>
+                                    </td>
+                                    <td class="col-xs-2 text-center">
+                                        <label class="control-label">إحداثيات المكان</label>
+                                    </td>
+                                    <td class="col-xs-2">
+                                        <input  type="text" name="hotel_coordinates" id="hotel_coordinates" class="form-control" placeholder="إحداثيات المكان" autocomplete="off" value="<?php echo $row['HOTEL_COORDINATES']; ?>"/>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="panel panel-success">
+                        <div class="panel-heading">
+                            <h5 align="center" class="panel-title">
+                                المتطوعين
+                            </h5>
+                        </div>
+                        <div class="panel-body">
+                            <table class="table table-responsive">
+                                <tr>
+                                    <td class="col-xs-2 text-center">
+                                        <label class="control-label">هل يوجد متطوعين:</label>
+                                    </td>
+                                    <td class="col-xs-2">
+                                        <input class="form-check-input" type="checkbox" name="volunteers" id="volunteers_yes" <?php echo $row['VOLUNTEERS'] == 1 ? 'checked' : ''; ?> value="1">
+                                        <label class="form-check-label" for="volunteers_yes">نعم</label>
+                                        <input class="form-check-input" type="checkbox" name="volunteers" id="volunteers_no" <?php echo $row['VOLUNTEERS'] == 0 ? 'checked' : ''; ?> value="0">
+                                        <label class="form-check-label" for="volunteers_no">لا</label>
+                                    </td>
+                                    <td></td>
+                                    <td class="col-xs-2 text-center">
+                                        <label class="control-label">عدد المتطوعين</label>
+                                    </td>
+                                    <td class="col-xs-2">
+                                        <input  type="number" name="volunteers_number" id="volunteers_number" class="form-control" placeholder="عدد المتطوعين" disabled autocomplete="off" min="0" value="<?php echo $row['VOLUNTEERS_NUMBER']; ?>"/>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="panel panel-success">
+                        <div class="panel-heading">
+                            <h5 align="center" class="panel-title">
+                                الجهات المشاركة في الفعالية 
+                            </h5>
+                        </div>
+                        <div class="panel-body">
+                            <table class="table table-responsive">
+                                <tr>
+                                    <td class="col-xs-2">
+                                        <input class="form-check-input" type="checkbox" name="security_service" id="security_service" <?php echo $row['SECURITY_SERVICE'] == 1 ? 'checked' : ''; ?> value="1">
+                                        <label class="form-check-label" for="security_service">جهاز أمن الدولة </label>
+                                    </td>
+                                    <td class="col-xs-2">
+                                        <input class="form-check-input" type="checkbox" name="traffic" id="traffic" <?php echo $row['TRAFFIC'] == 1 ? 'checked' : ''; ?> value="1">
+                                        <label class="form-check-label" for="traffic">الإدارة العامة للمرور</label>
+                                    </td>
+                                    <td class="col-xs-2">
+                                        <input class="form-check-input" type="checkbox" name="civil_defence" id="civil_defence" <?php echo $row['CIVIL_DEFENCE'] == 1 ? 'checked' : ''; ?> value="1">
+                                        <label class="form-check-label" for="civil_defence">الإدارة العامة الدفاع المدني</label>
+                                    </td>
+                                    <td class="col-xs-2">
+                                        <input class="form-check-input" type="checkbox" name="criminal_investigations" id="criminal_investigations" <?php echo $row['CRIMINAL_INVESTIGATIONS'] == 1 ? 'checked' : ''; ?> value="1">
+                                        <label class="form-check-label" for="criminal_investigations">التحريات والمباحث الجنائية</label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-xs-2">
+                                        <input class="form-check-input" type="checkbox" name="private_security" id="private_security" <?php echo $row['PRIVATE_SECURITY'] == 1 ? 'checked' : ''; ?> value="1">
+                                        <label class="form-check-label" for="private_security">شركات الأمن الخاص</label>
+                                    </td>
+                                    <td class="col-xs-2">
+                                        <input class="form-check-input" type="checkbox" name="operations" id="operations" <?php echo $row['OPERATIONS'] == 1 ? 'checked' : ''; ?> value="1">
+                                        <label class="form-check-label" for="operations">الإدارة العامة للعمليات</label>
+                                    </td>
+                                    <td class="col-xs-2">
+                                        <input class="form-check-input" type="checkbox" name="forensic_criminology" id="forensic_criminology" <?php echo $row['FORENSIC_CRIMINOLOGY'] == 1 ? 'checked' : ''; ?> value="1">
+                                        <label class="form-check-label" for="forensic_criminology">الأدلة الجنائية وعلم الجريمة</label>
+                                    </td>
+                                    <td class="col-xs-2">
+                                        <input class="form-check-input" type="checkbox" name="competent_center" id="competent_center" <?php echo $row['COMPETENT_CENTER'] == 1 ? 'checked' : ''; ?> value="1">
+                                        <label class="form-check-label" for="competent_center">المركز المختص</label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-xs-2">
+                                        <input class="form-check-input" type="checkbox" name="explosives_security" id="explosives_security" <?php echo $row['EXPLOSIVES_SECURITY'] == 1 ? 'checked' : ''; ?> value="1">
+                                        <label class="form-check-label" for="explosives_security">إدارة أمن المتفجرات</label>
+                                    </td>
+                                    <td class="col-xs-2">
+                                        <input class="form-check-input" type="checkbox" name="personal_security" id="personal_security" <?php echo $row['PERSONAL_SECURITY'] == 1 ? 'checked' : ''; ?> value="1">
+                                        <label class="form-check-label" for="personal_security">إدارة امن وحماية الشخصيات</label>
+                                    </td>
+                                    <td class="col-xs-2">
+                                        <input class="form-check-input" type="checkbox" name="transportation" id="transportation" <?php echo $row['TRANSPORTATION'] == 1 ? 'checked' : ''; ?> value="1">
+                                        <label class="form-check-label" for="transportation">هيئة الطرق والمواصلات</label>
+                                    </td>
+                                    <td class="col-xs-2">
+                                        <input class="form-check-input" type="checkbox" name="transport_rescue" id="transport_rescue" <?php echo $row['TRANSPORT_RESCUE'] == 1 ? 'checked' : ''; ?>   value="1">
+                                        <label class="form-check-label" for="transport_rescue">الإدارة العامة للنقل والإنقاذ</label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-xs-2">
+                                        <input class="form-check-input" type="checkbox" name="security_inspection" id="security_inspection" <?php echo $row['SECURITY_INSPECTION'] == 1 ? 'checked' : ''; ?> value="1">
+                                        <label class="form-check-label" for="security_inspection">إدارة التفتيش الأمني </label>
+                                    </td>
+                                    <td class="col-xs-2">
+                                        <input class="form-check-input" type="checkbox" name="explosives" id="explosives" <?php echo $row['EXPLOSIVES'] == 1 ? 'checked' : ''; ?> value="1">
+                                        <label class="form-check-label" for="explosives">إدارة المتفجرات</label>
+                                    </td>
+                                    <td class="col-xs-2">
+                                        <input class="form-check-input" type="checkbox" name="airports_security" id="airports_security" <?php echo $row['AIRPORTS_SECURITY'] == 1 ? 'checked' : ''; ?> value="1">
+                                        <label class="form-check-label" for="airports_security">الإدارة العامة لأمن المطارات</label>
+                                    </td>
+                                    <td class="col-xs-2">
+                                        <input class="form-check-input" type="checkbox" name="ambulance" id="ambulance" <?php echo $row['AMBULANCE'] == 1 ? 'checked' : ''; ?> value="1">
+                                        <label class="form-check-label" for="ambulance">الإسعاف الموحد</label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-xs-2 text-center">
+                                        <label class="control-label">أخرى</label>
+                                    </td>
+                                    <td class="col-xs-2">
+                                        <input  type="text" name="other_participant1" id="other_participant1" class="form-control" placeholder="أخرى" autocomplete="off" value="<?php echo $row['OTHER_PARTICIPANT1'] ?>"/>
+                                    </td>
+                                    <td class="col-xs-2 text-center">
+                                        <label class="control-label">أخرى</label>
+                                    </td>
+                                    <td class="col-xs-2">
+                                        <input  type="text" name="other_participant2" id="other_participant2" class="form-control" placeholder="أخرى" autocomplete="off" value="<?php echo $row['OTHER_PARTICIPANT2'] ?>"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-xs-2 text-center">
+                                        <label class="control-label">أخرى</label>
+                                    </td>
+                                    <td class="col-xs-2">
+                                        <input  type="text" name="other_participant3" id="other_participant3" class="form-control" placeholder="أخرى" autocomplete="off" value="<?php echo $row['OTHER_PARTICIPANT3'] ?>"/>
+                                    </td>
+                                    <td class="col-xs-2 text-center">
+                                        <label class="control-label">أخرى</label>
+                                    </td>
+                                    <td class="col-xs-2">
+                                        <input  type="text" name="other_participant4" id="other_participant4" class="form-control" placeholder="أخرى" autocomplete="off" value="<?php echo $row['OTHER_PARTICIPANT4'] ?>"/>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="panel panel-success">
+                        <div class="panel-heading">
+                            <h5 align="center" class="panel-title">
+                                احتياجات عملية التأمين
+                            </h5>
+                        </div>
+                        <div class="panel-body">
+                            <table class="table table-responsive">
+                                <tr>
+                                    <td class="col-xs-2 text-center">
+                                        <label class="control-label">عدد الافراد</label>
+                                    </td>
+                                    <td class="col-xs-2">
+                                        <input autocomplete="off" type="number" class="form-control"
+                                            name="individuals" id="individuals" min="0" value="<?php echo $row['INDIVIDUALS']; ?>"/>
+                                    </td>
+                                    <td class="col-xs-2 text-center">
+                                        <label class="control-label">عدد الدوريات الامنية</label>
+                                    </td>
+                                    <td class="col-xs-2">
+                                        <input autocomplete="off" type="number" class="form-control"
+                                            name="patrols" id="patrols" min="0" value="<?php echo $row['PATROLS']; ?>"/>
+                                    </td>
+                                    <td class="col-xs-2 text-center">
+                                        <label class="control-label">عدد الاجهزة</label>
+                                    </td>
+                                    <td class="col-xs-2">
+                                        <input autocomplete="off" type="number" class="form-control"
+                                            name="devices" id="devices" min="0" value="<?php echo $row['DEVICES']; ?>"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-xs-2 text-center">
+                                        <label class="control-label">عدد الباصات</label>
+                                    </td>
+                                    <td class="col-xs-2">
+                                        <input autocomplete="off" type="number" class="form-control"
+                                            name="buses" id="buses" min="0" value="<?php echo $row['BUSES']; ?>"/>
+                                    </td>
+                                    <td class="col-xs-2 text-center">
+                                        <label class="control-label">عدد عناصر الشرطة النسائية</label>
+                                    </td>
+                                    <td class="col-xs-2">
+                                        <input autocomplete="off" type="number" class="form-control"
+                                            name="female_officers" id="female_officers" min="0" value="<?php echo $row['FEMALE_OFFICERS']; ?>"/>
+                                    </td>
+                                    <td class="col-xs-2 text-center">
+                                        <label class="control-label">عدد الحواجز الأمنية</label>
+                                    </td>
+                                    <td class="col-xs-2">
+                                        <input autocomplete="off" type="number" class="form-control"
+                                            name="security_blocks" id="security_blocks" min="0" value="<?php echo $row['SECURITY_BLOCKS']; ?>"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-xs-2 text-center">
+                                        <label class="control-label">عدد الدراجات الهوائية والنارية</label>
+                                    </td>
+                                    <td class="col-xs-2">
+                                        <input autocomplete="off" type="number" class="form-control"
+                                            name="bikes_motobikes" id="bikes_motobikes" min="0" value="<?php echo $row['BIKES_MOTOBIKES']; ?>"/>
+                                    </td>
+                                    <td class="col-xs-2 text-center">
+                                        <label class="control-label">أخرى</label>
+                                    </td>
+                                    <td class="col-xs-2">
+                                        <input  type="text" name="other_needs1" id="other_needs1" class="form-control" placeholder="أخرى" autocomplete="off" value="<?php echo $row['OTHER_NEEDS1']; ?>"/>
+                                    </td>
+                                    <td class="col-xs-2 text-center">
+                                        <label class="control-label">أخرى</label>
+                                    </td>
+                                    <td class="col-xs-2">
+                                        <input  type="text" name="other_needs2" id="other_needs2" class="form-control" placeholder="أخرى" autocomplete="off" value="<?php echo $row['OTHER_NEEDS1']; ?>"/>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="panel panel-success">
+                        <div class="panel-heading">
+                            <h5 align="center" class="panel-title">
+                                نوع المواصلات 
+                            </h5>
+                        </div>
+                        <div class="panel-body">
+                            <table class="table table-responsive">
+                                <tr>
+                                    <td class="col-xs-2">
+                                        <input class="form-check-input" type="checkbox" name="transportation_bus" id="transportation_bus" <?php echo $row['BUS'] == 1 ? 'checked' : ''; ?> value="1">
+                                        <label class="form-check-label" for="transportation_bus">باص</label>
+                                    </td>
+                                    <td class="col-xs-2">
+                                        <input class="form-check-input" type="checkbox" name="transportation_car" id="transportation_car" <?php echo $row['CAR'] == 1 ? 'checked' : ''; ?> value="1">
+                                        <label class="form-check-label" for="transportation_car">سيارة</label>
+                                    </td>
+                                    <td class="col-xs-2">
+                                        <input class="form-check-input" type="checkbox" name="transportation_taxi" id="transportation_taxi" <?php echo $row['TAXI'] == 1 ? 'checked' : ''; ?> value="1">
+                                        <label class="form-check-label" for="transportation_taxi">سيارة اجرة</label>
+                                    </td>
+                                    <td class="col-xs-2">
+                                        <input class="form-check-input" type="checkbox" name="transportation_metro" id="transportation_metro" <?php echo $row['METRO'] == 1 ? 'checked' : ''; ?> value="1">
+                                        <label class="form-check-label" for="transportation_metro">مترو</label>
+                                    </td>
+                                    <td class="col-xs-2">
+                                        <input class="form-check-input" type="checkbox" name="transportation_other" id="transportation_other" <?php echo $row['OTHER'] == 1 ? 'checked' : ''; ?> value="1">
+                                        <label class="form-check-label" for="transportation_other">أخرى</label>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="panel panel-success">
+                        <div class="panel-heading">
+                            <h5 align="center" class="panel-title">
+                                المرفقات المطلوبة في التقرير النهائي 
+                            </h5>
+                        </div>
+                        <div class="panel-body">
+                            <table class="table table-responsive">
+                                <tr>
+                                    <td class="col-xs-2">
+                                        <input class="form-check-input" type="checkbox" name="emergency_plan" id="emergency_plan" <?php echo $row['EMERGENCY_PLAN'] == 1 ? 'checked' : ''; ?> value="1">
+                                        <label class="form-check-label" for="emergency_plan">خطة الطوارئ والاخلاء</label>
+                                    </td>
+                                    <td class="col-xs-2">
+                                        <input class="form-check-input" type="checkbox" name="vip_list" id="vip_list" <?php echo $row['VIP_LIST'] == 1 ? 'checked' : ''; ?> value="1">
+                                        <label class="form-check-label" for="vip_list">أسماء الشخصيات الهامة</label>
+                                    </td>
+                                    <td class="col-xs-2">
+                                        <input class="form-check-input" type="checkbox" name="id_cards" id="id_cards" <?php echo $row['ID_CARDS'] == 1 ? 'checked' : ''; ?> value="1">
+                                        <label class="form-check-label" for="id_cards">البطاقات التعريفية</label>
+                                    </td>
+                                    <td class="col-xs-2">
+                                        <input class="form-check-input" type="checkbox" name="correspondence" id="correspondence" <?php echo $row['CORRESPONDENCE'] == 1 ? 'checked' : ''; ?> value="1" checked disabled>
+                                        <label class="form-check-label" for="correspondence">المراسلات والمخاطبات</label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-xs-2">
+                                        <input class="form-check-input" type="checkbox" name="individuals_list" id="individuals_list" <?php echo $row['INDIVIDUALS_LIST'] == 1 ? 'checked' : ''; ?> value="1" checked disabled>
+                                        <label class="form-check-label" for="individuals_list">كشف الافراد</label>
+                                    </td>
+                                    <td class="col-xs-2">
+                                        <input class="form-check-input" type="checkbox" name="invitation_card" id="invitation_card" <?php echo $row['INVITATION_CARD'] == 1 ? 'checked' : ''; ?> value="1">
+                                        <label class="form-check-label" for="invitation_card">بطاقة الدعوة</label>
+                                    </td>
+                                    <td class="col-xs-2">
+                                        <input class="form-check-input" type="checkbox" name="volunteers_list" id="volunteers_list" <?php echo $row['VOLUNTEERS_LIST'] == 1 ? 'checked' : ''; ?> value="1">
+                                        <label class="form-check-label" for="volunteers_list">كشف المتطوعين</label>
+                                    </td>
+                                    <td class="col-xs-2">
+                                        <input class="form-check-input" type="checkbox" name="orginzers_list" id="orginzers_list" <?php echo $row['ORGINZERS_LIST'] == 1 ? 'checked' : ''; ?> value="1">
+                                        <label class="form-check-label" for="orginzers_list">كشف افراد الجهات المنظمة</label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-xs-2">
+                                        <input class="form-check-input" type="checkbox" name="security_list" id="security_list" <?php echo $row['SECURITY_LIST'] == 1 ? 'checked' : ''; ?> value="1">
+                                        <label class="form-check-label" for="security_list">كشف عناصر الشركات الامنية</label>
+                                    </td>
+                                    <td class="col-xs-2">
+                                        <input class="form-check-input" type="checkbox" name="participants_plans" id="participants_plans" <?php echo $row['PARTICIPANTS_PLANS'] == 1 ? 'checked' : ''; ?> value="1" checked disabled>
+                                        <label class="form-check-label" for="participants_plans">خطط الجهات المشاركة</label>
+                                    </td>
+                                    <td class="col-xs-2">
+                                        <input class="form-check-input" type="checkbox" name="operation_cost" id="operation_cost" <?php echo $row['OPERATION_COST'] == 1 ? 'checked' : ''; ?> value="1" checked disabled>
+                                        <label class="form-check-label" for="operation_cost">تكلفة العملية</label>
+                                    </td>
+                                    <td class="col-xs-2">
+                                        <input class="form-check-input" type="checkbox" name="classification_form" id="classification_form" <?php echo $row['CLASSIFICATION_FORM'] == 1 ? 'checked' : ''; ?> value="1" checked disabled>
+                                        <label class="form-check-label" for="classification_form">استمارة تصنيف العملية</label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-xs-2">
+                                        <input class="form-check-input" type="checkbox" name="success_form" id="success_form" <?php echo $row['SUCCESS_FORM'] == 1 ? 'checked' : ''; ?> value="1" checked disabled>
+                                        <label class="form-check-label" for="success_form">استمارة نجاح الفعالية</label>
+                                    </td>
+                                    <td class="col-xs-2 text-center">
+                                        <label class="control-label">أخرى</label>
+                                    </td>
+                                    <td class="col-xs-2">
+                                        <input  type="text" name="report_other1" id="report_other1" class="form-control" placeholder="أخرى" autocomplete="off" value="<?php echo $row['REPORT_OTHER1']; ?>"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                <td class="col-xs-2 text-center">
+                                        <label class="control-label">أخرى</label>
+                                    </td>
+                                    <td class="col-xs-2">
+                                        <input  type="text" name="report_other2" id="report_other2" class="form-control" placeholder="أخرى" autocomplete="off" value="<?php echo $row['REPORT_OTHER2']; ?>"/>
+                                    </td>
+                                    <td class="col-xs-2 text-center">
+                                        <label class="control-label">أخرى</label>
+                                    </td>
+                                    <td class="col-xs-2">
+                                        <input  type="text" name="report_other3" id="report_other3" class="form-control" placeholder="أخرى" autocomplete="off" value="<?php echo $row['REPORT_OTHER3']; ?>"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-xs-2 text-center">
+                                        <label class="control-label">ملاحظات</label>
+                                    </td>
+                                    <td class="col-xs-2" colspan="3">
+                                        <textarea  type="text" name="report_notes" id="report_notes" class="form-control" placeholder="ملاحظات" autocomplete="off"><?php echo $row['NOTES']; ?></textarea>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="panel panel-success">
+                        <div class="panel-heading">
+                            <h5 align="center" class="panel-title">
+                                القائم بالتنسيق والمعاينة
+                            </h5>
+                        </div>
+                        <div class="panel-body">
+                            <table class="table table-responsive">
+                                <tr>
+                                    <td class="col-xs-2 text-center">
+                                        <label class="control-label">الرتبة</label>
+                                    </td>
+                                    <td class="col-xs-2">
+                                        <input  type="text" name="coordination_rank" id="coordination_rank" class="form-control" placeholder="الرتبة" autocomplete="off" value="<?php echo $row['COORDINATOR_RANK'] ?>"/>
+                                    </td>
+                                    <td class="col-xs-2 text-center">
+                                        <label class="control-label">الإسم</label>
+                                    </td>
+                                    <td class="col-xs-2">
+                                        <input  type="text" name="coordination_name" id="coordination_name" class="form-control" placeholder="الإسم" autocomplete="off" value="<?php echo $row['COORDINATOR_NAME'] ?>"/>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- <div class="panel panel-success">
                         <div class="panel-heading">
                             <h5 align="center" class="panel-title">
                                 بيانات مكان الإحتفاظ بملف قطعة الأرض
@@ -324,9 +857,9 @@ body {
                                 </div>
                             </table>
                         </div>
-                    </div>
+                    </div> -->
 
-                    <div class="panel panel-success">
+                    <!-- <div class="panel panel-success">
                         <div class="panel-heading">
                             <h3 align="center" class="panel-title">بيانات مالكي قطعة الأرض</h3>
                         </div>
@@ -389,8 +922,9 @@ body {
                                 <i class="fa fa-user-plus"> </i> تسجيل بيانات جديد
                             </button>
                         </div>
-                    </div>
-                    <div class="col-md-12" style="margin-top:20px;margin-bottom:30px;">
+                    </div> -->
+                    
+                    <!-- <div class="col-md-12" style="margin-top:20px;margin-bottom:30px;">
 
                         <h2 class="col-md-6 pull-right" style="margin-top: 70px;color:brown;font-size:x-large">
                             إستعراض نسخة من ملف قطعة الأرض <i class="fa fa-hand-o-left"></i>
@@ -401,13 +935,13 @@ body {
                                     height="150" src="../ASSETS/folder_icon.png" /></a>
                         </a>
 
-                    </div>
+                    </div> -->
                     <input type="text" hidden value="<?php echo $row['DISTRICT_NO']; ?>" id="district_no"
                         name="district_no" />
                 </form>
             </div>
 
-            <div class="panel-footer">
+            <!-- <div class="panel-footer">
                 <div class="col-md-6 pull-right">
 
                     تم الإنشاء بواسطة :
@@ -447,23 +981,17 @@ body {
 
                 </div>
 
-            </div>
-        </div>
-    </div>
-
-
-    <input type="text" hidden value="<?php echo $row['CLASS_NO']; ?>" id="class_no" />
+            </div> -->
+    <!-- <input type="text" hidden value="<?php echo $row['CLASS_NO']; ?>" id="class_no" />
     <input type="text" hidden value="<?php echo $row['LOCALE_NO']; ?>" id="locale_no" />
     <input type="text" hidden value="<?php echo $row['TYPE_NO']; ?>" id="type_no" />
-    <input type="text" hidden value="<?php echo $row['AREA_UNIT']; ?>" id="measure_unit_no" />
+    <input type="text" hidden value="<?php echo $row['AREA_UNIT']; ?>" id="measure_unit_no" /> -->
 
 
 
 
-    <!-- Modal -->
-    <div class="modal fade" style="border-radius: 10px;" id="SelectOwnerModal" role="dialog">
+    <!-- <div class="modal fade" style="border-radius: 10px;" id="SelectOwnerModal" role="dialog">
         <div class="modal-dialog">
-            <!-- Modal content-->
             <div class="modal-content" style="border-radius: 10px;">
 
                 <div class="modal-header">
@@ -505,15 +1033,10 @@ body {
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 
-
-
-
-    <!-- Modal -->
-    <div class="modal fade" style="border-radius: 10px;" id="BorrowModal" role="dialog">
+    <!-- <div class="modal fade" style="border-radius: 10px;" id="BorrowModal" role="dialog">
         <div class="modal-dialog">
-            <!-- Modal content-->
             <div class="modal-content" style="border-radius: 10px;">
 
                 <div class="modal-header">
@@ -583,13 +1106,11 @@ body {
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 
 
-    <!-- Modal -->
-    <div class="modal fade" style="border-radius: 10px;" id="NewOwnerModal" role="dialog">
+    <!-- <div class="modal fade" style="border-radius: 10px;" id="NewOwnerModal" role="dialog">
         <div class="modal-dialog">
-            <!-- Modal content-->
             <div class="modal-content" style="border-radius: 10px;">
 
                 <div class="modal-header">
@@ -616,7 +1137,7 @@ body {
                             </tr>
                             <tr>
                                 <td class="col-xs-3">
-                                    <label class="control-label">الإسم </label>
+                                    <label class="control-label text-center">الإسم </label>
                                 </td>
                                 <td class="col-xs-3" colspan="4">
                                     <input autocomplete="off" required type="text" class="text-center form-control"
@@ -625,7 +1146,7 @@ body {
                             </tr>
                             <tr>
                                 <td class="col-xs-3">
-                                    <label class="control-label">رقم الهاتف 1</label>
+                                    <label class="control-label text-center">رقم الهاتف 1</label>
                                 </td>
                                 <td class="col-xs-3">
                                     <input dir="ltr" type="tel" class="form-control text-center"
@@ -633,7 +1154,7 @@ body {
                                 </td>
 
                                 <td class="col-xs-3">
-                                    <label class="control-label">رقم الهاتف 2</label>
+                                    <label class="control-label text-center">رقم الهاتف 2</label>
                                 </td>
                                 <td class="col-xs-3">
                                     <input dir="ltr" type="tel" class="form-control text-center"
@@ -642,7 +1163,7 @@ body {
                             </tr>
                             <tr id="id_row">
                                 <td class="col-xs-3">
-                                    <label class="control-label">نوع إثبات الشخصية</label>
+                                    <label class="control-label text-center">نوع إثبات الشخصية</label>
                                 </td>
                                 <td class="col-xs-3">
                                     <select required class="form-control text-center" name="idtype" id="idtype">
@@ -654,7 +1175,7 @@ body {
                                     </select>
                                 </td>
                                 <td class="col-xs-3">
-                                    <label class="control-label">رقم إثبات الشخصية</label>
+                                    <label class="control-label text-center">رقم إثبات الشخصية</label>
                                 </td>
                                 <td class="col-xs-3">
                                     <input dir="ltr" type="text" class="form-control text-center"
@@ -681,13 +1202,273 @@ body {
                 </div>
             </div>
         </div>
+    </div> -->
+    </div>
+
+    <div class="modal fade" style="border-radius: 10px;" id="CoordinationModal" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content" style="border-radius: 10px;">
+                <div class="modal-header">
+                    <h4 class="modal-title" align="center"> إضافة أسماء حضور التنسيق والمعاينة </h4>
+                </div>
+                <div class="modal-body" dir="rtl">
+                    <form id="coordinator_form" class="oe_formview">
+                        <input type="hidden" name="event_id" value="<?php echo $_GET['ID']; ?>">
+                        <table class="table table-responsive">
+                            <br />
+                            <tr>
+                                <td class="col-xs-1">
+                                    <label class="control-label text-center">الإسم </label>
+                                </td>
+                                <td class="col-xs-3" colspan="4">
+                                    <input autocomplete="off" required type="text" class="text-center form-control"
+                                        name="name" placeholder="الإسم ....." />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="col-xs-1">
+                                    <label class="control-label text-center">الجهة </label>
+                                </td>
+                                <td class="col-xs-3" colspan="4">
+                                    <input autocomplete="off" required type="text" class="text-center form-control"
+                                        name="reference" placeholder="الجهة ....." />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="col-xs-1">
+                                    <label class="control-label text-center">المنصب </label>
+                                </td>
+                                <td class="col-xs-3" colspan="4">
+                                    <input autocomplete="off" required type="text" class="text-center form-control"
+                                        name="position" placeholder="المنصب ....." />
+                                </td>
+                            </tr>
+                        </table>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button data-dismiss="modal" class="btn btn-warning pull-left"> <i class="fa fa-window-close"></i>
+                        إغلاق </button>
+                    <button type="submit" form="coordinator_form" class="btn btn-primary pull-left"> <i
+                            class="fa fa-save"></i> حفظ </button>
+                </div>
+            </div>
+        </div>
     </div>
 </body>
 
 </html>
 <script>
 $(document).ready(function() {
+    $('#event_date').datepicker();
 
+    $('#event_date').change(function () {
+        let day = moment($(this).val()).format('dddd');
+        if (day == 'Friday') {
+            $('#event_day').val('الجمعة');
+        }
+        
+        if (day == 'Saturday') {
+            $('#event_day').val('السبت');
+        }
+        
+        if (day == 'Sunday') {
+            $('#event_day').val('الأحد');
+        }
+        
+        if (day == 'Monday') {
+            $('#event_day').val('الأثنين');
+        }
+        
+        if (day == 'Tuesday') {
+            $('#event_day').val('الثلاثاء');
+        }
+        
+        if (day == 'Wednesday') {
+            $('#event_day').val('الأربعاء');
+        }
+        
+        if (day == 'Thursday') {
+            $('#event_day').val('الخميس');
+        }
+    });
+
+    $('#operation_room_covering_yes').change(function () {
+        if ($(this).attr('checked') == 'checked') {
+            $('#operation_room_covering_no').attr('checked', false);   
+        }
+        else {
+            $('#operation_room_covering_no').attr('checked', true);
+        }
+    });
+
+    $('#operation_room_covering_no').change(function () {
+        if ($(this).attr('checked') == 'checked') {
+            $('#operation_room_covering_yes').attr('checked', false);
+        }
+        else {
+            $('#operation_room_covering_yes').attr('checked', true);
+        }
+    });
+
+    $('#camaeras_recording_yes').change(function () {
+        if ($(this).attr('checked') == 'checked') {
+            $('#camaeras_recording_no').attr('checked', false);   
+        }
+        else {
+            $('#camaeras_recording_no').attr('checked', true); 
+        }
+    });
+
+    $('#camaeras_recording_no').change(function () {
+        if ($(this).attr('checked') == 'checked') {
+            $('#camaeras_recording_yes').attr('checked', false);
+        }
+        else {
+            $('#camaeras_recording_yes').attr('checked', true);
+        }
+    });
+
+    $('#volunteers_yes').change(function () {
+        if ($(this).attr('checked') == 'checked') {
+            $('#volunteers_no').attr('checked', false);   
+            $('#volunteers_number').attr('disabled', false);
+        }
+        else {
+            $('#volunteers_no').attr('checked', true);
+            $('#volunteers_number').attr('disabled', true);
+        }
+    });
+
+    $('#volunteers_no').change(function () {
+        if ($(this).attr('checked') == 'checked') {
+            $('#volunteers_yes').attr('checked', false);
+            $('#volunteers_number').attr('disabled', true);
+        }
+        else {
+            $('#volunteers_yes').attr('checked', true);
+            $('#volunteers_number').attr('disabled', false);
+        }
+    });
+    
+    fetchCoordinators();
+
+    $("#add_coordinator").click(function() {
+        $("#CoordinationModal").modal("show");
+    });
+
+    $('#coordinator_form').submit(function(e) {
+        e.preventDefault();
+
+        $.ajax({
+            url: '../MODEL/insert_coordinator.php',
+            method: 'POST',
+            data: new FormData(this),
+            processData: false,
+            contentType: false,
+            success: function(data) {
+                if (data.success) {
+                    $("#coordinator_form")[0].reset();
+                    swal({
+                        title: "تم !",
+                        text: "تم حفظ البيانات بنجاح",
+                        type: "success",
+                        confirmButtonColor: "skyblue",
+                        confirmButtonText: "حسنا"
+                    });
+                    fetchCoordinators();
+                }
+                else {
+                    swal("لم يتم حفظ البيانات ! الرجاء التحقق من صحتها");
+                }
+
+            }
+        });
+    });
+
+    function fetchCoordinators() {
+        $.ajax({
+            url: "../MODEL/fetch_coordinators.php",
+            method: "POST",
+            data: {
+                event_id: "<?php echo $_GET['ID']; ?>"
+            },
+            success: function(data) {
+                $("#coordinators_table tbody").html(data);
+            }
+
+        });
+    }
+
+    $("#event_form").submit(function(e) {
+        e.preventDefault();
+
+        if (change_flag == true) {
+            $.ajax({
+                url: '../MODEL/update_event.php',
+                method: 'POST',
+                data: new FormData(this),
+                processData: false,
+                contentType: false,
+                success: function(data) {
+                    if (data) {
+                        alertify.success(
+                            "<h4>  <i class='fa fa-check'></i> تم حفظ التعديلات بنجاح </h4>"
+                            );
+                        change_flag = false;
+
+                    } else {
+                        swal("لم يتم حفظ البيانات ! الرجاء التحقق من صحتها");
+                    }
+                }
+            });
+        } else {
+            alertify.message("<h4><i class='fa fa-info'></i> ليست هناك تعديلات لحفظها </h4>");
+        }
+    });
+
+    $("#delete_event").click(function() {
+        swal({
+            title: "تأكيد",
+            text: "هل تريد حذف هذا السجل",
+            type: "question",
+
+            confirmButtonColor: "red",
+            showCancelButton: true,
+            cancelButtonColor: "green",
+            cancelButtonText: "لا أريد الحذف <i class='fa fa-thumbs-up'></i>",
+            confirmButtonText: "نعم <i class='fa fa-trash'></i>"
+        }).then(function(isConfirm) {
+            if (isConfirm) {
+                $.ajax({
+                    url: "../MODEL/delete_event.php",
+                    method: "POST",
+                    data: {
+                        event_id: '<?php echo $_GET['ID'] ?>'
+                    },
+                    success: function(data) {
+                        if (data) {
+                            swal({
+                                title: "تم !",
+                                text: "تم الحذف بنجاح",
+                                type: "success",
+                                confirmButtonColor: "skyblue",
+                                confirmButtonText: "حسنا"
+                            }).then(function() {
+                                window.location = "events.php";
+                            });
+                        } else {
+                            swal("لم يتم حذف السجل لإرتباطه بسجلات أخرى");
+                        }
+
+                    }
+                });
+
+            } else {
+
+            }
+        });
+    });
 
 
     $("#individual").click(function() {
@@ -796,6 +1577,10 @@ $(document).ready(function() {
     });
 
     $("select").change(function() {
+        change_flag = true;
+    });
+
+    $("textarea").change(function() {
         change_flag = true;
     });
 
@@ -1134,7 +1919,5 @@ $(document).ready(function() {
     fetchDistricts();
     var c = $("#district_no").val();
     $("#district").val(c);
-
-
 });
 </script>

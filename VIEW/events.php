@@ -176,7 +176,7 @@ body {
 
         <br />
         <br />
-        <div class="col-xs-12" style="margin:0px;">
+        <!-- <div class="col-xs-12" style="margin:0px;">
             <table class='table table-bordered' style="margin-bottom: 0px !important;">
                 <tr align='center' style='background-color: #0c5460;color:white'>
                     <td width='10%'> متسلسل # </td>
@@ -186,18 +186,32 @@ body {
                     <td width='20%'> تاريخ المعاملة </td>
                 </tr>
             </table>
+        </div> -->
+        <div class="col-xs-12" style="margin:0px;">
+            <table id="events_table" class='table table-bordered' style="margin-bottom: 0px !important;">
+                <thead>
+                    <tr align='center' style='background-color: #0c5460;color:white'>
+                        <td> متسلسل # </td>
+                        <td> الفعالية </td>
+                        <td> نوع الفعالية </td>
+                        <td> تصنيف الفعالية </td>
+                        <td> الجهة المنظمة </td>
+                        <td> موقع الفعالية </td>
+                        <td> عدد الحضور المتوقع </td>
+                        <td> عدد أفراد الشرطة </td>
+                        <td> التاريخ </td>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
         </div>
     </div>
 
     </div>
 
-    <div class="col-xs-10 well" id="past_transactions_table"
-        style="min-height:81.5%;margin-top:130px;background-color:white;">
-
-    </div>
+<!-- <div class="col-xs-10 well" id="past_transactions_table" style="min-height:81.5%;margin-top:130px;background-color:white;"> </div> -->
 
     <input id="num_pages" value="<?php echo $pages; ?>" hidden />
-
 
     <!-- Modal -->
     <div class="modal fade" style="border-radius: 10%;" id="ReportModal" role="dialog">
@@ -238,12 +252,6 @@ body {
     </div>
 
     <!-- End Of Modal -->
-
-
-
-
-
-
 
     <!-- Modal -->
     <div class="modal fade" style="border-radius: 0px;" id="LandTransReportModal" role="dialog">
@@ -288,15 +296,6 @@ body {
     </div>
 
     <!-- End Of Modal -->
-
-
-
-
-
-
-
-
-
 
 </body>
 
@@ -450,7 +449,6 @@ $(document).ready(function() {
         }
     });
 
-
     $("#LandTransReportForm").submit(function(e) {
         e.preventDefault();
         var params = $("#land_no").val();
@@ -553,5 +551,20 @@ $(document).ready(function() {
         $("#to_date").datepicker();
     });
 
+    $.ajax({
+        url: "../MODEL/fetch_events.php",
+        method: "POST",
+        data: {
+            start: 0,
+            limit: 20
+        },
+        success: function(data) {
+            $("#events_table tbody").html(data);
+        }
+    });
+
+    $(document).on('click', '.event-row', function(e) {
+        window.location = "edit_event.php?ID=" + $(this).attr("id");
+    });
 });
 </script>

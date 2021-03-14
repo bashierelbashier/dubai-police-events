@@ -6,13 +6,8 @@ $creator = $_SESSION['USER_NO'];
 $district = $_POST['district'];
 $land = $_POST['land'];
 if(isset($_POST['owner'])){
-
-
     $owner = $_POST['owner'];
     $query = "INSERT INTO T_LAND_OWNERS VALUES (" . $land . ",'" . $district . "'," . $owner . " , CURTIME() ," . $creator . ")";
-
-
-
 
     $output = '<table align="center" class="table table-bordered">
                                 <tr align="center" style="background-color: #0c5460;color:white">
