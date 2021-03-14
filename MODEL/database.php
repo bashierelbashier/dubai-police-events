@@ -27,39 +27,6 @@ $full_name = 'الآدمن';
 $query = "INSERT INTO T_USERS VALUES (1,'admin','" . md5("admin") . "',True,'" . $full_name . "',1,CURTIME(),'')";
 mysqli_query($connect, $query) or die("");
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-
-$query = "CREATE TABLE T_EVENT (
-ID INT(20),
-EVENT_TYPE VARCHAR(40),
-CLASSIFICATION VARCHAR(1),
-EVENT_NAME VARCHAR(60),
-ORGANIZER VARCHAR(40),
-EVENT_LOCATION VARCHAR(40),
-EXPECTED_AUDIENCE INT(8),
-POLICE_COUNT INT(8),
-EVENT_DATE DATETIME,
-EVENT_DAY VARCHAR(10),
-DATE_CREATED DATETIME,
-CREATOR_ID INT(3),
-DATE_MODIFIED DATETIME,
-MODIFIER_ID INT(3),
-FOREIGN KEY (CREATOR_ID) REFERENCES T_USERS(USER_NO),
-FOREIGN KEY (MODIFIER_ID) REFERENCES T_USERS(USER_NO),
-PRIMARY KEY (ID)) CHARACTER SET utf8 ENGINE=InnoDB COLLATE utf8_general_ci";
-mysqli_query($connect, $query) or die("");
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////
-
-$query = "CREATE TABLE T_COORDINATORS (
-ID INT(20) AUTO_INCREMENT,
-EVENT_ID INT(20),
-NAME VARCHAR(100),
-REFERENCE VARCHAR(100),
-POSITION VARCHAR(100),
-FOREIGN KEY (EVENT_ID) REFERENCES T_EVENT(ID),
-PRIMARY KEY (ID))  CHARACTER SET utf8 ENGINE=InnoDB COLLATE utf8_general_ci";
-mysqli_query($connect, $query) or die("");
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -90,6 +57,19 @@ OTHER_INFO VARCHAR(100),
 FOREIGN KEY (EVENT_ID) REFERENCES T_EVENT(ID),
 PRIMARY KEY (ID))  CHARACTER SET utf8 ENGINE=InnoDB COLLATE utf8_general_ci";
 mysqli_query($connect, $query) or die("");
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+
+$query = "CREATE TABLE T_COORDINATORS (
+ID INT(20) AUTO_INCREMENT,
+EVENT_ID INT(20),
+NAME VARCHAR(100),
+REFERENCE VARCHAR(100),
+POSITION VARCHAR(100),
+FOREIGN KEY (EVENT_ID) REFERENCES T_EVENT(ID),
+PRIMARY KEY (ID))  CHARACTER SET utf8 ENGINE=InnoDB COLLATE utf8_general_ci";
+mysqli_query($connect, $query) or die("");
+
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 
