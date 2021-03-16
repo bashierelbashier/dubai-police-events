@@ -9,7 +9,7 @@ if ($_SESSION['PRIVILEGE'] == 4 || $_SESSION['PRIVILEGE'] == 5)
     header("location:access_denied.php");
 
 
-$cq = "SELECT COUNT(*) AS COUN FROM T_TRANSACTION";
+$cq = "SELECT COUNT(*) AS COUN FROM T_EVENT";
 $cr = mysqli_query($connect, $cq);
 $cw = mysqli_fetch_array($cr);
 $pages = ceil($cw['COUN'] / 20);
@@ -130,7 +130,7 @@ body {
 
         <div class="col-xs-4 pull-right">
             <nav aria-label="Navigation">
-                <ul style="margin:0px;" id="pages" class="pagination pull-left">
+                <ul style="margin:0px;" id="pages" class="pagination">
                 </ul>
             </nav>
         </div>
@@ -154,39 +154,8 @@ body {
                 id="filter_from" class="form-control" placeholder="من تاريخ ..." />
         </div>
 
-        <div class="input-group col-xs-2 pull-right">
-            <span class="input-group-addon" style="background-color:white;border-radius: 0px;border-width:0px;">
-                <i class="fa fa-filter"></i>
-            </span>
-            <select class="form-control text-center" id="transaction_no">
-                <option value="0">الكل</option>
-                <option value="1"> تخصيص </option>
-                <option value="2"> تجديد </option>
-                <option value="3"> تنازل </option>
-                <option value="4"> رهن </option>
-                <option value="5"> فك رهن </option>
-                <option value="6"> فرز </option>
-                <option value="8"> تغيير غرض </option>
-                <option value="9"> إضافة </option>
-                <option value="10"> ضم </option>
-                <option value="11"> إسترداد </option>
-                <option value="12"> نزع </option>
-            </select>
-        </div>
-
         <br />
         <br />
-        <!-- <div class="col-xs-12" style="margin:0px;">
-            <table class='table table-bordered' style="margin-bottom: 0px !important;">
-                <tr align='center' style='background-color: #0c5460;color:white'>
-                    <td width='10%'> متسلسل # </td>
-                    <td width='30%'> المربوع </td>
-                    <td width='20%'> قطعة الأرض </td>
-                    <td width='20%'> المعاملة </td>
-                    <td width='20%'> تاريخ المعاملة </td>
-                </tr>
-            </table>
-        </div> -->
         <div class="col-xs-12" style="margin:0px;">
             <table id="events_table" class='table table-bordered' style="margin-bottom: 0px !important;">
                 <thead>
@@ -279,7 +248,7 @@ body {
                         <div id="ModalLandsData">
 
                         </div>
-                        <input required type="text" id="land_no" name="land_no" hidden />
+                        <input required type="text" id="event_no" name="event_no" hidden />
                     </form>
                 </div>
 
@@ -312,37 +281,30 @@ $(document).ready(function() {
     fillPages(start);
 
     $(document).on('click', '.pagination-link', function(e) {
-
         var link = $(this).attr('id');
-
         if (link == 'prev_set') {
-
-            if (start != 1)
+            if (start != 1) {
                 fillPages(start - 5);
-
+            }
         } else if (link == 'next_set') {
-
-            if (end != pages)
+            if (end != pages) {
                 fillPages(end + 1);
-
-        } else {
-
+            }
+        }
+        else {
             var filter_from = $("#filter_from").val();
             var filter_to = $("#filter_to").val();
-            var trans_no = $("#transaction_no").val();
-
             $.ajax({
-                url: "../MODEL/fetch_transactions.php",
+                url: "../MODEL/fetch_events.php",
                 method: "POST",
                 data: {
                     filter_from: filter_from,
-                    trans_no: trans_no,
                     filter_to: filter_to,
                     limit: 20,
                     start: (link - 1) * 20
                 },
                 success: function(data) {
-                    $("#past_transactions_table").html(data);
+                    $("#events_table tbody").html(data);
                 }
             });
         }
@@ -382,21 +344,84 @@ $(document).ready(function() {
 
 <script>
 $(document).ready(function() {
-
-
-    $(document).on('click', '.transaction-row', function(e) {
-        window.location = "edit_transaction.php?TRANS_ID=" + $(this).attr("id");
+    $.datepicker.setDefaults({
+        changeYear: true,
+        changeMonth: true,
+        dateFormat: 'yy-mm-dd'
     });
 
-    $(document).on('click', '.land-row', function(e) {
-        $(".land-row").css("background-color", "white");
-        $(".land-row:hover").css("background-color", "#1b6d85");
+    $("#filter_from, #filter_to, #from_date, #to_date").datepicker();
 
-        $("#land_no").val($(this).attr("id"));
+    $.ajax({
+        url: "../MODEL/fetch_events.php",
+        method: "POST",
+        data: {
+            start: 0,
+            limit: 20
+        },
+        success: function(data) {
+            $("#events_table tbody").html(data);
+        }
+    });
+
+    $(document).on('click', '.event-row', function(e) {
+        window.location = "edit_event.php?ID=" + $(this).attr("id");
+    });
+
+    $(document).on('click', '.event-row', function(e) {
+        $(".event-row").css("background-color", "white");
+        $(".event-row:hover").css("background-color", "#1b6d85");
+        $(".event-row:hover").css("color", "#ffffff");
+
+        $("#event_no").val($(this).attr("id"));
 
         $(this).css("background-color", "#2a62bc");
     });
 
+    $("#filter_from").change(function() {
+        var filter_from = $("#filter_from").val();
+        var filter_to = $("#filter_to").val();
+
+        $.ajax({
+            url: "../MODEL/fetch_events.php",
+            method: "POST",
+            data: {
+                filter_from: filter_from,
+                filter_to: filter_to,
+                start: 0,
+                limit: 20
+            },
+            success: function(data) {
+                $("#events_table tbody").html(data);
+            }
+        });
+
+    });
+
+    $("#filter_to").change(function() {
+        var filter_from = $("#filter_from").val();
+        var filter_to = $("#filter_to").val();
+
+        $.ajax({
+            url: "../MODEL/fetch_events.php",
+            method: "POST",
+            data: {
+                filter_from: filter_from,
+                filter_to: filter_to,
+                start: 0,
+                limit: 20
+            },
+            success: function(data) {
+                $("#events_table tbody").html(data);
+            }
+        });
+    });
+
+    $(document).on('click', '.generate-pdf', function () {
+        window.location = "../REPORTS/event.php?id=" + $(this).attr('data-event-iid');
+    });
+
+    /*
     $.ajax({
         url: "../MODEL/modal_fetch_lands.php",
         method: "POST",
@@ -418,8 +443,7 @@ $(document).ready(function() {
             }
         });
     });
-
-
+    
     $("#print_transactions_in_period").click(function() {
         $("#ReportModal").modal({
             backdrop: 'static',
@@ -427,7 +451,7 @@ $(document).ready(function() {
         });
         $("#ReportModal").modal("show");
     });
-
+    
     $("#print_transactions_for_land").click(function() {
         $("#LandTransReportModal").modal({
             backdrop: 'static',
@@ -435,8 +459,7 @@ $(document).ready(function() {
         });
         $("#LandTransReportModal").modal("show");
     });
-
-
+    
     $.ajax({
         url: "../MODEL/fetch_transactions.php",
         method: "POST",
@@ -448,67 +471,20 @@ $(document).ready(function() {
             $("#past_transactions_table").html(data);
         }
     });
-
+    
     $("#LandTransReportForm").submit(function(e) {
         e.preventDefault();
-        var params = $("#land_no").val();
+        var params = $("#event_no").val();
         var url = "../REPORTS/TransForLand.php?" + params;
         window.location = url;
     });
-
-    ///////////////////////////////////////////////////////////////////////////////
-    $("#filter_from").change(function() {
-
-        var filter_from = $("#filter_from").val();
-        var filter_to = $("#filter_to").val();
-        var trans_no = $("#transaction_no").val();
-
-        $.ajax({
-            url: "../MODEL/fetch_transactions.php",
-            method: "POST",
-            data: {
-                filter_from: filter_from,
-                filter_to: filter_to,
-                start: 0,
-                limit: 20,
-                trans_no: trans_no
-            },
-            success: function(data) {
-                $("#past_transactions_table").html(data);
-            }
-        });
-
-    });
-
-    $("#filter_to").change(function() {
-
-        var filter_from = $("#filter_from").val();
-        var filter_to = $("#filter_to").val();
-        var trans_no = $("#transaction_no").val();
-
-        $.ajax({
-            url: "../MODEL/fetch_transactions.php",
-            method: "POST",
-            data: {
-                filter_from: filter_from,
-                filter_to: filter_to,
-                start: 0,
-                limit: 20,
-                trans_no: trans_no
-            },
-            success: function(data) {
-                $("#past_transactions_table").html(data);
-            }
-        });
-    });
-
-
+    
     $("#transaction_no").change(function() {
-
+ 
         var filter_from = $("#filter_from").val();
         var filter_to = $("#filter_to").val();
         var trans_no = $("#transaction_no").val();
-
+ 
         $.ajax({
             url: "../MODEL/fetch_transactions.php",
             method: "POST",
@@ -524,47 +500,9 @@ $(document).ready(function() {
             }
         });
     });
+    */
+    
 
 
-    /////////////////////////////////////////////////////////////////////
-
-
-    $.datepicker.setDefaults({
-        changeYear: true,
-        changeMonth: true,
-        dateFormat: 'yy-mm-dd'
-    });
-
-    $(function() {
-        $("#filter_from").datepicker();
-    });
-
-    $(function() {
-        $("#filter_to").datepicker();
-    });
-
-    $(function() {
-        $("#from_date").datepicker();
-    });
-
-    $(function() {
-        $("#to_date").datepicker();
-    });
-
-    $.ajax({
-        url: "../MODEL/fetch_events.php",
-        method: "POST",
-        data: {
-            start: 0,
-            limit: 20
-        },
-        success: function(data) {
-            $("#events_table tbody").html(data);
-        }
-    });
-
-    $(document).on('click', '.event-row', function(e) {
-        window.location = "edit_event.php?ID=" + $(this).attr("id");
-    });
 });
 </script>

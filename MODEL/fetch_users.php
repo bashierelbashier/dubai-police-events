@@ -11,6 +11,7 @@ $output = "<table class='table table-striped table-bordered' style='font-size:me
 <td>  متسلسل # </td>
 <td> إسم المستخدم </td>
 <td> الرقم العسكري </td>
+<td> الرتبة </td>
 <td> درجة الصلاحية </td>
 <td> نشط؟ </td>
 </tr>";
@@ -37,6 +38,7 @@ while ($row = mysqli_fetch_array($result)) {
         <tr class='user-row' id='" . $row['USER_NO'] . "' style='cursor:pointer;' align='center'>
         <td>" . $count . "</td>
         <td>" . $row['FULL_NAME'] . "</td><td>" . $row['USER_NAME'] . "</td>
+        <td>" . $row['RANK'] . "</td>
         <td>" . $privilege . "</td><td>" . $row['ACTIVE'] . "</td>
         </tr>";
     $count++;

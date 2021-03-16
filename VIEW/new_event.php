@@ -89,7 +89,7 @@ if ($_SESSION['PRIVILEGE'] == 4 || $_SESSION['PRIVILEGE'] == 5)
         <button id="events_form_submit" type="submit" form="events_form" style="margin-top: 20px;margin-right:5px;"
             class="btn btn-success col-xs-2 pull-right"><i class="fa fa-save"></i> حفظ </button>
         <button id="events_form_submit_and_new" type="submit" form="events_form"
-            style="margin-top: 20px;margin-right:5px;" class="btn btn-primary col-xs-3 pull-right"><i
+            style="margin-top: 20px;margin-right:5px;" class="btn btn-primary col-xs-3 pull-left"><i
                 class="fa fa-save"></i> حفظ و إضافة جديد </button>
         <br />
         <br />
@@ -210,19 +210,21 @@ if ($_SESSION['PRIVILEGE'] == 4 || $_SESSION['PRIVILEGE'] == 5)
                         </div>
 
                         <div class="panel-body">
+                            <button type="button" id="add_coordinator" class="btn btn-info pull-left" style="margin-bottom: 5px;">
+                                <i class="fa fa-user-plus"> </i>
+                                <span>إضافة</span>
+                            </button>
                             <table align="center" id="coordinators_table" class="table table-bordered">
                                 <thead>
-                                    <tr align="center" style="background-color: #0c5460;color:white">
-                                        <td> الإسم </td>
-                                        <td> الجهة </td>
-                                        <td> المنصب </td>
+                                    <tr style="background-color: #0c5460;color:white">
+                                        <td></td>
+                                        <th class="text-center"> الإسم </th>
+                                        <th class="text-center"> الجهة </th>
+                                        <th class="text-center"> المنصب </th>
                                     </tr>
                                 </thead>
                                 <tbody></tbody>
                             </table>
-                            <button type="button" id="add_coordinator" class="btn btn-info pull-left">
-                                <i class="fa fa-user-plus"> </i> إضافة
-                            </button>
                         </div>
                     </div>
                     <div class="panel panel-success">
@@ -320,8 +322,8 @@ if ($_SESSION['PRIVILEGE'] == 4 || $_SESSION['PRIVILEGE'] == 5)
                                     <td class="col-xs-2 text-center">
                                         <label class="control-label">أخرى</label>
                                     </td>
-                                    <td class="col-xs-2">
-                                        <input  type="text" name="other_exist" id="other_exist" class="form-control" placeholder="أخرى" autocomplete="off"/>
+                                    <td class="col-xs-2" colspan="3" style="max-width: 520px;">
+                                        <textarea name="other_exist" id="other_exist" class="form-control" placeholder="أخرى...." autocomplete="off" style="max-width: 760px; min-width: 243px; max-height: 150px; min-height: 50px;"></textarea>
                                     </td>
                                 </tr>
                             </table>
@@ -334,29 +336,47 @@ if ($_SESSION['PRIVILEGE'] == 4 || $_SESSION['PRIVILEGE'] == 5)
                             </h5>
                         </div>
                         <div class="panel-body">
+                            <button type="button" id="add_hotel" class="btn btn-info pull-left" style="margin-bottom: 5px;">
+                                <i class="fa fa-user-plus"> </i>
+                                <span>إضافة</span>
+                            </button>
+                            <table align="center" id="hotels_table" class="table table-bordered">
+                                <thead>
+                                    <tr style="background-color: #0c5460;color:white">
+                                        <td></td>
+                                        <th class="text-center"> إسم الفندق </th>
+                                        <th class="text-center"> الموقع </th>
+                                        <th class="text-center"> إحداثيات المكان </th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+
+                        <!-- <div class="panel-body">
                             <table class="table table-responsive">
                                 <tr>
                                     <td class="col-xs-2 text-center">
-                                        <label class="control-label">اسم الفندق</label>
+                                        <label class="control-label"></label>
                                     </td>
                                     <td class="col-xs-2">
                                         <input  type="text" name="hotel_name" id="hotel_name" class="form-control" placeholder="اسم الفندق" autocomplete="off"/>
                                     </td>
                                     <td class="col-xs-2 text-center">
-                                        <label class="control-label">الموقع</label>
+                                        <label class="control-label"></label>
                                     </td>
                                     <td class="col-xs-2">
                                         <input  type="text" name="hotel_location" id="hotel_location" class="form-control" placeholder="الموقع" autocomplete="off"/>
                                     </td>
                                     <td class="col-xs-2 text-center">
-                                        <label class="control-label">إحداثيات المكان</label>
+                                        <label class="control-label"></label>
                                     </td>
                                     <td class="col-xs-2">
                                         <input  type="text" name="hotel_coordinates" id="hotel_coordinates" class="form-control" placeholder="إحداثيات المكان" autocomplete="off"/>
                                     </td>
                                 </tr>
                             </table>
-                        </div>
+                        </div> -->
                     </div>
                     <div class="panel panel-success">
                         <div class="panel-heading">
@@ -471,28 +491,8 @@ if ($_SESSION['PRIVILEGE'] == 4 || $_SESSION['PRIVILEGE'] == 5)
                                     <td class="col-xs-2 text-center">
                                         <label class="control-label">أخرى</label>
                                     </td>
-                                    <td class="col-xs-2">
-                                        <input  type="text" name="other_participant11" id="other_participant11" class="form-control" placeholder="أخرى" autocomplete="off"/>
-                                    </td>
-                                    <td class="col-xs-2 text-center">
-                                        <label class="control-label">أخرى</label>
-                                    </td>
-                                    <td class="col-xs-2">
-                                        <input  type="text" name="other_participant12" id="other_participant12" class="form-control" placeholder="أخرى" autocomplete="off"/>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="col-xs-2 text-center">
-                                        <label class="control-label">أخرى</label>
-                                    </td>
-                                    <td class="col-xs-2">
-                                        <input  type="text" name="other_participant13" id="other_participant13" class="form-control" placeholder="أخرى" autocomplete="off"/>
-                                    </td>
-                                    <td class="col-xs-2 text-center">
-                                        <label class="control-label">أخرى</label>
-                                    </td>
-                                    <td class="col-xs-2">
-                                        <input  type="text" name="other_participant14" id="other_participant14" class="form-control" placeholder="أخرى" autocomplete="off"/>
+                                    <td class="col-xs-2" colspan="3" style="max-width: 520px;">
+                                        <textarea name="other_participants" id="other_participants" class="form-control" placeholder="أخرى...." autocomplete="off" style="max-width: 760px; min-width: 243px; max-height: 150px; min-height: 50px;"></textarea>
                                     </td>
                                 </tr>
                             </table>
@@ -563,14 +563,8 @@ if ($_SESSION['PRIVILEGE'] == 4 || $_SESSION['PRIVILEGE'] == 5)
                                     <td class="col-xs-2 text-center">
                                         <label class="control-label">أخرى</label>
                                     </td>
-                                    <td class="col-xs-2">
-                                        <input  type="text" name="other_needs1" id="other_needs1" class="form-control" placeholder="أخرى" autocomplete="off"/>
-                                    </td>
-                                    <td class="col-xs-2 text-center">
-                                        <label class="control-label">أخرى</label>
-                                    </td>
-                                    <td class="col-xs-2">
-                                        <input  type="text" name="other_needs2" id="other_needs2" class="form-control" placeholder="أخرى" autocomplete="off"/>
+                                    <td class="col-xs-2" colspan="3" style="max-width: 515px;">
+                                        <textarea name="other_needs" id="other_needs" class="form-control" placeholder="أخرى" autocomplete="off" style="max-width: 499px; min-width: 156px; max-height: 150px; min-height: 50px;"></textarea>
                                     </td>
                                 </tr>
                             </table>
@@ -679,30 +673,16 @@ if ($_SESSION['PRIVILEGE'] == 4 || $_SESSION['PRIVILEGE'] == 5)
                                     <td class="col-xs-2 text-center">
                                         <label class="control-label">أخرى</label>
                                     </td>
-                                    <td class="col-xs-2">
-                                        <input  type="text" name="report_other1" id="report_other1" class="form-control" placeholder="أخرى" autocomplete="off"/>
-                                    </td>
-                                </tr>
-                                <tr>
-                                <td class="col-xs-2 text-center">
-                                        <label class="control-label">أخرى</label>
-                                    </td>
-                                    <td class="col-xs-2">
-                                        <input  type="text" name="report_other2" id="report_other2" class="form-control" placeholder="أخرى" autocomplete="off"/>
-                                    </td>
-                                    <td class="col-xs-2 text-center">
-                                        <label class="control-label">أخرى</label>
-                                    </td>
-                                    <td class="col-xs-2">
-                                        <input  type="text" name="report_other3" id="report_other3" class="form-control" placeholder="أخرى" autocomplete="off"/>
+                                    <td class="col-xs-2" colspan="3" style="max-width: 309px;">
+                                        <textarea name="report_others" id="report_others" class="form-control" placeholder="أخرى" autocomplete="off" style="max-width: 499px; min-width: 160px; max-height: 150px; min-height: 50px;"></textarea>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td class="col-xs-2 text-center">
                                         <label class="control-label">ملاحظات</label>
                                     </td>
-                                    <td class="col-xs-2" colspan="3">
-                                        <textarea  type="text" name="report_notes" id="report_notes" class="form-control" placeholder="ملاحظات" autocomplete="off"></textarea>
+                                    <td class="col-xs-2" colspan="3" style="max-width: 520px;">
+                                        <textarea  type="text" name="report_notes" id="report_notes" class="form-control" placeholder="ملاحظات" autocomplete="off" style="max-width: 758px; min-width: 243px; max-height: 150px; min-height: 50px;"></textarea>
                                     </td>
                                 </tr>
                             </table>
@@ -721,120 +701,25 @@ if ($_SESSION['PRIVILEGE'] == 4 || $_SESSION['PRIVILEGE'] == 5)
                                         <label class="control-label">الرتبة</label>
                                     </td>
                                     <td class="col-xs-2">
-                                        <input  type="text" name="coordination_rank" id="coordination_rank" class="form-control" placeholder="الرتبة" autocomplete="off"/>
+                                        <input  type="text" name="coordination_rank" id="coordination_rank" value="<?php echo $_SESSION['RANK'] ;?>" class="form-control" placeholder="الرتبة" autocomplete="off" readonly/>
                                     </td>
                                     <td class="col-xs-2 text-center">
                                         <label class="control-label">الإسم</label>
                                     </td>
                                     <td class="col-xs-2">
-                                        <input  type="text" name="coordination_name" id="coordination_name" class="form-control" placeholder="الإسم" autocomplete="off"/>
+                                        <input  type="text" name="coordination_name" id="coordination_name" value="<?php echo $_SESSION['FULL_NAME'] ;?>" class="form-control" placeholder="الإسم" autocomplete="off" readonly/>
+                                    </td>
+                                    <td class="col-xs-2 text-center">
+                                        <label class="control-label">التوقيع</label>
+                                    </td>
+                                    <td class="col-xs-2">
+                                        <a href="../IMAGES/<?php echo $_SESSION['IMG_SIGNATURE']; ?>" class="btn btn-toolbar" style="padding: 0;">عرض</a>
                                     </td>
                                 </tr>
                             </table>
                         </div>
                     </div>
-
-<!-- 
-                    <div class="panel panel-success">
-                        <div class="panel-heading">
-                            <h5 align="center" class="panel-title">
-                                بيانات مكان الإحتفاظ بملف قطعة الأرض
-                            </h5>
-                        </div>
-                        <div class="panel-body">
-                            <table class="table table-striped">
-                                <tr>
-                                    <td>
-                                        <label> المكتب </label>
-                                    </td>
-                                    <td>
-                                        <input type="text" class="form-control" id="office_no" name="office_no" />
-                                    </td>
-                                    <td>
-                                        <label> الدولاب </label>
-                                    </td>
-                                    <td>
-                                        <input type="text" class="form-control" id="cupboard_no" name="cupboard_no" />
-                                    </td>
-                                    <td>
-                                        <label> الوحدة </label>
-                                    </td>
-                                    <td>
-                                        <input type="text" class="form-control" id="unit_no" name="unit_no" />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <label> الرف </label>
-                                    </td>
-                                    <td>
-                                        <input type="text" class="form-control" id="shelf_no" name="shelf_no" />
-                                    </td>
-                                    <td>
-                                        <label> الصندوق </label>
-                                    </td>
-                                    <td>
-                                        <input type="text" class="form-control" id="box_no" name="box_no" />
-                                    </td>
-
-                                    <td>
-                                        <label> المجلد </label>
-                                    </td>
-                                    <td>
-                                        <input type="text" class="form-control" id="folder_no" name="folder_no" />
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
-                    </div> -->
-
                 </form>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal -->
-    <div class="modal fade" style="border-radius: 10px;" id="SelectOwnerModal" role="dialog">
-        <div class="modal-dialog">
-            <!-- Modal content-->
-            <div class="modal-content" style="border-radius: 10px;">
-
-                <div class="modal-header">
-                    <h6 class="modal-title" align="center"> إضافة مالك لقطعة الأرض </h6>
-                    <br />
-                </div>
-
-                <div class="modal-body" dir="rtl">
-                    <div>
-                        <table class="table table-bordered">
-                            <tr>
-                                <td colspan="3">
-                                    <div class="input-group col-xs-12">
-                                        <span class="input-group-addon"
-                                            style="background-color:white;border-radius: 0px;border-width:0px;">
-                                            <i class="fa fa-filter"></i>
-                                        </span>
-                                        <input type="search" id="owner_search_txt" class="form-control"
-                                            placeholder="الإسم أو رقم إثبات الشخصية ..." />
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr align="center" style="background-color: #0c5460;color:white">
-                                <td width="15%"> متسلسل # </td>
-                                <td width="45%"> إسم المالك </td>
-                                <td width="40%"> نوع المالك </td>
-                            </tr>
-                        </table>
-                    </div>
-                    <div id="modal-owners-data" style="overflow-x:scroll;height:300px;">
-
-                    </div>
-                </div>
-
-                <div class="modal-footer">
-                    <button data-dismiss="modal" class="btn btn-warning"> <i class="fa fa-window-close"></i>
-                        إغلاق </button>
-                </div>
             </div>
         </div>
     </div>
@@ -851,7 +736,7 @@ if ($_SESSION['PRIVILEGE'] == 4 || $_SESSION['PRIVILEGE'] == 5)
                         <table class="table table-responsive">
                             <br />
                             <tr>
-                                <td class="col-xs-1">
+                                <td class="col-xs-1 text-center">
                                     <label class="control-label">الإسم </label>
                                 </td>
                                 <td class="col-xs-3" colspan="4">
@@ -860,7 +745,7 @@ if ($_SESSION['PRIVILEGE'] == 4 || $_SESSION['PRIVILEGE'] == 5)
                                 </td>
                             </tr>
                             <tr>
-                                <td class="col-xs-1">
+                                <td class="col-xs-1 text-center">
                                     <label class="control-label">الجهة </label>
                                 </td>
                                 <td class="col-xs-3" colspan="4">
@@ -869,7 +754,7 @@ if ($_SESSION['PRIVILEGE'] == 4 || $_SESSION['PRIVILEGE'] == 5)
                                 </td>
                             </tr>
                             <tr>
-                                <td class="col-xs-1">
+                                <td class="col-xs-1 text-center">
                                     <label class="control-label">المنصب </label>
                                 </td>
                                 <td class="col-xs-3" colspan="4">
@@ -881,317 +766,421 @@ if ($_SESSION['PRIVILEGE'] == 4 || $_SESSION['PRIVILEGE'] == 5)
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button data-dismiss="modal" class="btn btn-warning"> <i class="fa fa-window-close"></i>
-                        إغلاق </button>
-                    <button type="submit" form="coordinator_form" class="btn btn-primary"> <i
-                            class="fa fa-save"></i> حفظ </button>
+                    <button data-dismiss="modal" class="btn btn-warning pull-left">
+                        <i class="fa fa-window-close"></i>
+                        <span>إغلاق</span>
+                    </button>
+                    <button type="submit" form="coordinator_form" class="btn btn-primary pull-left">
+                        <i class="fa fa-save"></i>
+                        <span>حفظ</span>    
+                    </button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Modal -->
-    <div class="modal fade" style="border-radius: 10px;" id="NewOwnerModal" role="dialog">
+    <div class="modal fade" style="border-radius: 10px;" id="HotelModal" role="dialog">
         <div class="modal-dialog">
-            <!-- Modal content-->
             <div class="modal-content" style="border-radius: 10px;">
 
                 <div class="modal-header">
-                    <h4 class="modal-title" align="center"> إضافة بيانات مالك جديد </h4>
+                    <h4 class="modal-title" align="center"> إضافة فندق مخصص للمشاركين في الفعالية</h4>
                 </div>
                 <div class="modal-body" dir="rtl">
-                    <form id="owner_form" class="oe_formview">
+                    <form id="hotel_form" class="oe_formview">
                         <table class="table table-responsive">
                             <br />
                             <tr>
-                                <td>
-                                    <label>
-                                        نوع المالك
-                                    </label>
-                                </td>
-                                <td colspan="3">
-                                    <input class="col-xs-2 pull-right" checked type="radio" id="individual" value="1"
-                                        name="owner_type">
-                                    <label class="col-xs-2 pull-right">فرد</label>
-                                    <input class="col-xs-2 pull-right" type="radio" id="org" value="2"
-                                        name="owner_type">
-                                    <label class="col-xs-2 pull-right">مؤسسة</label>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="col-xs-3">
-                                    <label class="control-label">الإسم </label>
+                                <td class="col-xs-1 text-center">
+                                    <label class="control-label">إسم الفندق </label>
                                 </td>
                                 <td class="col-xs-3" colspan="4">
                                     <input autocomplete="off" required type="text" class="text-center form-control"
-                                        name="owner_name" placeholder="إسم المالك ....." />
+                                        name="name" id="hotel_name" placeholder="إسم الفندق ....." />
                                 </td>
                             </tr>
                             <tr>
-                                <td class="col-xs-3">
-                                    <label class="control-label">رقم الهاتف 1</label>
+                                <td class="col-xs-1 text-center">
+                                    <label class="control-label">الموقع </label>
                                 </td>
-                                <td class="col-xs-3">
-                                    <input dir="ltr" type="tel" class="form-control text-center"
-                                        placeholder="رقم الهاتف 1" id="phone1" name="phone1" />
-                                </td>
-
-                                <td class="col-xs-3">
-                                    <label class="control-label">رقم الهاتف 2</label>
-                                </td>
-                                <td class="col-xs-3">
-                                    <input dir="ltr" type="tel" class="form-control text-center"
-                                        placeholder="رقم الهاتف 2" id="phone2" name="phone2" />
-                                </td>
-                            </tr>
-                            <tr id="id_row">
-                                <td class="col-xs-3">
-                                    <label class="control-label">نوع إثبات الشخصية</label>
-                                </td>
-                                <td class="col-xs-3">
-                                    <select required class="form-control text-center" name="idtype" id="idtype">
-                                        <option value="0"> لايوجد </option>
-                                        <option value="1"> رقم وطني </option>
-                                        <option value="2"> بطاقة قومية </option>
-                                        <option value="3"> جواز سفر </option>
-                                        <option value="4"> رخصة قيادة </option>
-                                    </select>
-                                </td>
-                                <td class="col-xs-3">
-                                    <label class="control-label">رقم إثبات الشخصية</label>
-                                </td>
-                                <td class="col-xs-3">
-                                    <input dir="ltr" type="text" class="form-control text-center"
-                                        placeholder="رقم إثبات الشخصية" id="idno" name="idno" />
+                                <td class="col-xs-3" colspan="4">
+                                    <input autocomplete="off" required type="text" class="text-center form-control"
+                                        name="reference" id="hotel_location" placeholder="الموقع ....." />
                                 </td>
                             </tr>
                             <tr>
-                                <td>
-                                    <label>ملاحظات</label>
+                                <td class="col-xs-1 text-center">
+                                    <label class="control-label">إحداثيات المكان </label>
                                 </td>
-                                <td colspan="3">
-                                    <textarea name="notes" style="resize: none" rows="4"
-                                        class="form-control col-xs-12"></textarea>
+                                <td class="col-xs-3" colspan="4">
+                                    <input autocomplete="off" required type="text" class="text-center form-control"
+                                        name="position" id="hotel_coordinates" placeholder="إحداثيات المكان ....." />
                                 </td>
                             </tr>
                         </table>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button data-dismiss="modal" class="btn btn-warning"> <i class="fa fa-window-close"></i>
-                        إغلاق </button>
-                    <button type="submit" form="owner_form" class="btn btn-primary"> <i
-                            class="fa fa-save"></i> حفظ </button>
+                    <button data-dismiss="modal" class="btn btn-warning pull-left">
+                        <i class="fa fa-window-close"></i>
+                        <span>إغلاق</span>
+                    </button>
+                    <button type="submit" form="hotel_form" class="btn btn-primary pull-left">
+                        <i class="fa fa-save"></i>
+                        <span>حفظ</span>    
+                    </button>
                 </div>
             </div>
         </div>
     </div>
-</body>
 
-</html>
+    <script>
+        $(function() {
+            
+            $.datepicker.setDefaults({
+                changeYear: true,
+                changeMonth: true,
+                dateFormat: 'yy-mm-dd'
+            });
 
-<script>
-alertify.defaults.glossary.title = 'تأكيد';
-alertify.defaults.glossary.ok = 'موافق';
-alertify.defaults.glossary.cancel = 'إلغاء';
-//alertify.alert('هل قمت بمراجعة البيانات والتأكد من صحتها؟');
-</script>
+            var noveou = 0;
 
-<script>
-$(document).ready(function() {
+            $("#events_form_submit_and_new").click(function() {
+                noveou = 1;
+            });
 
-    $('#event_date').datepicker();
+            $('#event_date').datepicker();
 
-    $('#event_date').change(function () {
-        let day = moment($(this).val()).format('dddd');
-        if (day == 'Friday') {
-            $('#event_day').val('الجمعة');
-        }
-        
-        if (day == 'Saturday') {
-            $('#event_day').val('السبت');
-        }
-        
-        if (day == 'Sunday') {
-            $('#event_day').val('الأحد');
-        }
-        
-        if (day == 'Monday') {
-            $('#event_day').val('الأثنين');
-        }
-        
-        if (day == 'Tuesday') {
-            $('#event_day').val('الثلاثاء');
-        }
-        
-        if (day == 'Wednesday') {
-            $('#event_day').val('الأربعاء');
-        }
-        
-        if (day == 'Thursday') {
-            $('#event_day').val('الخميس');
-        }
-    });
+            $('#event_date').change(function () {
+                let day = moment($(this).val()).format('dddd');
+                if (day == 'Friday') {
+                    $('#event_day').val('الجمعة');
+                }
+                
+                if (day == 'Saturday') {
+                    $('#event_day').val('السبت');
+                }
+                
+                if (day == 'Sunday') {
+                    $('#event_day').val('الأحد');
+                }
+                
+                if (day == 'Monday') {
+                    $('#event_day').val('الأثنين');
+                }
+                
+                if (day == 'Tuesday') {
+                    $('#event_day').val('الثلاثاء');
+                }
+                
+                if (day == 'Wednesday') {
+                    $('#event_day').val('الأربعاء');
+                }
+                
+                if (day == 'Thursday') {
+                    $('#event_day').val('الخميس');
+                }
+            });
 
-    $("#add_coordinator").click(function() {
-        $("#CoordinationModal").modal("show");
-    });
+            $("#add_coordinator").click(function() {
+                $("#CoordinationModal").modal("show");
+            });
 
-    $('#coordinator_form').submit(function (e) {
-        event.preventDefault();
-        let html = '<tr>'
-            + '<td class="col-xs-2"><input type="text" class="form-control" name="coordinator_name[]" value="'+ $('#coordinator_name').val() +'"/></td>'
-            + '<td class="col-xs-2"><input type="text" class="form-control" name="coordinator_reference[]" value="'+ $('#coordinator_reference').val() +'"/></td>'
-            + '<td class="col-xs-2"><input type="text" class="form-control" name="coordinator_position[]" value="'+ $('#coordinator_position').val() +'"/></td>'
-            +'</tr>';
-        $('#coordinators_table tbody').append(html);
-        $('#coordinator_form')[0].reset();
-    });
+            $("#CoordinationModal").on('show.bs.modal', function (e) {
+                $('#coordinator_form')[0].reset();
+            });
 
-    $('#operation_room_covering_yes').change(function () {
-        if ($(this).attr('checked') == 'checked') {
-            $('#operation_room_covering_no').attr('checked', false);   
-        }
-        else {
-            $('#operation_room_covering_no').attr('checked', true);
-        }
-    });
+            $('#coordinator_form').submit(function (e) {
+                event.preventDefault();
+                let html = '<tr>'
+                    + '<td class="text-center" style="width: 1%;"><button type="button" class="btn btn-danger remove-coordinator"><i class="fa fa-times"></i></button></td>'
+                    + '<td class="col-xs-2"><input type="text" class="form-control" name="coordinator_name[]" value="'+ $('#coordinator_name').val() +'"/></td>'
+                    + '<td class="col-xs-2"><input type="text" class="form-control" name="coordinator_reference[]" value="'+ $('#coordinator_reference').val() +'"/></td>'
+                    + '<td class="col-xs-2"><input type="text" class="form-control" name="coordinator_position[]" value="'+ $('#coordinator_position').val() +'"/></td>'
+                    +'</tr>';
+                $('#coordinators_table tbody').append(html);
+                $('#coordinator_form')[0].reset();
+            });
 
-    $('#operation_room_covering_no').change(function () {
-        if ($(this).attr('checked') == 'checked') {
-            $('#operation_room_covering_yes').attr('checked', false);
-        }
-        else {
-            $('#operation_room_covering_yes').attr('checked', true);
-        }
-    });
+            $(document).on('click', '.remove-coordinator', function () {
+                $(this).parent().parent().remove();
+            });
 
-    $('#camaeras_recording_yes').change(function () {
-        if ($(this).attr('checked') == 'checked') {
-            $('#camaeras_recording_no').attr('checked', false);   
-        }
-        else {
-            $('#camaeras_recording_no').attr('checked', true); 
-        }
-    });
+            $("#add_hotel").click(function() {
+                $("#HotelModal").modal("show");
+            });
 
-    $('#camaeras_recording_no').change(function () {
-        if ($(this).attr('checked') == 'checked') {
-            $('#camaeras_recording_yes').attr('checked', false);
-        }
-        else {
-            $('#camaeras_recording_yes').attr('checked', true);
-        }
-    });
+            $("#HotelModal").on('show.bs.modal', function (e) {
+                $('#hotel_form')[0].reset();
+            });
 
-    $('#volunteers_yes').change(function () {
-        if ($(this).attr('checked') == 'checked') {
-            $('#volunteers_no').attr('checked', false);   
-            $('#volunteers_number').attr('disabled', false);
-        }
-        else {
-            $('#volunteers_no').attr('checked', true);
-            $('#volunteers_number').attr('disabled', true);
-        }
-    });
+            $('#hotel_form').submit(function (e) {
+                event.preventDefault();
+                let html = '<tr>'
+                    + '<td class="text-center" style="width: 1%;"><button type="button" class="btn btn-danger remove-hotel"><i class="fa fa-times"></i></button></td>'
+                    + '<td class="col-xs-2"><input type="text" class="form-control" name="hotel_name[]" value="'+ $('#hotel_name').val() +'"/></td>'
+                    + '<td class="col-xs-2"><input type="text" class="form-control" name="hotel_location[]" value="'+ $('#hotel_location').val() +'"/></td>'
+                    + '<td class="col-xs-2"><input type="text" class="form-control" name="hotel_coordinates[]" value="'+ $('#hotel_coordinates').val() +'"/></td>'
+                    +'</tr>';
+                $('#hotels_table tbody').append(html);
+                $('#hotel_form')[0].reset();
+            });
 
-    $('#volunteers_no').change(function () {
-        if ($(this).attr('checked') == 'checked') {
-            $('#volunteers_yes').attr('checked', false);
-            $('#volunteers_number').attr('disabled', true);
-        }
-        else {
-            $('#volunteers_yes').attr('checked', true);
-            $('#volunteers_number').attr('disabled', false);
-        }
-    });
+            $(document).on('click', '.remove-hotel', function () {
+                $(this).parent().parent().remove();
+            });
 
-    $("#events_form").submit(function(e) {
-        e.preventDefault();
-
-        $.ajax({
-            url: '../MODEL/insert_event.php',
-            method: 'POST',
-            data: new FormData(this),
-            processData: false,
-            contentType: false,
-            success: function(data) {
-                if (data.success) {
-                    swal({
-                        title: "تم !",
-                        text: "تم حفظ البيانات بنجاح",
-                        type: "success",
-                        confirmButtonColor: "skyblue",
-                        confirmButtonText: "حسنا"
-                    });
-
-                    setTimeout(() => {
-                        window.location.href = 'edit_event.php?ID=' + data.event_id;
-                    }, 1600);
+            $('#operation_room_covering_yes').change(function () {
+                if ($(this).attr('checked') == 'checked') {
+                    $('#operation_room_covering_no').attr('checked', false);   
                 }
                 else {
-                    swal("لم يتم حفظ البيانات ! الرجاء التحقق من صحتها");
+                    $('#operation_room_covering_no').attr('checked', true);
                 }
-            }
-        });
-    });
+            });
 
-    $("#individual").click(function() {
-        $("#id_row").show();
-    });
+            $('#operation_room_covering_no').change(function () {
+                if ($(this).attr('checked') == 'checked') {
+                    $('#operation_room_covering_yes').attr('checked', false);
+                }
+                else {
+                    $('#operation_room_covering_yes').attr('checked', true);
+                }
+            });
 
-    $("#org").click(function() {
-        $("#id_row").hide();
-        $("#id_type").val(0);
-        $("#idno").val('');
-    });
+            $('#camaeras_recording_yes').change(function () {
+                if ($(this).attr('checked') == 'checked') {
+                    $('#camaeras_recording_no').attr('checked', false);   
+                }
+                else {
+                    $('#camaeras_recording_no').attr('checked', true); 
+                }
+            });
 
-    var noveou = 0;
+            $('#camaeras_recording_no').change(function () {
+                if ($(this).attr('checked') == 'checked') {
+                    $('#camaeras_recording_yes').attr('checked', false);
+                }
+                else {
+                    $('#camaeras_recording_yes').attr('checked', true);
+                }
+            });
 
+            $('#volunteers_yes').change(function () {
+                if ($(this).attr('checked') == 'checked') {
+                    $('#volunteers_no').attr('checked', false);   
+                    $('#volunteers_number').attr('disabled', false);
+                }
+                else {
+                    $('#volunteers_no').attr('checked', true);
+                    $('#volunteers_number').attr('disabled', true);
+                }
+            });
 
-    $.datepicker.setDefaults({
-        changeYear: true,
-        changeMonth: true,
-        dateFormat: 'yy-mm-dd'
-    });
+            $('#volunteers_no').change(function () {
+                if ($(this).attr('checked') == 'checked') {
+                    $('#volunteers_yes').attr('checked', false);
+                    $('#volunteers_number').attr('disabled', true);
+                }
+                else {
+                    $('#volunteers_yes').attr('checked', true);
+                    $('#volunteers_number').attr('disabled', false);
+                }
+            });
 
-    $(function() {
-        $("#trans_date").datepicker();
-    });
+            $("#events_form").submit(function(e) {
+                e.preventDefault();
 
+                $.ajax({
+                    url: '../MODEL/insert_event.php',
+                    method: 'POST',
+                    data: new FormData(this),
+                    processData: false,
+                    contentType: false,
+                    success: function(data) {
+                        if (data.success) {
+                            swal({
+                                title: "تم !",
+                                text: "تم حفظ البيانات بنجاح",
+                                type: "success",
+                                confirmButtonColor: "skyblue",
+                                confirmButtonText: "حسنا"
+                            }).then(function() {
+                                if (noveou == 1) {
+                                    $("#events_form")[0].reset();
+                                    $('#coordinators_table tbody').html('');
+                                    $('#hotels_table tbody').html('');
+                                    $('#event_name').focus();
+                                }
+                                else {
+                                    window.location = 'edit_event.php?ID=' + data.event_id;
+                                }
+                            });
 
-    var change_flag = false;
+                        }
+                        else {
+                            swal("لم يتم حفظ البيانات ! الرجاء التحقق من صحتها");
+                        }
+                    }
+                });
+            });
+            
 
+            /* 
+            var change_flag = false;
 
-    $("#events_form_submit_and_new").click(function() {
-        noveou = 1;
-    });
+            $("select").change(function() {
+                change_flag = true;
+            });
 
-    $("input").change(function() {
-        change_flag = true;
-    });
+            $("input").change(function() {
+                change_flag = true;
+            });
 
-    $("select").change(function() {
-        change_flag = true;
-    });
+            $("#individual").click(function() {
+                $("#id_row").show();
+            });
 
-    var owners = [];
+            $("#org").click(function() {
+                $("#id_row").hide();
+                $("#id_type").val(0);
+                $("#idno").val('');
+            });
 
+            var owners = [];
 
+            $("#owner_form").submit(function(e) {
+                e.preventDefault();
 
-    $("#owner_form").submit(function(e) {
-        e.preventDefault();
+                $.ajax({
+                    url: '../MODEL/insert_owner.php',
+                    method: 'POST',
+                    data: new FormData(this),
+                    processData: false,
+                    contentType: false,
+                    success: function(data) {
 
-        $.ajax({
-            url: '../MODEL/insert_owner.php',
-            method: 'POST',
-            data: new FormData(this),
-            processData: false,
-            contentType: false,
-            success: function(data) {
+                        if (data) {
+                            owners.push(data);
+                            $.ajax({
+                                url: "../MODEL/fetch_new_land_owners.php",
+                                method: "POST",
+                                data: {
+                                    owners: owners
+                                },
+                                success: function(data) {
+                                    $("#owners_table").html(data);
+                                    $("#SelectOwnerModal").modal("hide");
+                                }
+                            });
 
-                if (data) {
-                    owners.push(data);
+                            $("#NewOwnerModal").modal("hide");
+                            $("#owner_form")[0].reset();
+                            $.ajax({
+                                url: "../MODEL/modal_fetch_owners.php",
+                                method: "POST",
+                                data: {},
+                                success: function(data) {
+                                    $("#modal-owners-data").html(data);
+                                }
+                            });
+                            change_flag = true;
+
+                        } else {
+                            swal("لم يتم حفظ البيانات ! الرجاء التحقق من صحتها");
+                        }
+
+                    }
+                });
+            });
+            
+            $(function() {
+                $("#trans_date").datepicker();
+            });
+            
+            $("#register_owner").click(function() {
+                $("#NewOwnerModal").modal("show");
+                $("#SelectOwnerModal").modal("hide");
+            });
+        
+            $.ajax({
+                url: "../MODEL/modal_fetch_owners.php",
+                method: "POST",
+                data: {},
+                success: function(data) {
+                    $("#modal-owners-data").html(data);
+                }
+            });
+            
+            $("#add_owner").click(function() {
+                $("#SelectOwnerModal").modal("show");
+            });
+        
+            $("#owner_search_txt").keyup(function(e) {
+        
+                var txt = $("#owner_search_txt").val();
+        
+                $.ajax({
+                    url: "../MODEL/modal_fetch_owners.php",
+                    method: "POST",
+                    data: {
+                        txt: txt
+                    },
+                    success: function(data) {
+                        $("#modal-owners-data").html(data);
+                    }
+                });
+            });
+            
+            $(document).on('click', '.owner-remove', function(e) {
+        
+                var owner = $(this).attr("id");
+        
+                var removedIndex = owners.indexOf(owner);
+        
+                swal({
+                    title: "تأكيد",
+                    text: "هل تريد حذف هذا السجل",
+                    type: "question",
+        
+                    confirmButtonColor: "red",
+                    showCancelButton: true,
+                    cancelButtonColor: "green",
+                    cancelButtonText: "لا أريد الحذف <i class='fa fa-thumbs-up'></i>",
+                    confirmButtonText: "نعم <i class='fa fa-trash'></i>"
+                }).then(function(isConfirm) {
+                    if (isConfirm) {
+        
+                        if (removedIndex > -1)
+                            owners.splice(removedIndex, 1);
+        
+                        $.ajax({
+                            url: "../MODEL/fetch_new_land_owners.php",
+                            method: "POST",
+                            data: {
+                                owners: owners
+                            },
+                            success: function(data) {
+                                $("#owners_table").html(data);
+                                $("#SelectOwnerModal").modal("hide");
+                                change_flag = true;
+                            }
+                        });
+                    }
+                });
+        
+            });
+        
+            $(document).on('click', '.owner-row', function(e) {
+        
+                var owner = $(this).attr("id");
+                var flag = false;
+                for (var i = 0; i < owners.length; i++)
+                    if (owners[i] == owner)
+                        flag = true;
+        
+                if (flag == false) {
+                    owners.push(owner);
                     $.ajax({
                         url: "../MODEL/fetch_new_land_owners.php",
                         method: "POST",
@@ -1201,159 +1190,51 @@ $(document).ready(function() {
                         success: function(data) {
                             $("#owners_table").html(data);
                             $("#SelectOwnerModal").modal("hide");
+                            change_flag = true;
                         }
                     });
-
-                    $("#NewOwnerModal").modal("hide");
-                    $("#owner_form")[0].reset();
-                    $.ajax({
-                        url: "../MODEL/modal_fetch_owners.php",
-                        method: "POST",
-                        data: {},
-                        success: function(data) {
-                            $("#modal-owners-data").html(data);
-                        }
-                    });
-                    change_flag = true;
-
-                } else {
-                    swal("لم يتم حفظ البيانات ! الرجاء التحقق من صحتها");
-                }
-
-            }
-        });
-    });
-
-    
-
-    $("#register_owner").click(function() {
-        $("#NewOwnerModal").modal("show");
-        $("#SelectOwnerModal").modal("hide");
-    });
-
-    $.ajax({
-        url: "../MODEL/modal_fetch_owners.php",
-        method: "POST",
-        data: {},
-        success: function(data) {
-            $("#modal-owners-data").html(data);
-        }
-    });
-
-    $("#add_owner").click(function() {
-        $("#SelectOwnerModal").modal("show");
-    });
-
-    $("#owner_search_txt").keyup(function(e) {
-
-        var txt = $("#owner_search_txt").val();
-
-        $.ajax({
-            url: "../MODEL/modal_fetch_owners.php",
-            method: "POST",
-            data: {
-                txt: txt
-            },
-            success: function(data) {
-                $("#modal-owners-data").html(data);
-            }
-        });
-    });
-
-    $(document).on('click', '.owner-remove', function(e) {
-
-        var owner = $(this).attr("id");
-
-        var removedIndex = owners.indexOf(owner);
-
-        swal({
-            title: "تأكيد",
-            text: "هل تريد حذف هذا السجل",
-            type: "question",
-
-            confirmButtonColor: "red",
-            showCancelButton: true,
-            cancelButtonColor: "green",
-            cancelButtonText: "لا أريد الحذف <i class='fa fa-thumbs-up'></i>",
-            confirmButtonText: "نعم <i class='fa fa-trash'></i>"
-        }).then(function(isConfirm) {
-            if (isConfirm) {
-
-                if (removedIndex > -1)
-                    owners.splice(removedIndex, 1);
-
-                $.ajax({
-                    url: "../MODEL/fetch_new_land_owners.php",
-                    method: "POST",
-                    data: {
-                        owners: owners
-                    },
-                    success: function(data) {
-                        $("#owners_table").html(data);
-                        $("#SelectOwnerModal").modal("hide");
-                        change_flag = true;
-                    }
-                });
-            }
-        });
-
-    });
-
-
-
-    $(document).on('click', '.owner-row', function(e) {
-
-        var owner = $(this).attr("id");
-        var flag = false;
-        for (var i = 0; i < owners.length; i++)
-            if (owners[i] == owner)
-                flag = true;
-
-        if (flag == false) {
-            owners.push(owner);
-            $.ajax({
-                url: "../MODEL/fetch_new_land_owners.php",
-                method: "POST",
-                data: {
-                    owners: owners
-                },
-                success: function(data) {
-                    $("#owners_table").html(data);
-                    $("#SelectOwnerModal").modal("hide");
-                    change_flag = true;
                 }
             });
-        }
-    });
-
-    function fetchDistricts() {
-
-        var locale_no = $("#locale").val();
-        $.ajax({
-            url: '../MODEL/fetch_districts.php',
-            method: "POST",
-            data: {
-                locale_no: locale_no
-            },
-            success: function(data) {
-                $("#district").html(data);
+        
+            function fetchDistricts() {
+        
+                var locale_no = $("#locale").val();
+                $.ajax({
+                    url: '../MODEL/fetch_districts.php',
+                    method: "POST",
+                    data: {
+                        locale_no: locale_no
+                    },
+                    success: function(data) {
+                        $("#district").html(data);
+                    }
+        
+                });
             }
+        
+            $("#locale").change(function() {
+                fetchDistricts();
+            });
+        
+            $.ajax({
+                url: "../MODEL/fetch_classifications.php",
+                method: "POST",
+                success: function(data) {
+                    $("#classification").html(data);
+                }
+            });
+        
+            fetchDistricts();
+            */
+
+
 
         });
-    }
 
-    $("#locale").change(function() {
-        fetchDistricts();
-    });
-
-    $.ajax({
-        url: "../MODEL/fetch_classifications.php",
-        method: "POST",
-        success: function(data) {
-            $("#classification").html(data);
-        }
-    });
-
-    fetchDistricts();
-});
-</script>
+        alertify.defaults.glossary.title = 'تأكيد';
+        alertify.defaults.glossary.ok = 'موافق';
+        alertify.defaults.glossary.cancel = 'إلغاء';
+        //alertify.alert('هل قمت بمراجعة البيانات والتأكد من صحتها؟');
+    </script>
+</body>
+</html>

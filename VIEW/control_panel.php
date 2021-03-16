@@ -50,6 +50,57 @@ html,
 body {
     height: 100%;
 }
+
+input[type=file] {
+    width: 180px;
+    height: 30px;
+    color: transparent;
+    outline: 0;
+
+    width: 200px;
+}
+
+input[type=file]::-webkit-file-upload-button {
+    visibility: hidden;
+}
+
+input[type=file]::before {
+    display: inline-block;
+    content: 'إختيار صورة' !important;
+    text-align: center;
+    color: #86919b;
+    background-color: rgb(238, 238, 238);
+    background-image: linear-gradient(rgb(250, 250, 250), rgb(221, 221, 221));
+    width: 100%;
+    height: 100%;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    padding: 3px 8px;
+    white-space: nowrap;
+    user-select: none;
+    -webkit-user-select: none;
+    text-shadow: 1px 1px #f2f2f2;
+    text-shadow: rgba(255, 255, 255, 0.8) 0px 1px 0px;
+    box-shadow: rgba(255, 255, 255, 0.8) 0px 0px 1px 1px inset, rgba(0, 0, 0, 0.3) 0px 1px 0px 0px;
+    cursor: pointer;
+}
+
+input[type=file]:active {
+    box-shadow: 0 0 4px 2px rgba(0,0,0,.3) inset;
+    position: relative;
+    top: 1px;
+}
+
+input[type=file]:focus {
+    outline: 0;
+}
+
+#signature-img{
+    width: 200px;
+    height: 200px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+}
 </style>
 
 <body dir="rtl">
@@ -122,10 +173,10 @@ body {
                 <div class="modal-body" dir="rtl">
                     <br />
                     <br />
-                    <form class="form-inline" id="users_form">
+                    <form class="form-inline" id="users_form" enctype="multipart/form-data">
                         <table class="table table-responsive">
                             <tr>
-                                <td>
+                                <td class="text-center">
                                     <label>الإسم</label>
                                 </td>
                                 <td>
@@ -141,13 +192,22 @@ body {
                                 </td>
                             </tr>
                             <tr>
+                                <td class="text-center">
+                                    <label>الرتبة</label>
+                                </td>
                                 <td>
+                                    <input type="text" class="form-control text-center" id="rank"
+                                        name="rank" autocomplete="off" />
+                                </td>
+                                <td class="text-center">
                                     <label>كلمة المرور</label>
                                 </td>
                                 <td>
                                     <input required type="text" required class="form-control text-center" id="password"
                                         name="password" autocomplete="off" />
                                 </td>
+                            </tr>
+                            <tr>
                                 <td>
                                     <label>درجة الصلاحية</label>
                                 </td>
@@ -159,9 +219,7 @@ body {
                                     </select>
 
                                 </td>
-                            </tr>
-                            <tr>
-                                <td>
+                                <td class="text-center">
                                     <label>نشط ؟</label>
                                 </td>
                                 <td>
@@ -171,17 +229,27 @@ body {
                                     <label>غير نشط</label>
                                 </td>
                             </tr>
+                            <tr>
+                                <td class="text-center"> 
+                                    <label>التوقيع</label>
+                                </td>
+                                <td colspan="3">
+                                    <img alt="signature-img" id="signature-img">
+                                    <input type="file" name="signature" id="signature">
+                                </td>
+                            </tr>
                         </table>
+                        <input type="hidden" name="user_no" id="user_no">
+                        <input type="hidden" name="action" id="action">
                     </form>
                 </div>
                 <div class="modal-footer">
 
                     <button type="button" class="btn btn-warning pull-left" data-dismiss="modal">إغلاق</button>
-                    <button type="submit" form="users_form" class="btn btn-primary pull-left" id="user_submit"><i
-                            class="fa fa-save"></i> حفظ </button>
-                    <button type="button" form="users_form" class="btn btn-success pull-left" id="user_update"><i
-                            class="fa fa-edit"></i> حفظ التعديلات </button>
-
+                    <button type="submit" form="users_form" class="btn btn-primary pull-left" id="user_submit">
+                        <i class="fa fa-save"></i>
+                        <span>حفظ</span>
+                    </button>
                 </div>
             </div>
 
@@ -333,14 +401,32 @@ body {
 </html>
 <script>
 $(document).ready(function() {
+    $('#signature').change(function () {
+        if ($(this).val()) {
+            if (this.files && this.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $("#signature-img").attr("src", e.target.result);
+                }
+                reader.readAsDataURL(this.files[0]);
+            }
+        }
+        else {
+            $('#signature-img').attr('src', '../IMAGES/not-found.png');
+        }
+    });
 
-    var user_no = '';
-    $("#user_update").hide();
+    $("#UserModal").on('show.bs.modal', function (e) {
+        $('#signature').val('');
+        $('#signature-img').attr('src', '../IMAGES/not-found.png');
+    })
 
     $(document).on('click', '.user-row', function(e) {
+        $('#action').val("update");
+        $('#user_submit span').html('حفظ التغييرات');
 
         var id = $(this).attr("id");
-        user_no = id;
+        $('#user_no').val(id);
         $.ajax({
 
             url: "../MODEL/fetch_user_data.php",
@@ -349,90 +435,77 @@ $(document).ready(function() {
                 id: id
             },
             success: function(data) {
-                $("#users_form").html(data);
+                $('#full_name').val(data.full_name);
+                $('#user_name').val(data.user_name);
+                $('#password').attr('required', false);
+                $('#privilege').val(data.privilege_no);
+                $('#rank').val(data.rank);
+                if (data.active == 1) {
+                    $('#active').attr('checked', true);
+                }
+                else {
+                    $('#inactive').attr('checked', true);
+                }
+
+                if (data.img_signature) {
+                    $('#signature-img').attr('src', '../IMAGES/' + data.img_signature);
+                }
+                else {
+                    $('#signature-img').attr('src', '../IMAGES/not-found.png');   
+                }
             }
 
         });
 
         $("#user_modal_title").html(" بيانات مستخدم ");
-        $("#user_submit").hide();
-        $("#user_update").show();
         $("#UserModal").modal("show");
 
     });
 
     $(document).on('click', '#add_user', function(e) {
+        $('#action').val("insert");
+        $('#user_submit span').html('حفظ');
 
         var full_name = $("#full_name").val('');
         var user_name = $("#user_name").val('');
         var password = $("#password").val('');
         var privilege = $("#privilege").val(1);
         var active = $("#active").val();
+        var rank = $("#rank").val('');
 
         $("#user_modal_title").html(" إضافة مستخدم جديد ");
-        $("#user_submit").show();
-        $("#user_update").hide();
+        $('#signature-img').attr('src', '../IMAGES/not-found.png'); 
         $("#UserModal").modal("show");
 
     });
 
-
-    $("#user_update").click(function() {
-
-        var full_name = $("#full_name").val();
-        var user_name = $("#user_name").val();
-        var password = $("#password").val();
-        var privilege = $("#privilege").val();
-        var active = $("input[name=active]:checked").val();
-
-        $.ajax({
-            url: "../MODEL/update_user.php",
-            method: "POST",
-            data: {
-                full_name: full_name,
-                user_name: user_name,
-                user_no: user_no,
-                active: active,
-                privilege: privilege,
-                password: password
-            },
-            success: function(data) {
-                $.ajax({
-                    url: "../MODEL/fetch_users.php",
-                    method: "POST",
-                    success: function(data) {
-
-                        $("#users_table").html(data);
-                        $("#UserModal").modal("hide");
-
-                    }
-                });
-            }
-        });
-
-    });
-
     $("#users_form").submit(function(e) {
-
         e.preventDefault();
 
+        let url = "";
+        if ($('#action').val() == 'insert') {
+            url = "../MODEL/insert_user.php";
+        }
+        else if ($('#action').val() == 'update') {
+            url = "../MODEL/update_user.php";
+        }
+
         $.ajax({
-            url: "../MODEL/insert_user.php",
+            url: url,
             method: "POST",
             data: new FormData(this),
             processData: false,
             contentType: false,
             success: function(data) {
-                $("#users_form")[0].reset();
+                if ($('#action').val() == 'update') {
+                    $("#users_form")[0].reset();
+                }
                 $("#UserModal").modal("hide");
-
                 $.ajax({
                     url: "../MODEL/fetch_users.php",
                     method: "POST",
                     success: function(data) {
-
                         $("#users_table").html(data);
-
                     }
                 });
             }

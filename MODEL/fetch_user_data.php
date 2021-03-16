@@ -2,12 +2,22 @@
 
 include "connect.php";
 
+header('Content-type: application/json; charset=utf-8');
+
 $query = "SELECT * FROM T_USERS WHERE USER_NO = " . $_POST['id'];
-
 $result = mysqli_query($connect, $query);
-
 $row = mysqli_fetch_array($result);
 
+echo json_encode([
+    'full_name' => $row['FULL_NAME'],
+    'user_name' => $row['USER_NAME'],
+    'privilege_no' => $row['PRIVILEGE_NO'],
+    'active' => $row['ACTIVE'],
+    'img_signature' => $row['IMG_SIGNATURE'],
+    'rank' => $row['RANK'],
+]);
+
+/*
 $output = '';
 $radio = '';
 $select = '';
@@ -84,3 +94,4 @@ $output .=
 
 
 echo $output;
+*/
