@@ -120,14 +120,13 @@ body {
 
 <script>
 $(document).ready(function() {
-    new Chart(document.getElementById("pie-chart-q1"), {
+    var q1_chart = new Chart(document.getElementById("pie-chart-q1"), {
         type: 'pie',
         data: {
-            labels: ["بشير مصطفى", "إسماعيل محمدي"],
             datasets: [{
                 label: "تعداد الفعاليات",
                 backgroundColor: ["#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850"],
-                data: [15, 5]
+                data: []
             }]
         },
         options: {
@@ -139,14 +138,13 @@ $(document).ready(function() {
         }
     });
 
-    new Chart(document.getElementById("pie-chart-q2"), {
+    var q2_chart = new Chart(document.getElementById("pie-chart-q2"), {
         type: 'pie',
         data: {
-            labels: ["بشير مصطفى", "إسماعيل محمدي"],
             datasets: [{
                 label: "تعداد الفعاليات",
                 backgroundColor: ["#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850"],
-                data: [1, 3]
+                data: []
             }]
         },
         options: {
@@ -158,14 +156,13 @@ $(document).ready(function() {
         }
     });
 
-    new Chart(document.getElementById("pie-chart-q3"), {
+    var q3_chart = new Chart(document.getElementById("pie-chart-q3"), {
         type: 'pie',
         data: {
-            labels: ["بشير مصطفى", "إسماعيل محمدي"],
             datasets: [{
                 label: "تعداد الفعاليات",
                 backgroundColor: ["#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850"],
-                data: [4, 2]
+                data: []
             }]
         },
         options: {
@@ -177,14 +174,13 @@ $(document).ready(function() {
         }
     });
 
-    new Chart(document.getElementById("pie-chart-q4"), {
+    var q4_chart = new Chart(document.getElementById("pie-chart-q4"), {
         type: 'pie',
         data: {
-            labels: ["بشير مصطفى", "إسماعيل محمدي"],
             datasets: [{
                 label: "تعداد الفعاليات",
                 backgroundColor: ["#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850"],
-                data: [7, 5]
+                data: []
             }]
         },
         options: {
@@ -193,6 +189,29 @@ $(document).ready(function() {
                 display: true,
                 text: 'إحصائية فعاليات الربع الرابع'
             }
+        }
+    });
+
+    $.ajax({
+        url: 'MODEL/events_stats.php',
+        method: 'POST',
+        dataType: 'json',
+        success: function (data) {
+            q1_chart.data.labels =  data.q1_labels;
+            q1_chart.data.datasets[0].data =  data.q1_percentages;
+            q1_chart.update();
+
+            q2_chart.data.labels =  data.q2_labels;
+            q2_chart.data.datasets[0].data =  data.q2_percentages;
+            q2_chart.update();
+            
+            q3_chart.data.labels =  data.q3_labels;
+            q3_chart.data.datasets[0].data =  data.q3_percentages;
+            q3_chart.update();
+            
+            q4_chart.data.labels =  data.q4_labels;
+            q4_chart.data.datasets[0].data =  data.q4_percentages;
+            q4_chart.update();
         }
     });
 

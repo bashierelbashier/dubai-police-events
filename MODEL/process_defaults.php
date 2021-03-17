@@ -189,8 +189,6 @@ else {
     $ambulance = 0;
 }
 
-// $ .",". $ .",". $ .",". $ .",". $
-
 if (isset($_POST['transportation_bus'])) {
     $transportation_bus = 1;
 }
@@ -247,20 +245,6 @@ else {
     $id_cards = 0;
 }
 
-if (isset($_POST['correspondence'])) {
-    $correspondence = 1;
-}
-else {
-    $correspondence = 0;
-}
-
-if (isset($_POST['individuals_list'])) {
-    $individuals_list = 1;
-}
-else {
-    $individuals_list = 0;
-}
-
 if (isset($_POST['invitation_card'])) {
     $invitation_card = 1;
 }
@@ -289,30 +273,9 @@ else {
     $security_list = 0;
 }
 
-if (isset($_POST['participants_plans'])) {
-    $participants_plans = 1;
-}
-else {
-    $participants_plans = 0;
-}
-
-if (isset($_POST['operation_cost'])) {
-    $operation_cost = 1;
-}
-else {
-    $operation_cost = 0;
-}
-
-if (isset($_POST['classification_form'])) {
-    $classification_form = 1;
-}
-else {
-    $classification_form = 0;
-}
-
-if (isset($_POST['success_form'])) {
-    $success_form = 1;
-}
-else {
-    $success_form = 0;
-}
+$correspondence = 1;
+$individuals_list = 1;
+$participants_plans = 1;
+$operation_cost = 1;
+$classification_form = 1;
+$success_form = 1;

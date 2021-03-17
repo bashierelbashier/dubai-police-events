@@ -1,6 +1,6 @@
 <?php
 
-
+session_start();
 include "connect.php";
 
 $limit = $_POST['limit'];
@@ -18,6 +18,10 @@ else if (isset($_POST['filter_to']) && $_POST['filter_to'] != '') {
 }
 else {
     $query = "SELECT * FROM T_EVENT";
+}
+
+if ($_SESSION['PRIVILEGE'] == 2) {
+    $query .= " WHERE CREATOR_ID = " . $_SESSION['USER_NO'];
 }
 
 $query .= " ORDER BY EVENT_DATE LIMIT ".$start.",".$limit;

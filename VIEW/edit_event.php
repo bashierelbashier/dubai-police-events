@@ -2,14 +2,9 @@
 
 session_start();
 
-$land_file_exist = TRUE;
-
 if (!isset($_SESSION['USER_NO'])) {
     header("location:login.php");
 }
-
-if ($_SESSION['PRIVILEGE'] == 4)
-    header("location:access_denied.php");
 
 
 include "../MODEL/connect.php";
@@ -17,6 +12,10 @@ include "../MODEL/connect.php";
 $sql = "SELECT * FROM T_EVENT JOIN T_EVENT_INFO ON T_EVENT.ID = T_EVENT_INFO.EVENT_ID JOIN T_EVENT_PARTICIPANTS ON T_EVENT.ID = T_EVENT_PARTICIPANTS.EVENT_ID JOIN T_EVENT_NEEDS ON T_EVENT.ID = T_EVENT_NEEDS.EVENT_ID JOIN T_EVENT_TRANSPORTATION ON T_EVENT.ID = T_EVENT_TRANSPORTATION.EVENT_ID JOIN T_EVENT_REPORT ON T_EVENT.ID = T_EVENT_REPORT.EVENT_ID WHERE T_EVENT.ID = " . $_GET['ID'];
 $res = mysqli_query($connect, $sql);
 $row = mysqli_fetch_array($res);
+
+if ($row['CREATOR_ID'] != $_SESSION['USER_NO']) {
+    header("location:access_denied.php");
+}
 
 ?>
 
@@ -101,16 +100,18 @@ $row = mysqli_fetch_array($res);
 
     <div id="buttons_div" class="col-xs-10 navbar-fixed-top"
         style="margin-right: 16.7%;height:70px;border-bottom-style: outset;border-bottom-width: 1px;border-bottom-color: lightgray;  background-color: #ffffff;margin-top:55px; ">
+        <div class="col-xs-2 pull-right"></div>
         <a href="events.php" style="margin-top: 20px;margin-right:5px;" class="btn btn-default col-xs-2 pull-right"><i
                 class="fa fa-long-arrow-right"></i> رجوع </a>
         <button type="submit" form="event_form" style="margin-top: 20px;margin-right:5px;"
             class="btn btn-success col-xs-2 pull-right"><i class="fa fa-pencil-square-o"></i> حفظ التعديلات </button>
         <button id="delete_event" style="margin-top: 20px;margin-right:5px;"
             class="btn btn-danger col-xs-2 pull-right"><i class="fa fa-trash-o"></i> حذف </button>
-        <!-- <a href="add_files.php?land_no=<?php echo $row['LAND_NO'] . '&district_no=' . $row['DISTRICT_NO']; ?>"><button
-                id="add_docs" style="margin-top: 20px;margin-right:5px;" class="btn btn-info col-xs-3 pull-right"><i
-                    class="fa fa-plus"></i> إضافة مستندات لقطعة الأرض </button> </a>
-        <a href="new_transaction.php?land_no=<?php echo $row['LAND_NO'] . '&district_no=' . $row['DISTRICT_NO']; ?>"><button
+        <a href="../REPORTS/event.php?id=<?php echo $_GET['ID']; ?>" style="margin-top: 20px;margin-right:5px;" class="btn btn-info col-xs-2 pull-right">
+            <i class="fa fa-print"></i>
+            <span>إستخراج</span>
+        </a>
+        <!--  <a href="new_transaction.php?land_no=<?php echo $row['LAND_NO'] . '&district_no=' . $row['DISTRICT_NO']; ?>"><button
                 id="add_trans" style="margin-top: 20px;margin-right:5px;" class="btn btn-warning col-xs-2 pull-right">
                 <i class="fa fa-plus"></i> إضافة معاملة </button> </a> -->
         <br />
@@ -227,6 +228,10 @@ $row = mysqli_fetch_array($res);
 
                         <div class="panel-body">
                             <!-- <div id="owners_table"> -->
+                            <button type="button" id="add_coordinator" class="btn btn-info pull-left" style="margin-bottom: 5px;">
+                                <i class="fa fa-user-plus"> </i>
+                                <span>إضافة</span>
+                            </button>
                             <div id="coordinators_table">
                                 <table align="center" class="table table-bordered">
                                     <thead>
@@ -240,9 +245,6 @@ $row = mysqli_fetch_array($res);
                                     <tbody></tbody>
                                 </table>
                             </div>
-                            <button type="button" id="add_coordinator" class="btn btn-info pull-left">
-                                <i class="fa fa-user-plus"> </i> إضافة
-                            </button>
                         </div>
                     </div>
                     <div class="panel panel-success">
@@ -340,8 +342,8 @@ $row = mysqli_fetch_array($res);
                                     <td class="col-xs-2 text-center">
                                         <label class="control-label">أخرى</label>
                                     </td>
-                                    <td class="col-xs-2">
-                                        <input  type="text" name="other_exist" id="other_exist" class="form-control" placeholder="أخرى" autocomplete="off" value="<?php echo $row['OTHER_INFO'] ?>"/>
+                                    <td class="col-xs-2" colspan="3" style="max-width: 520px;">
+                                        <textarea name="other_exist" id="other_exist" class="form-control" placeholder="أخرى...." autocomplete="off" style="max-width: 760px; min-width: 243px; max-height: 150px; min-height: 50px;"><?php echo $row['OTHER_INFO'] ?></textarea>
                                     </td>
                                 </tr>
                             </table>
@@ -354,27 +356,20 @@ $row = mysqli_fetch_array($res);
                             </h5>
                         </div>
                         <div class="panel-body">
-                            <table class="table table-responsive">
-                                <tr>
-                                    <td class="col-xs-2 text-center">
-                                        <label class="control-label">اسم الفندق</label>
-                                    </td>
-                                    <td class="col-xs-2">
-                                        <input  type="text" name="hotel_name" id="hotel_name" class="form-control" placeholder="اسم الفندق" autocomplete="off" value="<?php echo $row['HOTEL_NAME']; ?>"/>
-                                    </td>
-                                    <td class="col-xs-2 text-center">
-                                        <label class="control-label">الموقع</label>
-                                    </td>
-                                    <td class="col-xs-2">
-                                        <input  type="text" name="hotel_location" id="hotel_location" class="form-control" placeholder="الموقع" autocomplete="off" value="<?php echo $row['HOTEL_LOCATION']; ?>"/>
-                                    </td>
-                                    <td class="col-xs-2 text-center">
-                                        <label class="control-label">إحداثيات المكان</label>
-                                    </td>
-                                    <td class="col-xs-2">
-                                        <input  type="text" name="hotel_coordinates" id="hotel_coordinates" class="form-control" placeholder="إحداثيات المكان" autocomplete="off" value="<?php echo $row['HOTEL_COORDINATES']; ?>"/>
-                                    </td>
-                                </tr>
+                            <button type="button" id="add_hotel" class="btn btn-info pull-left" style="margin-bottom: 5px;">
+                                <i class="fa fa-user-plus"> </i>
+                                <span>إضافة</span>
+                            </button>
+                            <table align="center" id="hotels_table" class="table table-bordered">
+                                <thead>
+                                    <tr style="background-color: #0c5460;color:white">
+                                        <td></td>
+                                        <th class="text-center"> إسم الفندق </th>
+                                        <th class="text-center"> الموقع </th>
+                                        <th class="text-center"> إحداثيات المكان </th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
                             </table>
                         </div>
                     </div>
@@ -491,28 +486,8 @@ $row = mysqli_fetch_array($res);
                                     <td class="col-xs-2 text-center">
                                         <label class="control-label">أخرى</label>
                                     </td>
-                                    <td class="col-xs-2">
-                                        <input  type="text" name="other_participant1" id="other_participant1" class="form-control" placeholder="أخرى" autocomplete="off" value="<?php echo $row['OTHER_PARTICIPANT1'] ?>"/>
-                                    </td>
-                                    <td class="col-xs-2 text-center">
-                                        <label class="control-label">أخرى</label>
-                                    </td>
-                                    <td class="col-xs-2">
-                                        <input  type="text" name="other_participant2" id="other_participant2" class="form-control" placeholder="أخرى" autocomplete="off" value="<?php echo $row['OTHER_PARTICIPANT2'] ?>"/>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="col-xs-2 text-center">
-                                        <label class="control-label">أخرى</label>
-                                    </td>
-                                    <td class="col-xs-2">
-                                        <input  type="text" name="other_participant3" id="other_participant3" class="form-control" placeholder="أخرى" autocomplete="off" value="<?php echo $row['OTHER_PARTICIPANT3'] ?>"/>
-                                    </td>
-                                    <td class="col-xs-2 text-center">
-                                        <label class="control-label">أخرى</label>
-                                    </td>
-                                    <td class="col-xs-2">
-                                        <input  type="text" name="other_participant4" id="other_participant4" class="form-control" placeholder="أخرى" autocomplete="off" value="<?php echo $row['OTHER_PARTICIPANT4'] ?>"/>
+                                    <td class="col-xs-2" colspan="3" style="max-width: 520px;">
+                                        <textarea name="other_participants" id="other_participants" class="form-control" placeholder="أخرى...." autocomplete="off" style="max-width: 760px; min-width: 243px; max-height: 150px; min-height: 50px;"><?php echo $row['OTHER_PARTICIPANTS'] ?></textarea>
                                     </td>
                                 </tr>
                             </table>
@@ -583,14 +558,8 @@ $row = mysqli_fetch_array($res);
                                     <td class="col-xs-2 text-center">
                                         <label class="control-label">أخرى</label>
                                     </td>
-                                    <td class="col-xs-2">
-                                        <input  type="text" name="other_needs1" id="other_needs1" class="form-control" placeholder="أخرى" autocomplete="off" value="<?php echo $row['OTHER_NEEDS1']; ?>"/>
-                                    </td>
-                                    <td class="col-xs-2 text-center">
-                                        <label class="control-label">أخرى</label>
-                                    </td>
-                                    <td class="col-xs-2">
-                                        <input  type="text" name="other_needs2" id="other_needs2" class="form-control" placeholder="أخرى" autocomplete="off" value="<?php echo $row['OTHER_NEEDS1']; ?>"/>
+                                    <td class="col-xs-2" colspan="3" style="max-width: 515px;">
+                                        <textarea name="other_needs" id="other_needs" class="form-control" placeholder="أخرى" autocomplete="off" style="max-width: 499px; min-width: 156px; max-height: 150px; min-height: 50px;"><?php echo $row['OTHER_NEEDS'] ?></textarea>
                                     </td>
                                 </tr>
                             </table>
@@ -699,30 +668,16 @@ $row = mysqli_fetch_array($res);
                                     <td class="col-xs-2 text-center">
                                         <label class="control-label">أخرى</label>
                                     </td>
-                                    <td class="col-xs-2">
-                                        <input  type="text" name="report_other1" id="report_other1" class="form-control" placeholder="أخرى" autocomplete="off" value="<?php echo $row['REPORT_OTHER1']; ?>"/>
-                                    </td>
-                                </tr>
-                                <tr>
-                                <td class="col-xs-2 text-center">
-                                        <label class="control-label">أخرى</label>
-                                    </td>
-                                    <td class="col-xs-2">
-                                        <input  type="text" name="report_other2" id="report_other2" class="form-control" placeholder="أخرى" autocomplete="off" value="<?php echo $row['REPORT_OTHER2']; ?>"/>
-                                    </td>
-                                    <td class="col-xs-2 text-center">
-                                        <label class="control-label">أخرى</label>
-                                    </td>
-                                    <td class="col-xs-2">
-                                        <input  type="text" name="report_other3" id="report_other3" class="form-control" placeholder="أخرى" autocomplete="off" value="<?php echo $row['REPORT_OTHER3']; ?>"/>
+                                    <td class="col-xs-2" colspan="3" style="max-width: 309px;">
+                                        <textarea name="report_others" id="report_others" class="form-control" placeholder="أخرى" autocomplete="off" style="max-width: 499px; min-width: 160px; max-height: 150px; min-height: 50px;"><?php echo $row['REPORT_OTHERS'] ?></textarea>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td class="col-xs-2 text-center">
                                         <label class="control-label">ملاحظات</label>
                                     </td>
-                                    <td class="col-xs-2" colspan="3">
-                                        <textarea  type="text" name="report_notes" id="report_notes" class="form-control" placeholder="ملاحظات" autocomplete="off"><?php echo $row['NOTES']; ?></textarea>
+                                    <td class="col-xs-2" colspan="3" style="max-width: 520px;">
+                                        <textarea  type="text" name="report_notes" id="report_notes" class="form-control" placeholder="ملاحظات" autocomplete="off" style="max-width: 758px; min-width: 243px; max-height: 150px; min-height: 50px;"><?php echo $row['NOTES'] ?></textarea>
                                     </td>
                                 </tr>
                             </table>
@@ -741,13 +696,19 @@ $row = mysqli_fetch_array($res);
                                         <label class="control-label">الرتبة</label>
                                     </td>
                                     <td class="col-xs-2">
-                                        <input  type="text" name="coordination_rank" id="coordination_rank" class="form-control" placeholder="الرتبة" autocomplete="off" value="<?php echo $row['COORDINATOR_RANK'] ?>"/>
+                                        <input  type="text" name="coordination_rank" id="coordination_rank" value="<?php echo $_SESSION['RANK'] ;?>" class="form-control" placeholder="الرتبة" autocomplete="off" readonly/>
                                     </td>
                                     <td class="col-xs-2 text-center">
                                         <label class="control-label">الإسم</label>
                                     </td>
                                     <td class="col-xs-2">
-                                        <input  type="text" name="coordination_name" id="coordination_name" class="form-control" placeholder="الإسم" autocomplete="off" value="<?php echo $row['COORDINATOR_NAME'] ?>"/>
+                                        <input  type="text" name="coordination_name" id="coordination_name" value="<?php echo $_SESSION['FULL_NAME'] ;?>" class="form-control" placeholder="الإسم" autocomplete="off" readonly/>
+                                    </td>
+                                    <td class="col-xs-2 text-center">
+                                        <label class="control-label">التوقيع</label>
+                                    </td>
+                                    <td class="col-xs-2">
+                                        <a href="../IMAGES/<?php echo $_SESSION['IMG_SIGNATURE']; ?>" class="btn btn-toolbar" style="padding: 0;" target="_blank">عرض</a>
                                     </td>
                                 </tr>
                             </table>
@@ -1385,6 +1346,59 @@ $(document).ready(function() {
             },
             success: function(data) {
                 $("#coordinators_table tbody").html(data);
+            }
+
+        });
+    }
+
+    fetchHotels();
+
+    $("#add_hotel").click(function() {
+        $("#HotelModal").modal("show");
+    });
+
+    $("#HotelModal").on('show.bs.modal', function (e) {
+        $('#hotel_form')[0].reset();
+    });
+
+    $('#hotel_form').submit(function(e) {
+        e.preventDefault();
+
+        $.ajax({
+            url: '../MODEL/insert_hotel.php',
+            method: 'POST',
+            data: new FormData(this),
+            processData: false,
+            contentType: false,
+            success: function(data) {
+                if (data.success) {
+                    $("#hotel_form")[0].reset();
+                    swal({
+                        title: "تم !",
+                        text: "تم حفظ البيانات بنجاح",
+                        type: "success",
+                        confirmButtonColor: "skyblue",
+                        confirmButtonText: "حسنا"
+                    });
+                    fetchHotels();
+                }
+                else {
+                    swal("لم يتم حفظ البيانات ! الرجاء التحقق من صحتها");
+                }
+
+            }
+        });
+    });
+
+    function fetchHotels() {
+        $.ajax({
+            url: "../MODEL/fetch_hotels.php",
+            method: "POST",
+            data: {
+                event_id: "<?php echo $_GET['ID']; ?>"
+            },
+            success: function(data) {
+                $("#hotels_table tbody").html(data);
             }
 
         });

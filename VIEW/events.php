@@ -5,10 +5,6 @@ if (!isset($_SESSION['USER_NO'])) {
     header("location:login.php");
 }
 
-if ($_SESSION['PRIVILEGE'] == 4 || $_SESSION['PRIVILEGE'] == 5)
-    header("location:access_denied.php");
-
-
 $cq = "SELECT COUNT(*) AS COUN FROM T_EVENT";
 $cr = mysqli_query($connect, $cq);
 $cw = mysqli_fetch_array($cr);
@@ -415,10 +411,6 @@ $(document).ready(function() {
                 $("#events_table tbody").html(data);
             }
         });
-    });
-
-    $(document).on('click', '.generate-pdf', function () {
-        window.location = "../REPORTS/event.php?id=" + $(this).attr('data-event-iid');
     });
 
     /*

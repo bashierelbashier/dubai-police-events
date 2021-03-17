@@ -352,31 +352,6 @@ if ($_SESSION['PRIVILEGE'] == 4 || $_SESSION['PRIVILEGE'] == 5)
                                 <tbody></tbody>
                             </table>
                         </div>
-
-                        <!-- <div class="panel-body">
-                            <table class="table table-responsive">
-                                <tr>
-                                    <td class="col-xs-2 text-center">
-                                        <label class="control-label"></label>
-                                    </td>
-                                    <td class="col-xs-2">
-                                        <input  type="text" name="hotel_name" id="hotel_name" class="form-control" placeholder="اسم الفندق" autocomplete="off"/>
-                                    </td>
-                                    <td class="col-xs-2 text-center">
-                                        <label class="control-label"></label>
-                                    </td>
-                                    <td class="col-xs-2">
-                                        <input  type="text" name="hotel_location" id="hotel_location" class="form-control" placeholder="الموقع" autocomplete="off"/>
-                                    </td>
-                                    <td class="col-xs-2 text-center">
-                                        <label class="control-label"></label>
-                                    </td>
-                                    <td class="col-xs-2">
-                                        <input  type="text" name="hotel_coordinates" id="hotel_coordinates" class="form-control" placeholder="إحداثيات المكان" autocomplete="off"/>
-                                    </td>
-                                </tr>
-                            </table>
-                        </div> -->
                     </div>
                     <div class="panel panel-success">
                         <div class="panel-heading">
@@ -713,7 +688,7 @@ if ($_SESSION['PRIVILEGE'] == 4 || $_SESSION['PRIVILEGE'] == 5)
                                         <label class="control-label">التوقيع</label>
                                     </td>
                                     <td class="col-xs-2">
-                                        <a href="../IMAGES/<?php echo $_SESSION['IMG_SIGNATURE']; ?>" class="btn btn-toolbar" style="padding: 0;">عرض</a>
+                                        <a href="../IMAGES/<?php echo $_SESSION['IMG_SIGNATURE']; ?>" class="btn btn-toolbar" style="padding: 0;" target="_blank">عرض</a>
                                     </td>
                                 </tr>
                             </table>
@@ -796,7 +771,7 @@ if ($_SESSION['PRIVILEGE'] == 4 || $_SESSION['PRIVILEGE'] == 5)
                                 </td>
                                 <td class="col-xs-3" colspan="4">
                                     <input autocomplete="off" required type="text" class="text-center form-control"
-                                        name="name" id="hotel_name" placeholder="إسم الفندق ....." />
+                                        name="hotel_name" id="hotel_name" placeholder="إسم الفندق ....." />
                                 </td>
                             </tr>
                             <tr>
@@ -805,7 +780,7 @@ if ($_SESSION['PRIVILEGE'] == 4 || $_SESSION['PRIVILEGE'] == 5)
                                 </td>
                                 <td class="col-xs-3" colspan="4">
                                     <input autocomplete="off" required type="text" class="text-center form-control"
-                                        name="reference" id="hotel_location" placeholder="الموقع ....." />
+                                        name="hotel_location" id="hotel_location" placeholder="الموقع ....." />
                                 </td>
                             </tr>
                             <tr>
@@ -814,7 +789,7 @@ if ($_SESSION['PRIVILEGE'] == 4 || $_SESSION['PRIVILEGE'] == 5)
                                 </td>
                                 <td class="col-xs-3" colspan="4">
                                     <input autocomplete="off" required type="text" class="text-center form-control"
-                                        name="position" id="hotel_coordinates" placeholder="إحداثيات المكان ....." />
+                                        name="hotel_coordinates" id="hotel_coordinates" placeholder="إحداثيات المكان ....." />
                                 </td>
                             </tr>
                         </table>
