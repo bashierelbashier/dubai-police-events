@@ -6,14 +6,13 @@ if (!isset($_SESSION['USER_NO'])) {
     header("location:login.php");
 }
 
-
 include "../MODEL/connect.php";
 
 $sql = "SELECT * FROM T_EVENT JOIN T_EVENT_INFO ON T_EVENT.ID = T_EVENT_INFO.EVENT_ID JOIN T_EVENT_PARTICIPANTS ON T_EVENT.ID = T_EVENT_PARTICIPANTS.EVENT_ID JOIN T_EVENT_NEEDS ON T_EVENT.ID = T_EVENT_NEEDS.EVENT_ID JOIN T_EVENT_TRANSPORTATION ON T_EVENT.ID = T_EVENT_TRANSPORTATION.EVENT_ID JOIN T_EVENT_REPORT ON T_EVENT.ID = T_EVENT_REPORT.EVENT_ID WHERE T_EVENT.ID = " . $_GET['ID'];
 $res = mysqli_query($connect, $sql);
 $row = mysqli_fetch_array($res);
 
-if ($row['CREATOR_ID'] != $_SESSION['USER_NO']) {
+if ($_SESSION['PRIVILEGE'] == 2 && $row['CREATOR_ID'] != $_SESSION['USER_NO']) {
     header("location:access_denied.php");
 }
 
@@ -937,223 +936,6 @@ if ($row['CREATOR_ID'] != $_SESSION['USER_NO']) {
     <input type="text" hidden value="<?php echo $row['LOCALE_NO']; ?>" id="locale_no" />
     <input type="text" hidden value="<?php echo $row['TYPE_NO']; ?>" id="type_no" />
     <input type="text" hidden value="<?php echo $row['AREA_UNIT']; ?>" id="measure_unit_no" /> -->
-
-
-
-
-    <!-- <div class="modal fade" style="border-radius: 10px;" id="SelectOwnerModal" role="dialog">
-        <div class="modal-dialog">
-            <div class="modal-content" style="border-radius: 10px;">
-
-                <div class="modal-header">
-                    <h6 class="modal-title" align="center"> إضافة مالك لقطعة الأرض </h6>
-                    <br />
-                </div>
-
-                <div class="modal-body" dir="rtl">
-                    <div>
-                        <table class="table table-bordered">
-                            <tr>
-                                <td colspan="3">
-                                    <div class="input-group col-xs-12">
-                                        <span class="input-group-addon"
-                                            style="background-color:white;border-radius: 0px;border-width:0px;">
-                                            <i class="fa fa-filter"></i>
-                                        </span>
-                                        <input type="search" id="owner_search_txt" class="form-control"
-                                            placeholder="الإسم أو رقم إثبات الشخصية ..." />
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr align="center" style="background-color: #0c5460;color:white">
-                                <td width="15%"> متسلسل # </td>
-                                <td width="45%"> إسم المالك </td>
-                                <td width="40%"> نوع المالك </td>
-                            </tr>
-                        </table>
-                    </div>
-                    <div id="modal-owners-data" style="overflow-x:scroll;height:300px;">
-
-                    </div>
-                </div>
-
-                <div class="modal-footer">
-
-                    <button data-dismiss="modal" class="btn btn-warning pull-left"> <i class="fa fa-window-close"></i>
-                        إغلاق </button>
-                </div>
-            </div>
-        </div>
-    </div> -->
-
-    <!-- <div class="modal fade" style="border-radius: 10px;" id="BorrowModal" role="dialog">
-        <div class="modal-dialog">
-            <div class="modal-content" style="border-radius: 10px;">
-
-                <div class="modal-header">
-                    <h4 class="modal-title" align="center"> تسليف ملف قطعة الأرض </h4>
-                </div>
-                <div class="modal-body" dir="rtl">
-                    <form id="BorrowForm">
-
-                        <input hidden value="<?php echo $_GET['LAND_NO']; ?>" name="b_land_no" class="borrow-input"
-                            id="b_land_no" />
-
-                        <input value="<?php echo $_GET['DISTRICT_NO']; ?>" name="b_district" class="borrow-input"
-                            id="b_district" hidden />
-
-                        <table class="table table-responsive">
-
-                            <tr>
-                                <td>
-                                    <label>إسم المستلف</label>
-                                </td>
-                                <td>
-                                    <input required type="text" class="borrow-input form-control" id="borrower"
-                                        name="borrower" />
-                                </td>
-                                <td>
-                                    <label>إدارة المستلف</label>
-                                </td>
-                                <td>
-                                    <input required type="text" class="borrow-input form-control" id="management"
-                                        name="management" />
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td>
-                                    <label>غرض الإستلاف</label>
-                                </td>
-                                <td>
-                                    <input required type="text" class="borrow-input form-control" id="purpose"
-                                        name="purpose" />
-                                </td>
-                                <td>
-                                    <label>تاريخ الإستلاف</label>
-                                </td>
-                                <td>
-                                    <input required type="text" class="borrow-input form-control" id="borrow_date"
-                                        name="borrow_date" />
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label>مُسِّلف الملف</label>
-                                </td>
-                                <td>
-                                    <input required type="text" value="<?php echo $_SESSION['FULL_NAME']; ?>"
-                                        class="borrow-input form-control" id="hander" name="hander" />
-                                </td>
-                            </tr>
-                        </table>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button data-dismiss="modal" class="btn borrow-input btn-warning pull-left"> <i
-                            class="fa fa-window-close"></i> إغلاق </button>
-                    <button type="submit" form="BorrowForm" class="btn borrow-input btn-primary pull-left"> <i
-                            class="fa fa-save"></i> حفظ </button>
-                </div>
-            </div>
-        </div>
-    </div> -->
-
-
-    <!-- <div class="modal fade" style="border-radius: 10px;" id="NewOwnerModal" role="dialog">
-        <div class="modal-dialog">
-            <div class="modal-content" style="border-radius: 10px;">
-
-                <div class="modal-header">
-                    <h4 class="modal-title" align="center"> إضافة بيانات مالك جديد </h4>
-                </div>
-                <div class="modal-body" dir="rtl">
-                    <form id="owner_form" class="oe_formview">
-                        <table class="table table-responsive">
-                            <br />
-                            <tr>
-                                <td>
-                                    <label>
-                                        نوع المالك
-                                    </label>
-                                </td>
-                                <td colspan="3">
-                                    <input class="col-xs-2 pull-right" checked type="radio" id="individual" value="1"
-                                        name="owner_type">
-                                    <label class="col-xs-2 pull-right">فرد</label>
-                                    <input class="col-xs-2 pull-right" type="radio" id="org" value="2"
-                                        name="owner_type">
-                                    <label class="col-xs-2 pull-right">مؤسسة</label>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="col-xs-3">
-                                    <label class="control-label text-center">الإسم </label>
-                                </td>
-                                <td class="col-xs-3" colspan="4">
-                                    <input autocomplete="off" required type="text" class="text-center form-control"
-                                        name="owner_name" placeholder="إسم المالك ....." />
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="col-xs-3">
-                                    <label class="control-label text-center">رقم الهاتف 1</label>
-                                </td>
-                                <td class="col-xs-3">
-                                    <input dir="ltr" type="tel" class="form-control text-center"
-                                        placeholder="رقم الهاتف 1" id="phone1" name="phone1" />
-                                </td>
-
-                                <td class="col-xs-3">
-                                    <label class="control-label text-center">رقم الهاتف 2</label>
-                                </td>
-                                <td class="col-xs-3">
-                                    <input dir="ltr" type="tel" class="form-control text-center"
-                                        placeholder="رقم الهاتف 2" id="phone2" name="phone2" />
-                                </td>
-                            </tr>
-                            <tr id="id_row">
-                                <td class="col-xs-3">
-                                    <label class="control-label text-center">نوع إثبات الشخصية</label>
-                                </td>
-                                <td class="col-xs-3">
-                                    <select required class="form-control text-center" name="idtype" id="idtype">
-                                        <option value="0"> لايوجد </option>
-                                        <option value="1"> رقم وطني </option>
-                                        <option value="2"> بطاقة قومية </option>
-                                        <option value="3"> جواز سفر </option>
-                                        <option value="4"> رخصة قيادة </option>
-                                    </select>
-                                </td>
-                                <td class="col-xs-3">
-                                    <label class="control-label text-center">رقم إثبات الشخصية</label>
-                                </td>
-                                <td class="col-xs-3">
-                                    <input dir="ltr" type="text" class="form-control text-center"
-                                        placeholder="رقم إثبات الشخصية" id="idno" name="idno" />
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label>ملاحظات</label>
-                                </td>
-                                <td colspan="3">
-                                    <textarea name="notes" style="resize: none" rows="4"
-                                        class="form-control col-xs-12"></textarea>
-                                </td>
-                            </tr>
-                        </table>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button data-dismiss="modal" class="btn btn-warning pull-left"> <i class="fa fa-window-close"></i>
-                        إغلاق </button>
-                    <button type="submit" form="owner_form" class="btn btn-primary pull-left"> <i
-                            class="fa fa-save"></i> حفظ </button>
-                </div>
-            </div>
-        </div>
-    </div> -->
     </div>
 
     <div class="modal fade" style="border-radius: 10px;" id="CoordinationModal" role="dialog">
@@ -1202,6 +984,61 @@ if ($row['CREATOR_ID'] != $_SESSION['USER_NO']) {
                         إغلاق </button>
                     <button type="submit" form="coordinator_form" class="btn btn-primary pull-left"> <i
                             class="fa fa-save"></i> حفظ </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" style="border-radius: 10px;" id="HotelModal" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content" style="border-radius: 10px;">
+                <div class="modal-header">
+                    <h4 class="modal-title" align="center"> إضافة فندق مخصص للمشاركين في الفعالية</h4>
+                </div>
+                <div class="modal-body" dir="rtl">
+                    <form id="hotel_form" class="oe_formview">
+                        <input type="hidden" name="event_id" value="<?php echo $_GET['ID']; ?>">
+                        <table class="table table-responsive">
+                            <br />
+                            <tr>
+                                <td class="col-xs-1 text-center">
+                                    <label class="control-label">إسم الفندق </label>
+                                </td>
+                                <td class="col-xs-3" colspan="4">
+                                    <input autocomplete="off" required type="text" class="text-center form-control"
+                                        name="hotel_name" id="hotel_name" placeholder="إسم الفندق ....." />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="col-xs-1 text-center">
+                                    <label class="control-label">الموقع </label>
+                                </td>
+                                <td class="col-xs-3" colspan="4">
+                                    <input autocomplete="off" required type="text" class="text-center form-control"
+                                        name="hotel_location" id="hotel_location" placeholder="الموقع ....." />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="col-xs-1 text-center">
+                                    <label class="control-label">إحداثيات المكان </label>
+                                </td>
+                                <td class="col-xs-3" colspan="4">
+                                    <input autocomplete="off" required type="text" class="text-center form-control"
+                                        name="hotel_coordinates" id="hotel_coordinates" placeholder="إحداثيات المكان ....." />
+                                </td>
+                            </tr>
+                        </table>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button data-dismiss="modal" class="btn btn-warning pull-left">
+                        <i class="fa fa-window-close"></i>
+                        <span>إغلاق</span>
+                    </button>
+                    <button type="submit" form="hotel_form" class="btn btn-primary pull-left">
+                        <i class="fa fa-save"></i>
+                        <span>حفظ</span>    
+                    </button>
                 </div>
             </div>
         </div>

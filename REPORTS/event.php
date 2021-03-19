@@ -33,20 +33,20 @@ class MYPDF extends TCPDF {
 
 	//Page header
 	public function Header() {
-        $this->Image('../ASSETS/IMAGES/image.png', 60, 5, 176, '', 'PNG', '', 'C', false, 300, '', false, false, 0, false, false, false);
+        $this->Image('../ASSETS/IMAGES/image.png', 20, 5, 176, '', 'PNG', '', 'C', false, 300, '', false, false, 0, false, false, false);
         
-        $this->SetY(20);
+        $this->SetY(28);
 
         $this->SetFont('amiri', '', 14);
         $title = 'الفعاليات - بيانات الفعالية';
         $this->Cell(0, 5, $title, 0, true, 'R', 0, '', 0, true, 'M', 'M');
         
-        $this->SetY(20);
+        $this->SetY(28);
         
         $date = 'التاريخ: ' . date('Y/m/d');
         $this->Cell(0, 5, $date, 0, true, 'L', 0, '', 0, true, 'M', 'M');
         
-        $this->SetY(25);
+        $this->SetY(32);
         
         $this->Cell(($this->w - $this->original_lMargin - $this->original_rMargin), 0, '', 'T', 0, 'C');
     }
@@ -92,7 +92,7 @@ $pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
 $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
 
 // set margins
-$pdf->SetMargins(PDF_MARGIN_LEFT, 30, PDF_MARGIN_RIGHT);
+$pdf->SetMargins(PDF_MARGIN_LEFT, 40, PDF_MARGIN_RIGHT);
 $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
 $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
 
@@ -110,9 +110,8 @@ if (@file_exists(dirname(__FILE__).'/lang/eng.php')) {
 
 // ---------------------------------------------------------
 // add a page
-$pdf->AddPage('L', 'A4');
+$pdf->AddPage('P', 'A4');
 $pdf->setRTL(true);
-$pdf->Ln(3);
 $pdf->SetFont('amiri', '', 12);
 
 include "../MODEL/connect.php";
@@ -128,54 +127,62 @@ $coordinator_row = mysqli_fetch_array($coordinator_result);
 include "../MODEL/process_event_type.php";
 
 $output = '<h3>بيانات الفعالية الأساسية:</h3>
-<table cellpadding="4" border="1">
-    <thead>
-        <tr style="background-color: #01915c; color: white; text-align: center; font-size: 17px; font-weight: bold;">
-            <th>الفعالية</th>
-            <th>نوع الفعالية</th>
-            <th>تصنيف الفعالية</th>
-            <th>الجهة المنظمة</th>
-            <th>موقع الفعالية</th>
-            <th>الحضور المتوقع</th>
-            <th>عدد أفراد الشرطة</th>
-            <th>يوم الفعالية</th>
-            <th>التاريخ</th>
-        </tr>
-    </thead>
-    <tbody>
-    <tr align="center">
-            <td>'.$row['EVENT_NAME'].'</td>
-            <td>'.$row['EVENT_TYPE'].'</td>
-            <td>'.$row['CLASSIFICATION'].'</td>
-            <td>'.$row['ORGANIZER'].'</td>
-            <td>'.$row['EVENT_LOCATION'].'</td>
-            <td>'.$row['EXPECTED_AUDIENCE'].'</td>
-            <td>'.$row['POLICE_COUNT'].'</td>
-            <td>'.$row['EVENT_DAY'].'</td>
-            <td>'.date('Y/m/d', strtotime($row['EVENT_DATE'])).'</td>
-        </tr>
-    </tbody>
+<table cellpadding="6" border="1">
+    <tr style="background-color: #01915c; color: white; text-align: center; font-size: 17px; font-weight: bold;">
+        <td width="30%">الفعالية</td>
+        <td width="70%">'.$row['EVENT_NAME'].'</td>
+    </tr>
+    <tr style="text-align: center; font-size: 17px; font-weight: bold;">
+        <td width="30%">نوع الفعالية</td>
+        <td width="70%">'.$row['EVENT_TYPE'].'</td>
+    </tr>
+    <tr style="background-color: #01915c; color: white; text-align: center; font-size: 17px; font-weight: bold;">
+        <td width="30%">تصنيف الفعالية</td>
+        <td width="70%">'.$row['CLASSIFICATION'].'</td>
+    </tr>
+    <tr style="text-align: center; font-size: 17px; font-weight: bold;">
+        <td width="30%">الجهة المنظمة</td>
+        <td width="70%">'.$row['ORGANIZER'].'</td>
+    </tr>
+    <tr style="background-color: #01915c; color: white; text-align: center; font-size: 17px; font-weight: bold;">
+        <td width="30%">موقع الفعالية</td>
+        <td width="70%">'.$row['EVENT_LOCATION'].'</td>
+    </tr>
+    <tr style="text-align: center; font-size: 17px; font-weight: bold;">
+        <td width="30%">الحضور المتوقع</td>
+        <td width="70%">'.$row['EXPECTED_AUDIENCE'].'</td>
+    </tr>
+    <tr style="background-color: #01915c; color: white; text-align: center; font-size: 17px; font-weight: bold;">
+        <td width="30%">عدد أفراد الشرطة</td>
+        <td width="70%">'.$row['POLICE_COUNT'].'</td>
+    </tr>
+    <tr style="text-align: center; font-size: 17px; font-weight: bold;">
+        <td style="width: 30%;">التاريخ</td>
+        <td>'.date('Y/m/d', strtotime($row['EVENT_DATE'])).'</td>
+    </tr>
+    <tr style="background-color: #01915c; color: white; text-align: center; font-size: 17px; font-weight: bold;">
+        <td width="30%">يوم الفعالية</td>
+        <td width="70%">'.$row['EVENT_DAY'].'</td>
+    </tr>
 </table>';
 
 $query = "SELECT * FROM T_COORDINATORS WHERE EVENT_ID = " . $_GET['id'];
 $result = mysqli_query($connect,$query);
 $output .= '<h3>حضور التنسيق والمعاينة:</h3>
-<table width="95%" cellpadding="4" border="0">
+<table cellpadding="4" border="1">
 <thead>
     <tr style="background-color: #01915c; color: white; text-align: center; font-size: 17px; font-weight: bold;">
-        <th width="15%" style="background-color: #fff;"></th>
-        <th border="1">الإسم</th>
-        <th border="1">الجهة</th>
-        <th border="1">المنصب</th>
+        <th>الإسم</th>
+        <th>الجهة</th>
+        <th>المنصب</th>
     </tr>
 </thead>';
 
 while ($row = mysqli_fetch_array($result)) {
     $output .= '<tr align="center">
-        <td width="15%" style="background-color: #fff;"></td>
-        <td border="1">'.$row['NAME'].'</td>
-        <td border="1">'.$row['REFERENCE'].'</td>
-        <td border="1">'.$row['POSITION'].'</td>
+        <td>'.$row['NAME'].'</td>
+        <td>'.$row['REFERENCE'].'</td>
+        <td>'.$row['POSITION'].'</td>
 	</tr>';
 }
 
@@ -185,11 +192,10 @@ $query = "SELECT * FROM T_EVENT_INFO WHERE EVENT_ID = " . $_GET['id'];
 $result = mysqli_query($connect,$query);
 $row = mysqli_fetch_array($result);
 $output .= '<h3>بيانات أخرى عن الفعالية:</h3>
-<table width="95%" cellpadding="4" border="0">
+<table cellpadding="4" border="1">
     <tr style="background-color: #01915c; color: white; text-align: center;">
-        <td width="19%" style="background-color: #fff;"></td>
-        <td style="font-size: 17px; font-weight: bold;" border="1">شخصيات هامة</td>
-        <td border="1">';
+        <td style="font-size: 17px; font-weight: bold;">شخصيات هامة</td>
+        <td>';
         if ($row['VIPS_EXIST']) {
             $output .= 'نعم';    
         }
@@ -200,9 +206,8 @@ $output .= '<h3>بيانات أخرى عن الفعالية:</h3>
     </tr>
 
     <tr style="text-align: center;">
-        <td width="19%" style="background-color: #fff;"></td>
-        <td style="font-size: 17px; font-weight: bold;" border="1">فعالية مصاحبة</td>
-        <td border="1">';
+        <td style="font-size: 17px; font-weight: bold;">فعالية مصاحبة</td>
+        <td>';
         if ($row['OTHER_EVENT']) {
             $output .= 'نعم';    
         }
@@ -213,9 +218,8 @@ $output .= '<h3>بيانات أخرى عن الفعالية:</h3>
     </tr>
 
     <tr style="background-color: #01915c; color: white; text-align: center;">
-        <td width="19%" style="background-color: #fff;"></td>
-        <td style="font-size: 17px; font-weight: bold;" border="1">فنادق إقامة</td>
-        <td border="1">';
+        <td style="font-size: 17px; font-weight: bold;">فنادق إقامة</td>
+        <td>';
         if ($row['HOTELS']) {
             $output .= 'نعم';    
         }
@@ -226,9 +230,8 @@ $output .= '<h3>بيانات أخرى عن الفعالية:</h3>
     </tr>
 
     <tr style="text-align: center;">
-        <td width="19%" style="background-color: #fff;"></td>
-        <td style="font-size: 17px; font-weight: bold;" border="1">غرفة عمليات</td>
-        <td border="1">';
+        <td style="font-size: 17px; font-weight: bold;">غرفة عمليات</td>
+        <td>';
         if ($row['OPERATION_ROOM']) {
             $output .= 'نعم';    
         }
@@ -239,9 +242,8 @@ $output .= '<h3>بيانات أخرى عن الفعالية:</h3>
     </tr>
 
     <tr style="background-color: #01915c; color: white; text-align: center;">
-        <td width="19%" style="background-color: #fff;"></td>
-        <td style="font-size: 17px; font-weight: bold;" border="1">مكتب للشرطة</td>
-        <td border="1">';
+        <td style="font-size: 17px; font-weight: bold;">مكتب للشرطة</td>
+        <td>';
         if ($row['POLICE_OFFICE']) {
             $output .= 'نعم';    
         }
@@ -252,9 +254,8 @@ $output .= '<h3>بيانات أخرى عن الفعالية:</h3>
     </tr>
 
     <tr style="text-align: center;">
-        <td width="19%" style="background-color: #fff;"></td>
-        <td style="font-size: 17px; font-weight: bold;" border="1">مهبط طائرة</td>
-        <td border="1">';
+        <td style="font-size: 17px; font-weight: bold;">مهبط طائرة</td>
+        <td>';
         if ($row['HELIPORTS']) {
             $output .= 'نعم';    
         }
@@ -265,9 +266,8 @@ $output .= '<h3>بيانات أخرى عن الفعالية:</h3>
     </tr>
 
     <tr style="background-color: #01915c; color: white; text-align: center;">
-        <td width="19%" style="background-color: #fff;"></td>
-        <td style="font-size: 17px; font-weight: bold;" border="1">جهات إعلامية</td>
-        <td border="1">';
+        <td style="font-size: 17px; font-weight: bold;">جهات إعلامية</td>
+        <td>';
         if ($row['MEDIA']) {
             $output .= 'نعم';    
         }
@@ -278,15 +278,13 @@ $output .= '<h3>بيانات أخرى عن الفعالية:</h3>
     </tr>
 
     <tr style="text-align: center;">
-        <td width="19%" style="background-color: #fff;"></td>
-        <td style="font-size: 17px; font-weight: bold;" border="1">موقع غرفة العمليات</td>
-        <td border="1">'. $row['OPERATION_ROOM_LOCATION'] .'</td>
+        <td style="font-size: 17px; font-weight: bold;">موقع غرفة العمليات</td>
+        <td>'. $row['OPERATION_ROOM_LOCATION'] .'</td>
     </tr>
 
     <tr style="background-color: #01915c; color: white; text-align: center;">
-        <td width="19%" style="background-color: #fff;"></td>
-        <td style="font-size: 17px; font-weight: bold;" border="1">هل غرفة العمليات تغطي الحدث</td>
-        <td border="1">';
+        <td style="font-size: 17px; font-weight: bold;">هل غرفة العمليات تغطي الحدث</td>
+        <td>';
         if ($row['OPERATION_ROOM_COVERING']) {
             $output .= 'نعم';    
         }
@@ -297,15 +295,13 @@ $output .= '<h3>بيانات أخرى عن الفعالية:</h3>
     </tr>
 
     <tr style="text-align: center;">
-        <td width="19%" style="background-color: #fff;"></td>
-        <td style="font-size: 17px; font-weight: bold;" border="1">عدد الكاميرات</td>
-        <td border="1">'. $row['CAMERAS_NUMBER'] .'</td>
+        <td style="font-size: 17px; font-weight: bold;">عدد الكاميرات</td>
+        <td>'. $row['CAMERAS_NUMBER'] .'</td>
     </tr>
 
     <tr style="background-color: #01915c; color: white; text-align: center;">
-        <td width="19%" style="background-color: #fff;"></td>
-        <td style="font-size: 17px; font-weight: bold;" border="1">هل الكاميرات تقوم بعملية التسجيل</td>
-        <td border="1">';
+        <td style="font-size: 17px; font-weight: bold;">هل الكاميرات تقوم بعملية التسجيل</td>
+        <td>';
         if ($row['CAMERAS_RECORDING']) {
             $output .= 'نعم';    
         }
@@ -316,21 +312,18 @@ $output .= '<h3>بيانات أخرى عن الفعالية:</h3>
     </tr>
 
     <tr style="text-align: center;">
-        <td width="19%" style="background-color: #fff;"></td>
-        <td style="font-size: 17px; font-weight: bold;" border="1">عدد المداخل الفرعية</td>
-        <td border="1">'. $row['SUB_ENTRIES'] .'</td>
+        <td style="font-size: 17px; font-weight: bold;">عدد المداخل الفرعية</td>
+        <td>'. $row['SUB_ENTRIES'] .'</td>
     </tr>
 
     <tr style="background-color: #01915c; color: white; text-align: center;">
-        <td width="19%" style="background-color: #fff;"></td>
-        <td style="font-size: 17px; font-weight: bold;" border="1">عدد المداخل الرئيسية</td>
-        <td border="1">'. $row['MAIN_ENTRIES'] .'</td>
+        <td style="font-size: 17px; font-weight: bold;">عدد المداخل الرئيسية</td>
+        <td>'. $row['MAIN_ENTRIES'] .'</td>
     </tr>
 
     <tr style="text-align: center;">
-        <td width="19%" style="background-color: #fff;"></td>
-        <td style="font-size: 17px; font-weight: bold;" border="1">هل يوجد متطوعين</td>
-        <td border="1">';
+        <td style="font-size: 17px; font-weight: bold;">هل يوجد متطوعين</td>
+        <td>';
         if ($row['VOLUNTEERS']) {
             $output .= 'نعم';    
         }
@@ -341,37 +334,33 @@ $output .= '<h3>بيانات أخرى عن الفعالية:</h3>
     </tr>
 
     <tr style="background-color: #01915c; color: white; text-align: center;">
-        <td width="19%" style="background-color: #fff;"></td>
-        <td style="font-size: 17px; font-weight: bold;" border="1">عدد المتطوعين</td>
-        <td border="1">'. $row['VOLUNTEERS_NUMBER'] .'</td>
+        <td style="font-size: 17px; font-weight: bold;">عدد المتطوعين</td>
+        <td>'. $row['VOLUNTEERS_NUMBER'] .'</td>
     </tr>
 
     <tr style="text-align: center;">
-        <td width="19%" style="background-color: #fff;"></td>
-        <td style="font-size: 17px; font-weight: bold;" border="1">أخرى</td>
-        <td border="1">'. $row['OTHER_INFO'] .'</td>
+        <td style="font-size: 17px; font-weight: bold;">أخرى</td>
+        <td>'. $row['OTHER_INFO'] .'</td>
     </tr>
 </table>';
 
 $query = "SELECT * FROM T_EVENT_HOTELS WHERE EVENT_ID = " . $_GET['id'];
 $result = mysqli_query($connect,$query);
 $output .= '<h3>الفنادق المخصصة للمشاركين في الفعالية:</h3>
-<table width="95%" cellpadding="4" border="0">
+<table cellpadding="4" border="1></i>">
 <thead>
     <tr style="background-color: #01915c; color: white; text-align: center; font-size: 17px; font-weight: bold;">
-        <th width="15%" style="background-color: #fff;"></th>
-        <th border="1">إسم الفندق</th>
-        <th border="1">الموقع</th>
-        <th border="1">إحداثيات المكان</th>
+        <th>إسم الفندق</th>
+        <th>الم  قع</th>
+        <th>إحداثيات المكان</th>
     </tr>
 </thead>';
 
 while ($row = mysqli_fetch_array($result)) {
     $output .= '<tr align="center">
-        <td width="15%" style="background-color: #fff;"></td>
-        <td border="1">'.$row['HOTEL_NAME'].'</td>
-        <td border="1">'.$row['HOTEL_LOCATION'].'</td>
-        <td border="1">'.$row['HOTEL_COORDINATES'].'</td>
+        <td>'.$row['HOTEL_NAME'].'</td>
+        <td>'.$row['HOTEL_LOCATION'].'</td>
+        <td>'.$row['HOTEL_COORDINATES'].'</td>
 	</tr>';
 }
 
@@ -381,11 +370,10 @@ $query = "SELECT * FROM T_EVENT_PARTICIPANTS WHERE EVENT_ID = " . $_GET['id'];
 $result = mysqli_query($connect,$query);
 $row = mysqli_fetch_array($result);
 $output .= '<h3>الجهات المشاركة في الفعالية:</h3>
-<table width="95%" cellpadding="4" border="0">
+<table cellpadding="4" border="1">
     <tr style="background-color: #01915c; color: white; text-align: center;">
-        <td width="19%" style="background-color: #fff;"></td>
-        <td style="font-size: 17px; font-weight: bold;" border="1">جهاز أمن الدولة</td>
-        <td border="1">';
+        <td style="font-size: 17px; font-weight: bold;">جهاز أمن الدولة</td>
+        <td>';
         if ($row['SECURITY_SERVICE']) {
             $output .= 'نعم';    
         }
@@ -396,9 +384,8 @@ $output .= '<h3>الجهات المشاركة في الفعالية:</h3>
     </tr>
 
     <tr style="text-align: center;">
-        <td width="19%" style="background-color: #fff;"></td>
-        <td style="font-size: 17px; font-weight: bold;" border="1">الإدارة العامة للمرور</td>
-        <td border="1">';
+        <td style="font-size: 17px; font-weight: bold;">الإدارة العامة للمرور</td>
+        <td>';
         if ($row['TRAFFIC']) {
             $output .= 'نعم';    
         }
@@ -409,9 +396,8 @@ $output .= '<h3>الجهات المشاركة في الفعالية:</h3>
     </tr>
 
     <tr style="background-color: #01915c; color: white; text-align: center;">
-        <td width="19%" style="background-color: #fff;"></td>
-        <td style="font-size: 17px; font-weight: bold;" border="1">الإدارة العامة الدفاع المدني</td>
-        <td border="1">';
+        <td style="font-size: 17px; font-weight: bold;">الإدارة العامة الدفاع المدني</td>
+        <td>';
         if ($row['CIVIL_DEFENCE']) {
             $output .= 'نعم';    
         }
@@ -422,9 +408,8 @@ $output .= '<h3>الجهات المشاركة في الفعالية:</h3>
     </tr>
 
     <tr style="text-align: center;">
-        <td width="19%" style="background-color: #fff;"></td>
-        <td style="font-size: 17px; font-weight: bold;" border="1">التحريات والمباحث الجنائية</td>
-        <td border="1">';
+        <td style="font-size: 17px; font-weight: bold;">التحريات والمباحث الجنائية</td>
+        <td>';
         if ($row['CRIMINAL_INVESTIGATIONS']) {
             $output .= 'نعم';    
         }
@@ -435,9 +420,8 @@ $output .= '<h3>الجهات المشاركة في الفعالية:</h3>
     </tr>
 
     <tr style="background-color: #01915c; color: white; text-align: center;">
-        <td width="19%" style="background-color: #fff;"></td>
-        <td style="font-size: 17px; font-weight: bold;" border="1">شركات الأمن الخاص</td>
-        <td border="1">';
+        <td style="font-size: 17px; font-weight: bold;">شركات الأمن الخاص</td>
+        <td>';
         if ($row['PRIVATE_SECURITY']) {
             $output .= 'نعم';    
         }
@@ -448,9 +432,8 @@ $output .= '<h3>الجهات المشاركة في الفعالية:</h3>
     </tr>
 
     <tr style="text-align: center;">
-        <td width="19%" style="background-color: #fff;"></td>
-        <td style="font-size: 17px; font-weight: bold;" border="1">الإدارة العامة للعمليات</td>
-        <td border="1">';
+        <td style="font-size: 17px; font-weight: bold;">الإدارة العامة للعمليات</td>
+        <td>';
         if ($row['OPERATIONS']) {
             $output .= 'نعم';    
         }
@@ -461,9 +444,8 @@ $output .= '<h3>الجهات المشاركة في الفعالية:</h3>
     </tr>
 
     <tr style="background-color: #01915c; color: white; text-align: center;">
-        <td width="19%" style="background-color: #fff;"></td>
-        <td style="font-size: 17px; font-weight: bold;" border="1">الأدلة الجنائية وعلم الجريمة</td>
-        <td border="1">';
+        <td style="font-size: 17px; font-weight: bold;">الأدلة الجنائية وعلم الجريمة</td>
+        <td>';
         if ($row['FORENSIC_CRIMINOLOGY']) {
             $output .= 'نعم';    
         }
@@ -474,9 +456,8 @@ $output .= '<h3>الجهات المشاركة في الفعالية:</h3>
     </tr>
 
     <tr style="text-align: center;">
-        <td width="19%" style="background-color: #fff;"></td>
-        <td style="font-size: 17px; font-weight: bold;" border="1">المركز المختص</td>
-        <td border="1">';
+        <td style="font-size: 17px; font-weight: bold;">المركز المختص</td>
+        <td>';
         if ($row['COMPETENT_CENTER']) {
             $output .= 'نعم';    
         }
@@ -487,9 +468,8 @@ $output .= '<h3>الجهات المشاركة في الفعالية:</h3>
     </tr>
 
     <tr style="background-color: #01915c; color: white; text-align: center;">
-        <td width="19%" style="background-color: #fff;"></td>
-        <td style="font-size: 17px; font-weight: bold;" border="1">إدارة أمن المتفجرات</td>
-        <td border="1">';
+        <td style="font-size: 17px; font-weight: bold;">إدارة أمن المتفجرات</td>
+        <td>';
         if ($row['EXPLOSIVES_SECURITY']) {
             $output .= 'نعم';    
         }
@@ -500,9 +480,8 @@ $output .= '<h3>الجهات المشاركة في الفعالية:</h3>
     </tr>
 
     <tr style="text-align: center;">
-        <td width="19%" style="background-color: #fff;"></td>
-        <td style="font-size: 17px; font-weight: bold;" border="1">إدارة امن وحماية الشخصيات</td>
-        <td border="1">';
+        <td style="font-size: 17px; font-weight: bold;">إدارة امن وحماية الشخصيات</td>
+        <td>';
         if ($row['PERSONAL_SECURITY']) {
             $output .= 'نعم';    
         }
@@ -513,9 +492,8 @@ $output .= '<h3>الجهات المشاركة في الفعالية:</h3>
     </tr>
 
     <tr style="background-color: #01915c; color: white; text-align: center;">
-        <td width="19%" style="background-color: #fff;"></td>
-        <td style="font-size: 17px; font-weight: bold;" border="1">هيئة الطرق والمواصلات</td>
-        <td border="1">';
+        <td style="font-size: 17px; font-weight: bold;">هيئة الطرق والمواصلات</td>
+        <td>';
         if ($row['TRANSPORTATION']) {
             $output .= 'نعم';    
         }
@@ -526,9 +504,8 @@ $output .= '<h3>الجهات المشاركة في الفعالية:</h3>
     </tr>
 
     <tr style="text-align: center;">
-        <td width="19%" style="background-color: #fff;"></td>
-        <td style="font-size: 17px; font-weight: bold;" border="1">الإدارة العامة للنقل والإنقاذ</td>
-        <td border="1">';
+        <td style="font-size: 17px; font-weight: bold;">الإدارة العامة للنقل والإنقاذ</td>
+        <td>';
         if ($row['TRANSPORT_RESCUE']) {
             $output .= 'نعم';    
         }
@@ -539,9 +516,8 @@ $output .= '<h3>الجهات المشاركة في الفعالية:</h3>
     </tr>
 
     <tr style="background-color: #01915c; color: white; text-align: center;">
-        <td width="19%" style="background-color: #fff;"></td>
-        <td style="font-size: 17px; font-weight: bold;" border="1">إدارة التفتيش الأمني</td>
-        <td border="1">';
+        <td style="font-size: 17px; font-weight: bold;">إدارة التفتيش الأمني</td>
+        <td>';
         if ($row['SECURITY_INSPECTION']) {
             $output .= 'نعم';    
         }
@@ -552,9 +528,8 @@ $output .= '<h3>الجهات المشاركة في الفعالية:</h3>
     </tr>
 
     <tr style="text-align: center;">
-        <td width="19%" style="background-color: #fff;"></td>
-        <td style="font-size: 17px; font-weight: bold;" border="1">إدارة المتفجرات</td>
-        <td border="1">';
+        <td style="font-size: 17px; font-weight: bold;">إدارة المتفجرات</td>
+        <td>';
         if ($row['EXPLOSIVES']) {
             $output .= 'نعم';    
         }
@@ -565,9 +540,8 @@ $output .= '<h3>الجهات المشاركة في الفعالية:</h3>
     </tr>
 
     <tr style="background-color: #01915c; color: white; text-align: center;">
-        <td width="19%" style="background-color: #fff;"></td>
-        <td style="font-size: 17px; font-weight: bold;" border="1">الإدارة العامة لأمن المطارات</td>
-        <td border="1">';
+        <td style="font-size: 17px; font-weight: bold;">الإدارة العامة لأمن المطارات</td>
+        <td>';
         if ($row['AIRPORTS_SECURITY']) {
             $output .= 'نعم';    
         }
@@ -578,9 +552,8 @@ $output .= '<h3>الجهات المشاركة في الفعالية:</h3>
     </tr>
 
     <tr style="text-align: center;">
-        <td width="19%" style="background-color: #fff;"></td>
-        <td style="font-size: 17px; font-weight: bold;" border="1">الإسعاف الموحد</td>
-        <td border="1">';
+        <td style="font-size: 17px; font-weight: bold;">الإسعاف الموحد</td>
+        <td>';
         if ($row['AMBULANCE']) {
             $output .= 'نعم';    
         }
@@ -591,9 +564,8 @@ $output .= '<h3>الجهات المشاركة في الفعالية:</h3>
     </tr>
 
     <tr style="background-color: #01915c; color: white; text-align: center;">
-        <td width="19%" style="background-color: #fff;"></td>
-        <td style="font-size: 17px; font-weight: bold;" border="1">أخرى</td>
-        <td border="1">'. $row['OTHER_PARTICIPANTS'] .'</td>
+        <td style="font-size: 17px; font-weight: bold;">أخرى</td>
+        <td>'. $row['OTHER_PARTICIPANTS'] .'</td>
     </tr>
 </table>';
 
@@ -601,53 +573,45 @@ $query = "SELECT * FROM T_EVENT_NEEDS WHERE EVENT_ID = " . $_GET['id'];
 $result = mysqli_query($connect,$query);
 $row = mysqli_fetch_array($result);
 $output .= '<br><h3>احتياجات عملية التأمين:</h3>
-<table width="95%" cellpadding="4" border="0">
+<table cellpadding="4" border="1">
     <tr style="background-color: #01915c; color: white; text-align: center;">
-        <td width="19%" style="background-color: #fff;"></td>
-        <td border="1" style="font-size: 17px; font-weight: bold;">عدد الافراد</td>
-        <td border="1">'. $row['INDIVIDUALS'] .'</td>
+        <td style="font-size: 17px; font-weight: bold;">عدد الافراد</td>
+        <td>'. $row['INDIVIDUALS'] .'</td>
     </tr>
 
     <tr style="text-align: center;">
-        <td width="19%" style="background-color: #fff;"></td>
-        <td border="1" style="font-size: 17px; font-weight: bold;">عدد الدوريات الامنية</td>
-        <td border="1">'. $row['PATROLS'] .'</td>
+        <td style="font-size: 17px; font-weight: bold;">عدد الدوريات الامنية</td>
+        <td>'. $row['PATROLS'] .'</td>
     </tr>
 
     <tr style="background-color: #01915c; color: white; text-align: center;">
-        <td width="19%" style="background-color: #fff;"></td>
-        <td border="1" style="font-size: 17px; font-weight: bold;">عدد الاجهزة</td>
-        <td border="1">'. $row['DEVICES'] .'</td>
+        <td style="font-size: 17px; font-weight: bold;">عدد الاجهزة</td>
+        <td>'. $row['DEVICES'] .'</td>
     </tr>
 
     <tr style="text-align: center;">
-        <td width="19%" style="background-color: #fff;"></td>
-        <td border="1" style="font-size: 17px; font-weight: bold;">عدد الباصات</td>
-        <td border="1">'. $row['BUSES'] .'</td>
+        <td style="font-size: 17px; font-weight: bold;">عدد الباصات</td>
+        <td>'. $row['BUSES'] .'</td>
     </tr>
 
     <tr style="background-color: #01915c; color: white; text-align: center;">
-        <td width="19%" style="background-color: #fff;"></td>
-        <td border="1" style="font-size: 17px; font-weight: bold;">عدد عناصر الشرطة النسائية</td>
-        <td border="1">'. $row['FEMALE_OFFICERS'] .'</td>
+        <td style="font-size: 17px; font-weight: bold;">عدد عناصر الشرطة النسائية</td>
+        <td>'. $row['FEMALE_OFFICERS'] .'</td>
     </tr>
 
     <tr style="text-align: center;">
-        <td width="19%" style="background-color: #fff;"></td>
-        <td border="1" style="font-size: 17px; font-weight: bold;">عدد الحواجز الأمنية</td>
-        <td border="1">'. $row['SECURITY_BLOCKS'] .'</td>
+        <td style="font-size: 17px; font-weight: bold;">عدد الحواجز الأمنية</td>
+        <td>'. $row['SECURITY_BLOCKS'] .'</td>
     </tr>
 
     <tr style="background-color: #01915c; color: white; text-align: center;">
-        <td width="19%" style="background-color: #fff;"></td>
-        <td border="1" style="font-size: 17px; font-weight: bold;">عدد الدراجات الهوائية والنارية</td>
-        <td border="1">'. $row['BIKES_MOTOBIKES'] .'</td>
+        <td style="font-size: 17px; font-weight: bold;">عدد الدراجات الهوائية والنارية</td>
+        <td>'. $row['BIKES_MOTOBIKES'] .'</td>
     </tr>
 
     <tr style="text-align: center;">
-        <td width="19%" style="background-color: #fff;"></td>
-        <td border="1" style="font-size: 17px; font-weight: bold;">أخرى</td>
-        <td border="1">'. $row['OTHER_NEEDS'] .'</td>
+        <td style="font-size: 17px; font-weight: bold;">أخرى</td>
+        <td>'. $row['OTHER_NEEDS'] .'</td>
     </tr>
 </table>';
 
@@ -655,11 +619,10 @@ $query = "SELECT * FROM T_EVENT_TRANSPORTATION WHERE EVENT_ID = " . $_GET['id'];
 $result = mysqli_query($connect,$query);
 $row = mysqli_fetch_array($result);
 $output .= '<h3>نوع المواصلات:</h3>
-<table width="95%" cellpadding="4" border="0">
+<table cellpadding="4" border="1">
     <tr style="background-color: #01915c; color: white; text-align: center;">
-        <td width="19%" style="background-color: #fff;"></td>
-        <td border="1" style="font-size: 17px; font-weight: bold;">باص</td>
-        <td border="1">';
+        <td style="font-size: 17px; font-weight: bold;">باص</td>
+        <td>';
         if ($row['BUS']) {
             $output .= 'نعم';    
         }
@@ -670,9 +633,8 @@ $output .= '<h3>نوع المواصلات:</h3>
     </tr>
 
     <tr style="text-align: center;">
-        <td width="19%" style="background-color: #fff;"></td>
-        <td border="1" style="font-size: 17px; font-weight: bold;">سيارة</td>
-        <td border="1">';
+        <td style="font-size: 17px; font-weight: bold;">سيارة</td>
+        <td>';
         if ($row['CAR']) {
             $output .= 'نعم';    
         }
@@ -683,9 +645,8 @@ $output .= '<h3>نوع المواصلات:</h3>
     </tr>
 
     <tr style="background-color: #01915c; color: white; text-align: center;">
-        <td width="19%" style="background-color: #fff;"></td>
-        <td border="1" style="font-size: 17px; font-weight: bold;">سيارة اجرة</td>
-        <td border="1">';
+        <td style="font-size: 17px; font-weight: bold;">سيارة اجرة</td>
+        <td>';
         if ($row['TAXI']) {
             $output .= 'نعم';    
         }
@@ -696,9 +657,8 @@ $output .= '<h3>نوع المواصلات:</h3>
     </tr>
 
     <tr style="text-align: center;">
-        <td width="19%" style="background-color: #fff;"></td>
-        <td border="1" style="font-size: 17px; font-weight: bold;">مترو</td>
-        <td border="1">';
+        <td style="font-size: 17px; font-weight: bold;">مترو</td>
+        <td>';
         if ($row['METRO']) {
             $output .= 'نعم';    
         }
@@ -709,9 +669,8 @@ $output .= '<h3>نوع المواصلات:</h3>
     </tr>
 
     <tr style="background-color: #01915c; color: white; text-align: center;">
-        <td width="19%" style="background-color: #fff;"></td>
-        <td border="1" style="font-size: 17px; font-weight: bold;">أخرى</td>
-        <td border="1">';
+        <td style="font-size: 17px; font-weight: bold;">أخرى</td>
+        <td>';
         if ($row['OTHER']) {
             $output .= 'نعم';    
         }
@@ -726,11 +685,10 @@ $query = "SELECT * FROM T_EVENT_REPORT WHERE EVENT_ID = " . $_GET['id'];
 $result = mysqli_query($connect,$query);
 $row = mysqli_fetch_array($result);
 $output .= '<br><h3>المرفقات المطلوبة في التقرير النهائي:</h3>
-<table width="95%" cellpadding="4" border="0">
+<table cellpadding="4" border="1">
     <tr style="background-color: #01915c; color: white; text-align: center;">
-        <td width="19%" style="background-color: #fff;"></td>
-        <td border="1" style="font-size: 17px; font-weight: bold;">خطة الطوارئ والاخلاء</td>
-        <td border="1">';
+        <td style="font-size: 17px; font-weight: bold;">خطة الطوارئ والاخلاء</td>
+        <td>';
         if ($row['EMERGENCY_PLAN']) {
             $output .= 'نعم';    
         }
@@ -741,9 +699,8 @@ $output .= '<br><h3>المرفقات المطلوبة في التقرير الن
     </tr>
 
     <tr style="text-align: center;">
-        <td width="19%" style="background-color: #fff;"></td>
-        <td border="1" style="font-size: 17px; font-weight: bold;">أسماء الشخصيات الهامة</td>
-        <td border="1">';
+        <td style="font-size: 17px; font-weight: bold;">أسماء الشخصيات الهامة</td>
+        <td>';
         if ($row['VIP_LIST']) {
             $output .= 'نعم';    
         }
@@ -754,9 +711,8 @@ $output .= '<br><h3>المرفقات المطلوبة في التقرير الن
     </tr>
 
     <tr style="background-color: #01915c; color: white; text-align: center;">
-        <td width="19%" style="background-color: #fff;"></td>
-        <td border="1" style="font-size: 17px; font-weight: bold;">البطاقات التعريفية</td>
-        <td border="1">';
+        <td style="font-size: 17px; font-weight: bold;">البطاقات التعريفية</td>
+        <td>';
         if ($row['ID_CARDS']) {
             $output .= 'نعم';    
         }
@@ -767,9 +723,8 @@ $output .= '<br><h3>المرفقات المطلوبة في التقرير الن
     </tr>
 
     <tr style="text-align: center;">
-        <td width="19%" style="background-color: #fff;"></td>
-        <td border="1" style="font-size: 17px; font-weight: bold;">المراسلات والمخاطبات</td>
-        <td border="1">';
+        <td style="font-size: 17px; font-weight: bold;">المراسلات والمخاطبات</td>
+        <td>';
         if ($row['CORRESPONDENCE']) {
             $output .= 'نعم';    
         }
@@ -780,9 +735,8 @@ $output .= '<br><h3>المرفقات المطلوبة في التقرير الن
     </tr>
 
     <tr style="background-color: #01915c; color: white; text-align: center;">
-        <td width="19%" style="background-color: #fff;"></td>
-        <td border="1" style="font-size: 17px; font-weight: bold;">كشف الافراد</td>
-        <td border="1">';
+        <td style="font-size: 17px; font-weight: bold;">كشف الافراد</td>
+        <td>';
         if ($row['INDIVIDUALS_LIST']) {
             $output .= 'نعم';    
         }
@@ -793,9 +747,8 @@ $output .= '<br><h3>المرفقات المطلوبة في التقرير الن
     </tr>
 
     <tr style="text-align: center;">
-        <td width="19%" style="background-color: #fff;"></td>
-        <td border="1" style="font-size: 17px; font-weight: bold;">بطاقة الدعوة</td>
-        <td border="1">';
+        <td style="font-size: 17px; font-weight: bold;">بطاقة الدعوة</td>
+        <td>';
         if ($row['INVITATION_CARD']) {
             $output .= 'نعم';    
         }
@@ -806,9 +759,8 @@ $output .= '<br><h3>المرفقات المطلوبة في التقرير الن
     </tr>
 
     <tr style="background-color: #01915c; color: white; text-align: center;">
-        <td width="19%" style="background-color: #fff;"></td>
-        <td border="1" style="font-size: 17px; font-weight: bold;">كشف المتطوعين</td>
-        <td border="1">';
+        <td style="font-size: 17px; font-weight: bold;">كشف المتطوعين</td>
+        <td>';
         if ($row['VOLUNTEERS_LIST']) {
             $output .= 'نعم';    
         }
@@ -819,9 +771,8 @@ $output .= '<br><h3>المرفقات المطلوبة في التقرير الن
     </tr>
 
     <tr style="text-align: center;">
-        <td width="19%" style="background-color: #fff;"></td>
-        <td border="1" style="font-size: 17px; font-weight: bold;">كشف افراد الجهات المنظمة</td>
-        <td border="1">';
+        <td style="font-size: 17px; font-weight: bold;">كشف افراد الجهات المنظمة</td>
+        <td>';
         if ($row['ORGINZERS_LIST']) {
             $output .= 'نعم';    
         }
@@ -832,9 +783,8 @@ $output .= '<br><h3>المرفقات المطلوبة في التقرير الن
     </tr>
 
     <tr style="background-color: #01915c; color: white; text-align: center;">
-        <td width="19%" style="background-color: #fff;"></td>
-        <td border="1" style="font-size: 17px; font-weight: bold;">كشف عناصر الشركات الامنية</td>
-        <td border="1">';
+        <td style="font-size: 17px; font-weight: bold;">كشف عناصر الشركات الامنية</td>
+        <td>';
         if ($row['SECURITY_LIST']) {
             $output .= 'نعم';    
         }
@@ -845,9 +795,8 @@ $output .= '<br><h3>المرفقات المطلوبة في التقرير الن
     </tr>
 
     <tr style="text-align: center;">
-        <td width="19%" style="background-color: #fff;"></td>
-        <td border="1" style="font-size: 17px; font-weight: bold;">خطط الجهات المشاركة</td>
-        <td border="1">';
+        <td style="font-size: 17px; font-weight: bold;">خطط الجهات المشاركة</td>
+        <td>';
         if ($row['PARTICIPANTS_PLANS']) {
             $output .= 'نعم';    
         }
@@ -858,9 +807,8 @@ $output .= '<br><h3>المرفقات المطلوبة في التقرير الن
     </tr>
 
     <tr style="background-color: #01915c; color: white; text-align: center;">
-        <td width="19%" style="background-color: #fff;"></td>
-        <td border="1" style="font-size: 17px; font-weight: bold;">تكلفة العملية</td>
-        <td border="1">';
+        <td style="font-size: 17px; font-weight: bold;">تكلفة العملية</td>
+        <td>';
         if ($row['OPERATION_COST']) {
             $output .= 'نعم';    
         }
@@ -871,9 +819,8 @@ $output .= '<br><h3>المرفقات المطلوبة في التقرير الن
     </tr>
 
     <tr style="text-align: center;">
-        <td width="19%" style="background-color: #fff;"></td>
-        <td border="1" style="font-size: 17px; font-weight: bold;">استمارة تصنيف العملية</td>
-        <td border="1">';
+        <td style="font-size: 17px; font-weight: bold;">استمارة تصنيف العملية</td>
+        <td>';
         if ($row['CLASSIFICATION_FORM']) {
             $output .= 'نعم';    
         }
@@ -884,9 +831,8 @@ $output .= '<br><h3>المرفقات المطلوبة في التقرير الن
     </tr>
 
     <tr style="background-color: #01915c; color: white; text-align: center;">
-        <td width="19%" style="background-color: #fff;"></td>
-        <td border="1" style="font-size: 17px; font-weight: bold;">استمارة نجاح الفعالية</td>
-        <td border="1">';
+        <td style="font-size: 17px; font-weight: bold;">استمارة نجاح الفعالية</td>
+        <td>';
         if ($row['SUCCESS_FORM']) {
             $output .= 'نعم';    
         }
@@ -897,14 +843,12 @@ $output .= '<br><h3>المرفقات المطلوبة في التقرير الن
     </tr>
 
     <tr style="text-align: center;">
-        <td width="19%" style="background-color: #fff;"></td>
-        <td border="1" style="font-size: 17px; font-weight: bold;">أخرى</td>
-        <td border="1">'. $row['REPORT_OTHERS'] .'</td>
+        <td style="font-size: 17px; font-weight: bold;">أخرى</td>
+        <td>'. $row['REPORT_OTHERS'] .'</td>
     </tr>
 
     <tr style="background-color: #01915c; color: white; text-align: center;">
-        <td width="19%" style="background-color: #fff;"></td>
-        <td border="1" style="font-size: 17px; font-weight: bold;">ملاحظات</td>
+        <td style="font-size: 17px; font-weight: bold;">ملاحظات</td>
         <td>'. $row['NOTES'] .'</td>
     </tr>
 </table>';
