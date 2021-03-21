@@ -244,16 +244,16 @@ $(document).ready(function() {
                 };
             }
             var q4_chart = new Chart(document.getElementById("pie-chart-q4"), {
-                    type: 'pie',
-                    data: q4_data,
-                    options: {
-                        responsive: true,
-                        title: {
-                            display: true,
-                            text: 'إحصائية فعاليات الربع الرابع'
-                        }
+                type: 'pie',
+                data: q4_data,
+                options: {
+                    responsive: true,
+                    title: {
+                        display: true,
+                        text: 'إحصائية فعاليات الربع الرابع'
                     }
-                });
+                }
+            });
         }
     });
 

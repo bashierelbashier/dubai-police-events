@@ -38,7 +38,7 @@ while ($row = mysqli_fetch_array($result)) {
         <tr class='user-row' id='" . $row['USER_NO'] . "' style='cursor:pointer;' align='center'>
         <td>" . $count . "</td>
         <td>" . $row['FULL_NAME'] . "</td><td>" . $row['USER_NAME'] . "</td>
-        <td>" . $row['RANK'] . "</td>
+        <td>" . $row['RANKING'] . "</td>
         <td>" . $privilege . "</td><td>" . $row['ACTIVE'] . "</td>
         </tr>";
     $count++;

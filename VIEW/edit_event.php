@@ -695,7 +695,7 @@ if ($_SESSION['PRIVILEGE'] == 2 && $row['CREATOR_ID'] != $_SESSION['USER_NO']) {
                                         <label class="control-label">الرتبة</label>
                                     </td>
                                     <td class="col-xs-2">
-                                        <input  type="text" name="coordination_rank" id="coordination_rank" value="<?php echo $_SESSION['RANK'] ;?>" class="form-control" placeholder="الرتبة" autocomplete="off" readonly/>
+                                        <input  type="text" name="coordination_RANKING" id="coordination_RANKING" value="<?php echo $_SESSION['RANKING'] ;?>" class="form-control" placeholder="الرتبة" autocomplete="off" readonly/>
                                     </td>
                                     <td class="col-xs-2 text-center">
                                         <label class="control-label">الإسم</label>
@@ -707,7 +707,11 @@ if ($_SESSION['PRIVILEGE'] == 2 && $row['CREATOR_ID'] != $_SESSION['USER_NO']) {
                                         <label class="control-label">التوقيع</label>
                                     </td>
                                     <td class="col-xs-2">
-                                        <a href="../IMAGES/<?php echo $_SESSION['IMG_SIGNATURE']; ?>" class="btn btn-toolbar" style="padding: 0;" target="_blank">عرض</a>
+                                        <?php if ($_SESSION['IMG_SIGNATURE']) : ?>
+                                            <a href="../IMAGES/<?php echo $_SESSION['IMG_SIGNATURE']; ?>" class="btn btn-toolbar" style="padding: 0;" target="_blank">عرض</a>
+                                        <?php else : ?>
+                                            لا يوجد توقيع
+                                        <?php endif; ?>
                                     </td>
                                 </tr>
                             </table>

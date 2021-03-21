@@ -857,7 +857,7 @@ $output .= '<br><h3>المرفقات المطلوبة في التقرير الن
 $output .= '<h3>القائم بالتنسيق والمعاينة:</h3><table width="100%">
 <tr>
     <td width="40px">الرتبة:</td>
-    <td>'. $coordinator_row['RANK'] .'</td>
+    <td>'. $coordinator_row['RANKING'] .'</td>
     <td width="40px">الإسم:</td>
     <td>'. $coordinator_row['FULL_NAME'] .'</td>
 </tr>

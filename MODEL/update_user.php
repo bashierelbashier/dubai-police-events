@@ -8,7 +8,7 @@ $fullname = $_POST['full_name'];
 $password = $_POST['password'];
 $active = $_POST['active'];
 $privilege = $_POST['privilege'];
-$rank = $_POST['rank'];
+$RANKING = $_POST['RANKING'];
 
 $query = "SELECT * FROM T_USERS WHERE USER_NO = " . $_POST['user_no'];
 $result = mysqli_query($connect, $query);
@@ -34,7 +34,7 @@ if ($password == '')
     ACTIVE =  ".$active.",
     FULL_NAME = '".$fullname."', PRIVILEGE_NO = ".$privilege.",
     IMG_SIGNATURE = '". $img_signature ."',
-    RANK = '". $rank ."'
+    RANKING = '". $RANKING ."'
     WHERE USER_NO = ".$userno;
 
 }else{
@@ -43,7 +43,7 @@ if ($password == '')
     PASSWORD = '".md5($password)."', ACTIVE =  ".$active.",
     FULL_NAME = '".$fullname."', PRIVILEGE_NO = ".$privilege.",
     IMG_SIGNATURE = '". $img_signature ."',
-    RANK = '". $rank ."'
+    RANKING = '". $RANKING ."'
     WHERE USER_NO = ".$userno;
 
 }

@@ -14,7 +14,7 @@ echo json_encode([
     'privilege_no' => $row['PRIVILEGE_NO'],
     'active' => $row['ACTIVE'],
     'img_signature' => $row['IMG_SIGNATURE'],
-    'rank' => $row['RANK'],
+    'RANKING' => $row['RANKING'],
 ]);
 
 /*

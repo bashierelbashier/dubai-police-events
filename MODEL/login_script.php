@@ -18,7 +18,7 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
             $_SESSION['FULL_NAME'] = $row['FULL_NAME'];
             $_SESSION['PRIVILEGE'] = $row['PRIVILEGE_NO'];
             $_SESSION['IMG_SIGNATURE'] = $row['IMG_SIGNATURE'];
-            $_SESSION['RANK'] = $row['RANK'];
+            $_SESSION['RANKING'] = $row['RANKING'];
 
             if ($row['PRIVILEGE_NO'] == 1)
                 echo ("INDEX");

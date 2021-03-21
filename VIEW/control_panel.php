@@ -196,8 +196,8 @@ input[type=file]:focus {
                                     <label>الرتبة</label>
                                 </td>
                                 <td>
-                                    <input type="text" class="form-control text-center" id="rank"
-                                        name="rank" autocomplete="off" />
+                                    <input type="text" class="form-control text-center" id="RANKING"
+                                        name="RANKING" autocomplete="off" />
                                 </td>
                                 <td class="text-center">
                                     <label>كلمة المرور</label>
@@ -439,7 +439,7 @@ $(document).ready(function() {
                 $('#user_name').val(data.user_name);
                 $('#password').attr('required', false);
                 $('#privilege').val(data.privilege_no);
-                $('#rank').val(data.rank);
+                $('#RANKING').val(data.RANKING);
                 if (data.active == 1) {
                     $('#active').attr('checked', true);
                 }
@@ -471,7 +471,7 @@ $(document).ready(function() {
         var password = $("#password").val('');
         var privilege = $("#privilege").val(1);
         var active = $("#active").val();
-        var rank = $("#rank").val('');
+        var RANKING = $("#RANKING").val('');
 
         $("#user_modal_title").html(" إضافة مستخدم جديد ");
         $('#signature-img').attr('src', '../IMAGES/not-found.png'); 

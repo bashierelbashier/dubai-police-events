@@ -676,7 +676,7 @@ if ($_SESSION['PRIVILEGE'] == 4 || $_SESSION['PRIVILEGE'] == 5)
                                         <label class="control-label">الرتبة</label>
                                     </td>
                                     <td class="col-xs-2">
-                                        <input  type="text" name="coordination_rank" id="coordination_rank" value="<?php echo $_SESSION['RANK'] ;?>" class="form-control" placeholder="الرتبة" autocomplete="off" readonly/>
+                                        <input  type="text" name="coordination_RANKING" id="coordination_RANKING" value="<?php echo $_SESSION['RANKING'] ;?>" class="form-control" placeholder="الرتبة" autocomplete="off" readonly/>
                                     </td>
                                     <td class="col-xs-2 text-center">
                                         <label class="control-label">الإسم</label>
