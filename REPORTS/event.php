@@ -861,11 +861,12 @@ $output .= '<h3>القائم بالتنسيق والمعاينة:</h3><table wid
     <td width="40px">الإسم:</td>
     <td>'. $coordinator_row['FULL_NAME'] .'</td>
 </tr>
-<tr><td></td><td></td></tr>';
+<tr><td></td><td></td><td></td><td></td></tr>';
 if ($coordinator_row['IMG_SIGNATURE']) {
     $output .='<tr>
-        <td width="16%">التوقيع:</td>
-        <td><img src="../IMAGES/'. $coordinator_row['IMG_SIGNATURE'] .'" style="width: 100px; height: 100px;"></td>
+        <td colspan="2">التوقيع:</td>
+        
+        <td colspan="2"><img src="../IMAGES/'. $coordinator_row['IMG_SIGNATURE'] .'" style="width: 100px; height: 100px;"></td>
     </tr>';
 }
 $output .= '</table>';
