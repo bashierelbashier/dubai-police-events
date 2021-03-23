@@ -20,6 +20,10 @@ if (mysqli_num_rows($result)>0)
             <td>".$row['HOTEL_NAME']."</td>
             <td>".$row['HOTEL_LOCATION']."</td>
             <td>".$row['HOTEL_COORDINATES']."</td>
+            <td class='text-center' style='width: 10%;'>
+                <button type='button' class='btn btn-primary edit-hotel' data-id='".$row['ID']."' data-name='".$row['HOTEL_NAME']."' data-location='".$row['HOTEL_LOCATION']."' data-coordinates='".$row['HOTEL_COORDINATES']."'  data-toggle='modal'data-target='#HotelModal' title='تعديل'><i class='fa fa-edit'></i></button>
+                <button type='button' class='btn btn-danger delete-hotel' data-id='".$row['ID']."' title='حذف'><i class='fa fa-times'></i></button>
+            </td>
         </tr>";
 
         $count++;

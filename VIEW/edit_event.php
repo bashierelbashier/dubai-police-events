@@ -12,10 +12,6 @@ $sql = "SELECT * FROM T_EVENT JOIN T_EVENT_INFO ON T_EVENT.ID = T_EVENT_INFO.EVE
 $res = mysqli_query($connect, $sql);
 $row = mysqli_fetch_array($res);
 
-if ($_SESSION['PRIVILEGE'] == 2 && $row['CREATOR_ID'] != $_SESSION['USER_NO']) {
-    header("location:access_denied.php");
-}
-
 ?>
 
 <!DOCTYPE html>
@@ -99,17 +95,19 @@ if ($_SESSION['PRIVILEGE'] == 2 && $row['CREATOR_ID'] != $_SESSION['USER_NO']) {
 
     <div id="buttons_div" class="col-xs-10 navbar-fixed-top"
         style="margin-right: 16.7%;height:70px;border-bottom-style: outset;border-bottom-width: 1px;border-bottom-color: lightgray;  background-color: #ffffff;margin-top:55px; ">
-        <div class="col-xs-2 pull-right"></div>
+        <div class="<?php if ($_SESSION['PRIVILEGE'] == 1) : ?> col-xs-2 <?php else : ?> col-xs-3 <?php endif; ?> pull-right"></div>
         <a href="events.php" style="margin-top: 20px;margin-right:5px;" class="btn btn-default col-xs-2 pull-right"><i
                 class="fa fa-long-arrow-right"></i> رجوع </a>
         <button type="submit" form="event_form" style="margin-top: 20px;margin-right:5px;"
             class="btn btn-success col-xs-2 pull-right"><i class="fa fa-pencil-square-o"></i> حفظ التعديلات </button>
-        <button id="delete_event" style="margin-top: 20px;margin-right:5px;"
-            class="btn btn-danger col-xs-2 pull-right"><i class="fa fa-trash-o"></i> حذف </button>
-        <a href="../REPORTS/event.php?id=<?php echo $_GET['ID']; ?>" style="margin-top: 20px;margin-right:5px;" class="btn btn-info col-xs-2 pull-right">
+        <?php if ($_SESSION['PRIVILEGE'] == 1) : ?>
+            <button id="delete_event" style="margin-top: 20px;margin-right:5px;"
+                class="btn btn-danger col-xs-2 pull-right"><i class="fa fa-trash-o"></i> حذف </button>
+        <?php endif; ?>
+        <button type="button" style="margin-top: 20px;margin-right:5px;" class="btn btn-info col-xs-2 pull-right" id="event-pdf-btn" data-href="../REPORTS/event.php?id=<?php echo $_GET['ID']; ?>">
             <i class="fa fa-print"></i>
             <span>إستخراج</span>
-        </a>
+        </button>
         <!--  <a href="new_transaction.php?land_no=<?php echo $row['LAND_NO'] . '&district_no=' . $row['DISTRICT_NO']; ?>"><button
                 id="add_trans" style="margin-top: 20px;margin-right:5px;" class="btn btn-warning col-xs-2 pull-right">
                 <i class="fa fa-plus"></i> إضافة معاملة </button> </a> -->
@@ -117,7 +115,9 @@ if ($_SESSION['PRIVILEGE'] == 2 && $row['CREATOR_ID'] != $_SESSION['USER_NO']) {
         <br />
     </div>
 
+    <input type="text" hidden id="user_no" value="<?php echo $_SESSION['USER_NO']; ?>" />
     <input type="text" hidden id="privilege" value="<?php echo $_SESSION['PRIVILEGE']; ?>" />
+    <input type="text" hidden id="creator_id" value="<?php echo $row['CREATOR_ID']; ?>" />
 
     <div class="col-xs-10" id="data_div"
         style="min-height:81.5%;margin-top:125px;background-image: url('../ASSETS/form_sheetbg.png');">
@@ -227,7 +227,7 @@ if ($_SESSION['PRIVILEGE'] == 2 && $row['CREATOR_ID'] != $_SESSION['USER_NO']) {
 
                         <div class="panel-body">
                             <!-- <div id="owners_table"> -->
-                            <button type="button" id="add_coordinator" class="btn btn-info pull-left" style="margin-bottom: 5px;">
+                            <button type="button" id="add_coordinator" class="btn btn-info pull-left" data-toggle="modal"data-target="#CoordinationModal" style="margin-bottom: 5px;">
                                 <i class="fa fa-user-plus"> </i>
                                 <span>إضافة</span>
                             </button>
@@ -239,6 +239,7 @@ if ($_SESSION['PRIVILEGE'] == 2 && $row['CREATOR_ID'] != $_SESSION['USER_NO']) {
                                             <td> الإسم </td>
                                             <td> الجهة </td>
                                             <td> المنصب </td>
+                                            <td></td>
                                         </tr>
                                     </thead>
                                     <tbody></tbody>
@@ -355,7 +356,7 @@ if ($_SESSION['PRIVILEGE'] == 2 && $row['CREATOR_ID'] != $_SESSION['USER_NO']) {
                             </h5>
                         </div>
                         <div class="panel-body">
-                            <button type="button" id="add_hotel" class="btn btn-info pull-left" style="margin-bottom: 5px;">
+                            <button type="button" id="add_hotel" class="btn btn-info pull-left" data-toggle="modal" data-target="#HotelModal" style="margin-bottom: 5px;">
                                 <i class="fa fa-user-plus"> </i>
                                 <span>إضافة</span>
                             </button>
@@ -366,6 +367,7 @@ if ($_SESSION['PRIVILEGE'] == 2 && $row['CREATOR_ID'] != $_SESSION['USER_NO']) {
                                         <th class="text-center"> إسم الفندق </th>
                                         <th class="text-center"> الموقع </th>
                                         <th class="text-center"> إحداثيات المكان </th>
+                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody></tbody>
@@ -946,11 +948,12 @@ if ($_SESSION['PRIVILEGE'] == 2 && $row['CREATOR_ID'] != $_SESSION['USER_NO']) {
         <div class="modal-dialog">
             <div class="modal-content" style="border-radius: 10px;">
                 <div class="modal-header">
-                    <h4 class="modal-title" align="center"> إضافة أسماء حضور التنسيق والمعاينة </h4>
+                    <h4 class="modal-title" id="coordination-modal-title" align="center"></h4>
                 </div>
                 <div class="modal-body" dir="rtl">
                     <form id="coordinator_form" class="oe_formview">
                         <input type="hidden" name="event_id" value="<?php echo $_GET['ID']; ?>">
+                        <input type="hidden" name="id" id="coordinator-id">
                         <table class="table table-responsive">
                             <br />
                             <tr>
@@ -959,7 +962,7 @@ if ($_SESSION['PRIVILEGE'] == 2 && $row['CREATOR_ID'] != $_SESSION['USER_NO']) {
                                 </td>
                                 <td class="col-xs-3" colspan="4">
                                     <input autocomplete="off" required type="text" class="text-center form-control"
-                                        name="name" placeholder="الإسم ....." />
+                                        name="name" id="coordinator-name" placeholder="الإسم ....." />
                                 </td>
                             </tr>
                             <tr>
@@ -968,7 +971,7 @@ if ($_SESSION['PRIVILEGE'] == 2 && $row['CREATOR_ID'] != $_SESSION['USER_NO']) {
                                 </td>
                                 <td class="col-xs-3" colspan="4">
                                     <input autocomplete="off" required type="text" class="text-center form-control"
-                                        name="reference" placeholder="الجهة ....." />
+                                        name="reference" id="coordinator-reference" placeholder="الجهة ....." />
                                 </td>
                             </tr>
                             <tr>
@@ -977,13 +980,14 @@ if ($_SESSION['PRIVILEGE'] == 2 && $row['CREATOR_ID'] != $_SESSION['USER_NO']) {
                                 </td>
                                 <td class="col-xs-3" colspan="4">
                                     <input autocomplete="off" required type="text" class="text-center form-control"
-                                        name="position" placeholder="المنصب ....." />
+                                        name="position" id="coordinator-position" placeholder="المنصب ....." />
                                 </td>
                             </tr>
                         </table>
                     </form>
                 </div>
                 <div class="modal-footer">
+                    <input type="hidden" name="action" id="coordinator-action">
                     <button data-dismiss="modal" class="btn btn-warning pull-left"> <i class="fa fa-window-close"></i>
                         إغلاق </button>
                     <button type="submit" form="coordinator_form" class="btn btn-primary pull-left"> <i
@@ -997,11 +1001,12 @@ if ($_SESSION['PRIVILEGE'] == 2 && $row['CREATOR_ID'] != $_SESSION['USER_NO']) {
         <div class="modal-dialog">
             <div class="modal-content" style="border-radius: 10px;">
                 <div class="modal-header">
-                    <h4 class="modal-title" align="center"> إضافة فندق مخصص للمشاركين في الفعالية</h4>
+                    <h4 class="modal-title" id="hotel-modal-title" align="center"></h4>
                 </div>
                 <div class="modal-body" dir="rtl">
                     <form id="hotel_form" class="oe_formview">
                         <input type="hidden" name="event_id" value="<?php echo $_GET['ID']; ?>">
+                        <input type="hidden" name="id" id="hotel-id">
                         <table class="table table-responsive">
                             <br />
                             <tr>
@@ -1010,7 +1015,7 @@ if ($_SESSION['PRIVILEGE'] == 2 && $row['CREATOR_ID'] != $_SESSION['USER_NO']) {
                                 </td>
                                 <td class="col-xs-3" colspan="4">
                                     <input autocomplete="off" required type="text" class="text-center form-control"
-                                        name="hotel_name" id="hotel_name" placeholder="إسم الفندق ....." />
+                                        name="hotel_name" id="hotel-name" placeholder="إسم الفندق ....." />
                                 </td>
                             </tr>
                             <tr>
@@ -1019,7 +1024,7 @@ if ($_SESSION['PRIVILEGE'] == 2 && $row['CREATOR_ID'] != $_SESSION['USER_NO']) {
                                 </td>
                                 <td class="col-xs-3" colspan="4">
                                     <input autocomplete="off" required type="text" class="text-center form-control"
-                                        name="hotel_location" id="hotel_location" placeholder="الموقع ....." />
+                                        name="hotel_location" id="hotel-location" placeholder="الموقع ....." />
                                 </td>
                             </tr>
                             <tr>
@@ -1028,13 +1033,14 @@ if ($_SESSION['PRIVILEGE'] == 2 && $row['CREATOR_ID'] != $_SESSION['USER_NO']) {
                                 </td>
                                 <td class="col-xs-3" colspan="4">
                                     <input autocomplete="off" required type="text" class="text-center form-control"
-                                        name="hotel_coordinates" id="hotel_coordinates" placeholder="إحداثيات المكان ....." />
+                                        name="hotel_coordinates" id="hotel-coordinates" placeholder="إحداثيات المكان ....." />
                                 </td>
                             </tr>
                         </table>
                     </form>
                 </div>
                 <div class="modal-footer">
+                    <input type="hidden" name="action" id="hotel-action">
                     <button data-dismiss="modal" class="btn btn-warning pull-left">
                         <i class="fa fa-window-close"></i>
                         <span>إغلاق</span>
@@ -1145,25 +1151,93 @@ $(document).ready(function() {
     
     fetchCoordinators();
 
-    $("#add_coordinator").click(function() {
-        $("#CoordinationModal").modal("show");
+    $('#CoordinationModal').on('show.bs.modal', function (e) {
+        $('#coordinator-action').val('create');
+        $('#coordination-modal-title').text('إضافة أسماء حضور التنسيق والمعاينة');
+        $('#coordinator_form')[0].reset();
+    });
+
+    $(document).on('click', '.edit-coordinator',function (e) {
+        $('#coordinator-action').val('update');
+        $('#coordination-modal-title').text('تعديل أسماء حضور التنسيق والمعاينة');
+        $('#coordinator-id').val($(this).attr('data-id'));
+        $('#coordinator-name').val($(this).attr('data-name'));
+        $('#coordinator-reference').val($(this).attr('data-reference'));
+        $('#coordinator-position').val($(this).attr('data-position'));
+    });
+
+    $(document).on("click", ".delete-coordinator", function(e) {
+        const id = $(this).attr('data-id');
+        swal({
+            title: "تأكيد",
+            text: "هل تريد حذف هذا السجل",
+            type: "question",
+            confirmButtonColor: "red",
+            showCancelButton: true,
+            cancelButtonColor: "green",
+            cancelButtonText: "لا أريد الحذف <i class='fa fa-thumbs-up'></i>",
+            confirmButtonText: "نعم <i class='fa fa-trash'></i>"
+        }).then(function(isConfirm) {
+            if (isConfirm) {
+                $.ajax({
+                    url: "../MODEL/delete_coordinator.php",
+                    method: "POST",
+                    data: {
+                        id: id
+                    },
+                    success: function(data) {
+                        if (data) {
+                            swal({
+                                title: "تم !",
+                                text: "تم الحذف بنجاح",
+                                type: "success",
+                                confirmButtonColor: "skyblue",
+                                confirmButtonText: "حسنا"
+                            }).then(function() {
+                               fetchCoordinators(); 
+                            });
+                        } else {
+                            swal("لم يتم حذف السجل");
+                        }
+
+                    }
+                });
+
+            } else {
+
+            }
+        });
     });
 
     $('#coordinator_form').submit(function(e) {
         e.preventDefault();
 
+        let url, success_msg, error_msg = '';
+        if ($('#coordinator-action').val() == 'create') {
+            url = '../MODEL/insert_coordinator.php';
+            success_msg = 'تم حفظ البيانات بنجاح';
+            error_msg = 'لم يتم حفظ البيانات ! الرجاء التحقق من صحتها';
+        }
+        else if ($('#coordinator-action').val() == 'update') {
+            url = '../MODEL/update_coordinator.php';
+            success_msg = 'تم تعديل البيانات بنجاج';
+            error_msg = 'لم يتم تعديل البيانات ! الرجاء التحقق من صحتها';
+        }
+
         $.ajax({
-            url: '../MODEL/insert_coordinator.php',
+            url: url,
             method: 'POST',
             data: new FormData(this),
             processData: false,
             contentType: false,
             success: function(data) {
                 if (data.success) {
-                    $("#coordinator_form")[0].reset();
+                    if ($('#coordinator-action').val() == 'create') {
+                        $("#coordinator_form")[0].reset();
+                    }
                     swal({
                         title: "تم !",
-                        text: "تم حفظ البيانات بنجاح",
+                        text: success_msg,
                         type: "success",
                         confirmButtonColor: "skyblue",
                         confirmButtonText: "حسنا"
@@ -1171,9 +1245,8 @@ $(document).ready(function() {
                     fetchCoordinators();
                 }
                 else {
-                    swal("لم يتم حفظ البيانات ! الرجاء التحقق من صحتها");
+                    swal(error_msg);
                 }
-
             }
         });
     });
@@ -1188,35 +1261,98 @@ $(document).ready(function() {
             success: function(data) {
                 $("#coordinators_table tbody").html(data);
             }
-
         });
     }
 
     fetchHotels();
 
-    $("#add_hotel").click(function() {
-        $("#HotelModal").modal("show");
+    $('#HotelModal').on('show.bs.modal', function (e) {
+        $('#hotel-action').val('create');
+        $('#hotel-modal-title').text('إضافة فندق مخصص للمشاركين في الفعالية');
+        $('#hotel_form')[0].reset();
+    });
+    
+    $(document).on('click', '.edit-hotel',function (e) {
+        $('#hotel-action').val('update');
+        $('#hotel-modal-title').text('تعديل فندق مخصص للمشاركين في الفعالية');
+        $('#hotel-id').val($(this).attr('data-id'));
+        $('#hotel-name').val($(this).attr('data-name'));
+        $('#hotel-location').val($(this).attr('data-location'));
+        $('#hotel-coordinates').val($(this).attr('data-coordinates'));
     });
 
-    $("#HotelModal").on('show.bs.modal', function (e) {
-        $('#hotel_form')[0].reset();
+    $(document).on("click", ".delete-hotel", function(e) {
+        const id = $(this).attr('data-id');
+        swal({
+            title: "تأكيد",
+            text: "هل تريد حذف هذا السجل",
+            type: "question",
+            confirmButtonColor: "red",
+            showCancelButton: true,
+            cancelButtonColor: "green",
+            cancelButtonText: "لا أريد الحذف <i class='fa fa-thumbs-up'></i>",
+            confirmButtonText: "نعم <i class='fa fa-trash'></i>"
+        }).then(function(isConfirm) {
+            if (isConfirm) {
+                $.ajax({
+                    url: "../MODEL/delete_hotel.php",
+                    method: "POST",
+                    data: {
+                        id: id
+                    },
+                    success: function(data) {
+                        if (data) {
+                            swal({
+                                title: "تم !",
+                                text: "تم الحذف بنجاح",
+                                type: "success",
+                                confirmButtonColor: "skyblue",
+                                confirmButtonText: "حسنا"
+                            }).then(function() {
+                               fetchHotels(); 
+                            });
+                        } else {
+                            swal("لم يتم حذف السجل");
+                        }
+
+                    }
+                });
+
+            } else {
+
+            }
+        });
     });
 
     $('#hotel_form').submit(function(e) {
         e.preventDefault();
 
+        let url, success_msg, error_msg = '';
+        if ($('#hotel-action').val() == 'create') {
+            url = '../MODEL/insert_hotel.php';
+            success_msg = 'تم حفظ البيانات بنجاح';
+            error_msg = 'لم يتم حفظ البيانات ! الرجاء التحقق من صحتها';
+        }
+        else if ($('#hotel-action').val() == 'update') {
+            url = '../MODEL/update_hotel.php';
+            success_msg = 'تم تعديل البيانات بنجاج';
+            error_msg = 'لم يتم تعديل البيانات ! الرجاء التحقق من صحتها';
+        }
+
         $.ajax({
-            url: '../MODEL/insert_hotel.php',
+            url: url,
             method: 'POST',
             data: new FormData(this),
             processData: false,
             contentType: false,
             success: function(data) {
                 if (data.success) {
-                    $("#hotel_form")[0].reset();
+                    if ($('#hotel-action').val() == 'create') {
+                        $("#hotel_form")[0].reset();
+                    }
                     swal({
                         title: "تم !",
-                        text: "تم حفظ البيانات بنجاح",
+                        text: success_msg,
                         type: "success",
                         confirmButtonColor: "skyblue",
                         confirmButtonText: "حسنا"
@@ -1224,9 +1360,8 @@ $(document).ready(function() {
                     fetchHotels();
                 }
                 else {
-                    swal("لم يتم حفظ البيانات ! الرجاء التحقق من صحتها");
+                    swal(error_msg);
                 }
-
             }
         });
     });
@@ -1315,40 +1450,48 @@ $(document).ready(function() {
         });
     });
 
+    $('#event-pdf-btn').click(function (e) {
+        window.location.href = $(this).attr('data-href');
+    });
 
+    if ($("#privilege").val() != 1 && $('#creator_id').val() != $('#user_no').val()) {
+        $("input").prop('disabled', true);
+        $("select").prop('disabled', true);
+        $("textarea").prop('disabled', true);
+        $("button").prop('disabled', true);
+    }
+
+    window.onbeforeunload = function() {
+        window.confirm();
+        if (change_flag == true)
+            return "";
+        else
+            return;
+    };
+
+    /*
     $("#individual").click(function() {
         $("#id_row").show();
     });
-
+ 
     $("#org").click(function() {
         $("#id_row").hide();
         $("#id_type").val(0);
         $("#idno").val('');
     });
-
-
     var status = $("#status").val();
-
-
-    if ($("#privilege").val() != 1 && $("#privilege").val() != 2) {
-        $("input").prop('disabled', true);
-        $("select").prop('disabled', true);
-        $("button").prop('disabled', true);
-
-    }
-
-
+ 
     if ($("#privilege").val() == 5) {
         $(".borrow-input").prop('disabled', false);
         $("#borrow").prop('disabled', false);
         $("#receive").prop('disabled', false);
     }
-
+ 
     if ($("#privilege").val() == 3) {
         $("#add_trans").prop('disabled', false);
         $("#add_docs").prop('disabled', false);
     }
-
+ 
     if (status == 1) {
         $("input").prop('disabled', true);
         $("select").prop('disabled', true);
@@ -1361,7 +1504,7 @@ $(document).ready(function() {
         $("button").prop('disabled', true);
         alertify.set('notifier', 'position', 'bottom-center');
         alertify.error("<h3> هذه القطعة قد تم ضمها إلى قطعة أخرى ولا يمكن تعديل بياناتها </h3>");
-
+ 
     } else if (status == 3) {
         $("input").prop('disabled', true);
         $("select").prop('disabled', true);
@@ -1369,25 +1512,16 @@ $(document).ready(function() {
         alertify.set('notifier', 'position', 'bottom-center');
         alertify.error(
         "<h3> هذه القطعة قد تم نزعها لمصلحة حكومة جمهورية السودان ولا يمكن تعديل بياناتها </h3>");
-
+ 
     }
-
-    window.onbeforeunload = function() {
-        window.confirm();
-        if (change_flag == true)
-            return "";
-        else
-            return;
-    };
-
+    */
+ 
     $("#user_button").prop('disabled', false);
-
+ 
     $("#receive").click(function() {
-
         var land = $("#b_land_no").val();
         var district = $("#b_district").val();
         $.ajax({
-
             url: '../MODEL/return_land_file.php',
             method: 'POST',
             data: {
@@ -1398,51 +1532,47 @@ $(document).ready(function() {
                 if (data)
                     window.location = window.location.href;
             }
-
         });
-
     });
-
+ 
     $.datepicker.setDefaults({
         changeYear: true,
         changeMonth: true,
         dateFormat: 'yy-mm-dd'
     });
-
-
+ 
     $("#borrow").click(function() {
         $("#BorrowModal").modal("show");
     });
-
-
+ 
     var change_flag = false;
-
+ 
     $("input").change(function() {
         change_flag = true;
     });
-
+ 
     $("select").change(function() {
         change_flag = true;
     });
-
+ 
     $("textarea").change(function() {
         change_flag = true;
     });
-
+ 
     var owners = [];
-
+ 
     $("#land_owners_list option").each(function() {
         owners.push($(this).val());
     });
-
+ 
     $("#register_owner").click(function() {
         $("#NewOwnerModal").modal("show");
     });
-
-
+ 
+ 
     $("#owner_form").submit(function(e) {
         e.preventDefault();
-
+ 
         $.ajax({
             url: '../MODEL/insert_owner.php',
             method: 'POST',
@@ -1450,14 +1580,14 @@ $(document).ready(function() {
             processData: false,
             contentType: false,
             success: function(data) {
-
+ 
                 if (data) {
-
+ 
                     var land = $("#land_no").val();
                     var district = $("#district").val();
                     var owner = data;
                     owners.push(owner);
-
+ 
                     $.ajax({
                         url: "../MODEL/insert_land_owners.php",
                         method: "POST",
@@ -1470,10 +1600,10 @@ $(document).ready(function() {
                             $("#owners_table").html(data);
                         }
                     });
-
+ 
                     $("#NewOwnerModal").modal("hide");
                     $("#owner_form")[0].reset();
-
+ 
                     $.ajax({
                         url: "../MODEL/modal_fetch_owners.php",
                         method: "POST",
@@ -1481,24 +1611,24 @@ $(document).ready(function() {
                         success: function(data) {
                             $("#modal-owners-data").html(data);
                         }
-
+ 
                     });
-
+ 
                     change_flag = true;
                 } else {
                     swal("لم يتم حفظ البيانات ! الرجاء التحقق من صحتها");
                 }
-
+ 
             }
         });
     });
-
-
-
+ 
+ 
+ 
     $(function() {
         $("#borrow_date").datepicker();
     });
-
+ 
     $.ajax({
         url: "../MODEL/modal_fetch_owners.php",
         method: "POST",
@@ -1507,16 +1637,16 @@ $(document).ready(function() {
             $("#modal-owners-data").html(data);
         }
     });
-
-
+ 
+ 
     $("#add_owner").click(function() {
         $("#SelectOwnerModal").modal("show");
     });
-
+ 
     $("#owner_search_txt").keyup(function(e) {
-
+ 
         var txt = $("#owner_search_txt").val();
-
+ 
         $.ajax({
             url: "../MODEL/modal_fetch_owners.php",
             method: "POST",
@@ -1528,10 +1658,10 @@ $(document).ready(function() {
             }
         });
     });
-
-
+ 
+ 
     $("#BorrowForm").submit(function(e) {
-
+ 
         e.preventDefault();
         $.ajax({
             url: '../MODEL/insert_borrow.php',
@@ -1540,27 +1670,27 @@ $(document).ready(function() {
             processData: false,
             contentType: false,
             success: function(data) {
-
+ 
                 if (data) {
                     change_flag = false;
                     window.location = window.location.href;
                 }
             }
         });
-
+ 
     });
-
+ 
     $(document).on('click', '.owner-remove', function(e) {
-
+ 
         var owner = $(this).attr("id");
-
+ 
         var removedIndex = owners.indexOf(owner);
-
+ 
         swal({
             title: "تأكيد",
             text: "هل تريد حذف هذا السجل",
             type: "question",
-
+ 
             confirmButtonColor: "red",
             showCancelButton: true,
             cancelButtonColor: "green",
@@ -1568,10 +1698,10 @@ $(document).ready(function() {
             confirmButtonText: "نعم <i class='fa fa-trash'></i>"
         }).then(function(isConfirm) {
             if (isConfirm) {
-
+ 
                 if (removedIndex > -1)
                     owners.splice(removedIndex, 1);
-
+ 
                 $.ajax({
                     url: "../MODEL/fetch_new_land_owners.php",
                     method: "POST",
@@ -1584,22 +1714,22 @@ $(document).ready(function() {
                         change_flag = true;
                     }
                 });
-
+ 
             }
         });
-
+ 
     });
-
-
-
+ 
+ 
+ 
     $(document).on('click', '.owner-row', function(e) {
-
+ 
         var owner = $(this).attr("id");
         var flag = false;
         for (var i = 0; i < owners.length; i++)
             if (owners[i] == owner)
                 flag = true;
-
+ 
         if (flag == false) {
             owners.push(owner);
             $.ajax({
@@ -1616,10 +1746,10 @@ $(document).ready(function() {
             });
         }
     });
-
-
+ 
+ 
     function fetchDistricts() {
-
+ 
         var locale_no = $("#locale").val();
         $.ajax({
             url: '../MODEL/fetch_districts.php',
@@ -1630,21 +1760,21 @@ $(document).ready(function() {
             success: function(data) {
                 $("#district").html(data);
             }
-
+ 
         });
     }
-
-
-
+ 
+ 
+ 
     $("#locale").change(function() {
         fetchDistricts();
     });
-
-
-
+ 
+ 
+ 
     $("#lands_form").submit(function(e) {
         e.preventDefault();
-
+ 
         if (change_flag == true) {
             $.ajax({
                 url: '../MODEL/update_land.php',
@@ -1654,10 +1784,10 @@ $(document).ready(function() {
                 contentType: false,
                 success: function(data) {
                     if (data) {
-
+ 
                         var land = $("#land_no").val();
                         var district = $("#district").val();
-
+ 
                         $.ajax({
                             url: '../MODEL/insert_land_owners.php',
                             method: 'POST',
@@ -1666,35 +1796,35 @@ $(document).ready(function() {
                                 land: land,
                                 district: district
                             },
-
+ 
                             success: function(data) {
                                 $("#scan_land_no").val($("#land_no").val());
                                 $("#scan_district_no").val($("#district")
                             .val());
-
+ 
                                 alertify.success(
                                     "<h4>  <i class='fa fa-check'></i> تم حفظ التعديلات بنجاح </h4>"
                                     );
                                 change_flag = false;
                             }
-
+ 
                         });
-
+ 
                     } else {
                         swal("لم يتم حفظ البيانات ! الرجاء التحقق من صحتها");
                     }
                 }
             });
         } else {
-
+ 
             alertify.message("<h4><i class='fa fa-info'></i> ليست هناك تعديلات لحفظها </h4>");
-
+ 
         }
     });
-
-
-
-
+ 
+ 
+ 
+ 
     var c = $("#class_no").val();
     $("#classification").val(c);
     var c = $("#owner_no").val();
@@ -1705,17 +1835,17 @@ $(document).ready(function() {
     $("#measure_unit").val(c);
     var c = $("#type_no").val();
     $("#land_type").val(c);
-
-
-
-
-
+ 
+ 
+ 
+ 
+ 
     $("#delete_record").click(function() {
         swal({
             title: "تأكيد",
             text: "هل تريد حذف هذا السجل",
             type: "question",
-
+ 
             confirmButtonColor: "red",
             showCancelButton: true,
             cancelButtonColor: "green",
@@ -1723,11 +1853,11 @@ $(document).ready(function() {
             confirmButtonText: "نعم <i class='fa fa-trash'></i>"
         }).then(function(isConfirm) {
             if (isConfirm) {
-
+ 
                 var land_no = $("#land_no").val();
                 var district_no = $("#district").val();
-
-
+ 
+ 
                 $.ajax({
                     url: "../MODEL/delete_land.php",
                     method: "POST",
@@ -1736,9 +1866,9 @@ $(document).ready(function() {
                         district_no: district_no
                     },
                     success: function(data) {
-
+ 
                         if (data) {
-
+ 
                             swal({
                                 title: "تم !",
                                 text: "تم الحذف بنجاح",
@@ -1751,16 +1881,16 @@ $(document).ready(function() {
                         } else {
                             swal("لم يتم حذف السجل لإرتباطه بسجلات أخرى");
                         }
-
+ 
                     }
                 });
-
+ 
             } else {
-
+ 
             }
         });
     });
-
+ 
     fetchDistricts();
     var c = $("#district_no").val();
     $("#district").val(c);

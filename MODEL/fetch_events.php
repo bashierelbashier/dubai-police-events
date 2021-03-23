@@ -20,10 +20,6 @@ else {
     $query = "SELECT * FROM T_EVENT";
 }
 
-if ($_SESSION['PRIVILEGE'] == 2) {
-    $query .= " WHERE CREATOR_ID = " . $_SESSION['USER_NO'];
-}
-
 $query .= " ORDER BY EVENT_DATE LIMIT ".$start.",".$limit;
 
 $result= mysqli_query($connect,$query);
