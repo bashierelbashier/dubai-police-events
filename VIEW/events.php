@@ -58,6 +58,32 @@ body {
     background-color: dimgray;
     color: white;
 }
+
+.event-row {
+    position: relative;
+}
+
+.event-tooltip {
+    position: absolute;
+    left: 16px;
+    display: flex;
+    justify-content: space-between;
+    width: 97.2%;
+    padding: 8px 50px !important;
+    background: #1B5E20;
+    color: #f2f2f2;
+    content: attr(aria-label);
+    white-space: nowrap;
+    opacity: 0;
+    z-index: 20;
+    transition: opacity 0.5s;
+    pointer-events: none;
+}
+
+.event-row:hover .event-tooltip {
+    opacity: 1;
+    transition-delay: 1.5s;
+}
 </style>
 
 <body>

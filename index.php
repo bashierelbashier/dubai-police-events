@@ -107,8 +107,8 @@ body {
 
     <div class="col-xs-10" id="home_view" style="padding:2px;min-height:81.5%;margin-top:125px;background-color:white;">
 
-        <div style="width: 50%;" class="col-md-6 pull-right"><canvas id="pie-chart-q1"></canvas></div>
-        <div style="width: 50%;" class="col-md-6 pull-right"><canvas id="pie-chart-q2"></canvas></div>
+        <div style="margin-bottom: 20px; width: 50%;" class="col-md-6 pull-right"><canvas id="pie-chart-q1"></canvas></div>
+        <div style="margin-bottom: 20px; width: 50%;" class="col-md-6 pull-right"><canvas id="pie-chart-q2"></canvas></div>
         <div style="width: 50%;" class="col-md-6 pull-right"><canvas id="pie-chart-q3"></canvas></div>
         <div style="width: 50%;" class="col-md-6 pull-right"><canvas id="pie-chart-q4"></canvas></div>
 
@@ -126,12 +126,26 @@ $(document).ready(function() {
         dataType: 'json',
         success: function (data) {
             let q1_data, q2_data, q3_data, q4_data = {};
-            if (data.q1_labels.length > 0 && data.q1_percentages.length > 0) {
+            const legend = {
+                rtl : true,
+                borderWidth: 3,
+                labels: {
+                    fontSize: 13,
+                    fontFamily: 'Droid Arabic Kufi'
+                }
+            };
+            const title = {
+                display: true,
+                padding: 0,
+                fontSize: 15,
+                fontFamily: 'Droid Arabic Kufi'
+            };
+
+            if (data.q1_labels.length > 0 && data.q1_stats.length > 0) {
                 q1_data = {
                     datasets: [{
-                        label: "تعداد الفعاليات",
                         backgroundColor: ["#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850"],
-                        data: data.q1_percentages
+                        data: data.q1_stats,
                     }],
                     labels: data.q1_labels
                 };
@@ -152,19 +166,21 @@ $(document).ready(function() {
                 data: q1_data,
                 options: {
                     responsive: true,
-                    title: {
-                        display: true,
-                        text: 'إحصائية فعاليات الربع الأول'
+                    legend: legend,
+                    title: title,
+                    tooltip: {
+                        enabled: false
                     }
                 }
             });
 
-            if (data.q2_labels.length > 0 && data.q2_percentages.length > 0) {
+            q1_chart.options.title.text = 'إحصائية فعاليات الربع الأول';
+
+            if (data.q2_labels.length > 0 && data.q2_stats.length > 0) {
                 q2_data = {
                     datasets: [{
-                        label: "تعداد الفعاليات",
                         backgroundColor: ["#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850"],
-                        data: data.q2_percentages
+                        data: data.q2_stats
                     }],
                     labels: data.q2_labels
                 };
@@ -184,19 +200,18 @@ $(document).ready(function() {
                 data: q2_data,
                 options: {
                     responsive: true,
-                    title: {
-                        display: true,
-                        text: 'إحصائية فعاليات الربع الثاني'
-                    }
+                    legend: legend,
+                    title: title
                 }
             });
+
+            q2_chart.options.title.text = 'إحصائية فعاليات الربع الثاني';
             
-            if (data.q3_labels.length > 0 && data.q3_percentages) {
+            if (data.q3_labels.length > 0 && data.q3_stats) {
                 q3_data = {
                     datasets: [{
-                        label: "تعداد الفعاليات",
                         backgroundColor: ["#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850"],
-                        data: data.q3_percentages
+                        data: data.q3_stats
                     }],
                     labels: data.q3_labels
                 };
@@ -216,19 +231,18 @@ $(document).ready(function() {
                 data: q3_data,
                 options: {
                     responsive: true,
-                    title: {
-                        display: true,
-                        text: 'إحصائية فعاليات الربع الثالث'
-                    }
+                    legend: legend,
+                    title: title
                 }
             });
 
-            if (data.q4_labels.length > 0 && data.q4_percentages.length > 0) {
+            q3_chart.options.title.text = 'إحصائية فعاليات الربع الثالث';
+
+            if (data.q4_labels.length > 0 && data.q4_stats.length > 0) {
                 q4_data = {
                     datasets: [{
-                        label: "تعداد الفعاليات",
                         backgroundColor: ["#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850"],
-                        data: data.q4_percentages
+                        data: data.q4_stats
                     }],
                     labels: data.q4_labels
                 };
@@ -248,12 +262,12 @@ $(document).ready(function() {
                 data: q4_data,
                 options: {
                     responsive: true,
-                    title: {
-                        display: true,
-                        text: 'إحصائية فعاليات الربع الرابع'
-                    }
+                    legend: legend,
+                    title: title
                 }
             });
+
+            q4_chart.options.title.text = 'إحصائية فعاليات الربع الرابع';
         }
     });
 
