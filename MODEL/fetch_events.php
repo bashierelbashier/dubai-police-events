@@ -35,6 +35,20 @@ if (mysqli_num_rows($result)>0)
         $event_id = $row['ID'];
         include "process_event_type.php";
 
+        if (date('A', strtotime($row['DATE_CREATED'])) == 'AM') {
+            $created_date_time = 'ص';
+        }
+        else {
+            $created_date_time = 'م';
+        }
+
+        if (date('A', strtotime($row['DATE_MODIFIED'])) == 'AM') {
+            $modified_date_time = 'ص';
+        }
+        else {
+            $modified_date_time = 'م';
+        }
+        
         $output .= "<tr id= '".$event_id."' class= 'event-row' style= 'cursor:pointer;' align= 'center' aria-label='تم الإنشاء في ".$row['DATE_CREATED']."، تاريخ آخر تعديل ".$row['DATE_MODIFIED']."'>
             <td>".$count."</td>
             <td>".$row['EVENT_NAME']."</td>
@@ -46,9 +60,9 @@ if (mysqli_num_rows($result)>0)
             <td>".$row['POLICE_COUNT']."</td>
             <td>".date('Y-m-d', strtotime($row['EVENT_DATE']))."</td>
             <td class='event-tooltip' colspan='8'>
-                <span>تم الإنشاء بواسطة: <strong>".$row['CREATOR_NAME']."</strong> - يوم: <strong>".date('Y/m/d', strtotime($row['DATE_CREATED']))."</strong> الساعة: <strong>".date('h:i', strtotime($row['DATE_CREATED']))."</strong></span>";
+                <span>تم الإنشاء بواسطة: <strong>".$row['CREATOR_NAME']."</strong> - يوم: <strong>".date('Y/m/d', strtotime($row['DATE_CREATED']))."</strong> الساعة: <strong>".date('h:i', strtotime($row['DATE_CREATED'])) ." ". $created_date_time ."</strong></span>";
             if ($row['MODIFIER_NAME'] && $row['DATE_MODIFIED']) {
-                $output .= "<span>آخر تعديل بواسطة: <strong>".$row['MODIFIER_NAME']."</strong> - يوم: <strong>".date('Y/m/d', strtotime($row['DATE_MODIFIED']))."</strong> الساعة: <strong>".date('h:i', strtotime($row['DATE_MODIFIED']))."</strong></span>";
+                $output .= "<span>آخر تعديل بواسطة: <strong>".$row['MODIFIER_NAME']."</strong> - يوم: <strong>".date('Y/m/d', strtotime($row['DATE_MODIFIED']))."</strong> الساعة: <strong>".date('h:i', strtotime($row['DATE_MODIFIED'])) ." ". $modified_date_time ."</strong></span>";
             }
             else {
                 $output .= "<span>لا يوجد تعديل</span>";
