@@ -8,7 +8,7 @@ if (!isset($_SESSION['USER_NO'])) {
 $cq = "SELECT COUNT(*) AS COUN FROM T_EVENT";
 $cr = mysqli_query($connect, $cq);
 $cw = mysqli_fetch_array($cr);
-$pages = ceil($cw['COUN'] / 20);
+$pages = ceil($cw['COUN'] / 5);
 
 ?>
 
@@ -91,11 +91,11 @@ body {
 
 .event-tooltip {
     position: absolute;
-    left: 170px;
+    left: 185px;
     display: flex;
     justify-content: space-between;
     width: 83.5%;
-    padding: 8px 50px !important;
+    padding: 8px 0 !important;
     content: attr(aria-label);
     white-space: nowrap;
     z-index: 20;
@@ -349,8 +349,8 @@ $(document).ready(function() {
                 data: {
                     filter_from: filter_from,
                     filter_to: filter_to,
-                    limit: 20,
-                    start: (link - 1) * 20
+                    limit: 5,
+                    start: (link - 1) * 5
                 },
                 success: function(data) {
                     $("#events_table tbody").html(data);
@@ -408,7 +408,7 @@ $(document).ready(function() {
             method: "POST",
             data: {
                 start: 0,
-                limit: 20
+                limit: 5
             },
             success: function(data) {
                 $("#events_table tbody").html(data);
@@ -443,7 +443,7 @@ $(document).ready(function() {
                 filter_from: filter_from,
                 filter_to: filter_to,
                 start: 0,
-                limit: 20
+                limit: 5
             },
             success: function(data) {
                 $("#events_table tbody").html(data);
@@ -463,7 +463,7 @@ $(document).ready(function() {
                 filter_from: filter_from,
                 filter_to: filter_to,
                 start: 0,
-                limit: 20
+                limit: 5
             },
             success: function(data) {
                 $("#events_table tbody").html(data);

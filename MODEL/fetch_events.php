@@ -69,13 +69,13 @@ if (mysqli_num_rows($result)>0)
             }
 
             $output .= "</td>
-            <td id='".$count."' class='event-tooltip'>
-                <span>تم الإنشاء بواسطة: <strong>".$row['CREATOR_NAME']."</strong> - يوم: <strong>".date('Y/m/d', strtotime($row['DATE_CREATED']))."</strong> الساعة: <strong>".date('h:i', strtotime($row['DATE_CREATED'])) ." ". $created_date_time ."</strong></span>";
+            <td class='event-tooltip row'>
+                <span class='col-xs-6 text-center'>تم الإنشاء بواسطة: <strong>".$row['CREATOR_NAME']."</strong> - يوم: <strong>".date('Y/m/d', strtotime($row['DATE_CREATED']))."</strong> الساعة: <strong>".date('h:i', strtotime($row['DATE_CREATED'])) ." ". $created_date_time ."</strong></span>";
             if ($row['MODIFIER_NAME'] && $row['DATE_MODIFIED']) {
-                $output .= "<span>آخر تعديل بواسطة: <strong>".$row['MODIFIER_NAME']."</strong> - يوم: <strong>".date('Y/m/d', strtotime($row['DATE_MODIFIED']))."</strong> الساعة: <strong>".date('h:i', strtotime($row['DATE_MODIFIED'])) ." ". $modified_date_time ."</strong></span>";
+                $output .= "<span class='col-xs-6 text-center'>آخر تعديل بواسطة: <strong>".$row['MODIFIER_NAME']."</strong> - يوم: <strong>".date('Y/m/d', strtotime($row['DATE_MODIFIED']))."</strong> الساعة: <strong>".date('h:i', strtotime($row['DATE_MODIFIED'])) ." ". $modified_date_time ."</strong></span>";
             }
             else {
-                $output .= "<span>لا يوجد تعديل</span>";
+                $output .= "<span class='col-xs-6 text-center'>لا يوجد تعديل</span>";
             }
             $output .="</td>
         </tr>";
