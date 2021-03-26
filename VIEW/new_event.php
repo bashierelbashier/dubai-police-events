@@ -571,8 +571,16 @@ if ($_SESSION['PRIVILEGE'] == 4 || $_SESSION['PRIVILEGE'] == 5)
                                         <label class="form-check-label" for="transportation_metro">مترو</label>
                                     </td>
                                     <td class="col-xs-2">
-                                        <input class="form-check-input" type="checkbox" name="transportation_other" id="transportation_other" value="1">
-                                        <label class="form-check-label" for="transportation_other">أخرى</label>
+                                        <input class="form-check-input" type="checkbox" name="transportation_police" id="transportation_police" value="1">
+                                        <label class="form-check-label" for="transportation_police">سيارة شرطة</label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-xs-2 text-center">
+                                        <label class="control-label">أخرى</label>
+                                    </td>
+                                    <td class="col-xs-2" colspan="4" style="max-width: 520px;">
+                                        <textarea name="transportation_others" id="transportation_others" class="form-control" placeholder="أخرى" autocomplete="off" style="max-width: 758px; min-width: 243px; max-height: 150px; min-height: 50px;"></textarea>
                                     </td>
                                 </tr>
                             </table>
@@ -657,7 +665,7 @@ if ($_SESSION['PRIVILEGE'] == 4 || $_SESSION['PRIVILEGE'] == 5)
                                         <label class="control-label">ملاحظات</label>
                                     </td>
                                     <td class="col-xs-2" colspan="3" style="max-width: 520px;">
-                                        <textarea  type="text" name="report_notes" id="report_notes" class="form-control" placeholder="ملاحظات" autocomplete="off" style="max-width: 758px; min-width: 243px; max-height: 150px; min-height: 50px;"></textarea>
+                                        <textarea name="report_notes" id="report_notes" class="form-control" placeholder="ملاحظات" autocomplete="off" style="max-width: 758px; min-width: 243px; max-height: 150px; min-height: 50px;"></textarea>
                                     </td>
                                 </tr>
                             </table>

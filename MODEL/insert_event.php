@@ -59,8 +59,10 @@ $needs_query = "INSERT INTO `T_EVENT_NEEDS`(`EVENT_ID`, `INDIVIDUALS`, `PATROLS`
 $needs_check = mysqli_query($connect, $needs_query);
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-$transportation_query = "INSERT INTO `T_EVENT_TRANSPORTATION`(`EVENT_ID`, `BUS`, `CAR`, `TAXI`, `METRO`, `OTHER`)
-    VALUES (". $event_id .",". $transportation_bus .",". $transportation_car .",". $transportation_taxi .",". $transportation_metro .",". $transportation_other .")";
+$transportation_others = mysqli_real_escape_string($connect, $_POST['transportation_others']);
+
+$transportation_query = "INSERT INTO `T_EVENT_TRANSPORTATION`(`EVENT_ID`, `BUS`, `CAR`, `TAXI`, `METRO`, `POLICE_CAR`, `TRANSPORTATION_OTHERS`)
+    VALUES (". $event_id .", ". $transportation_bus .", ". $transportation_car .", ". $transportation_taxi .", ". $transportation_metro .", ". $transportation_police .", '". $transportation_others ."')";
 
 $transportation_check = mysqli_query($connect, $transportation_query);
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

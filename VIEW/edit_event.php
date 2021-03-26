@@ -592,8 +592,16 @@ $row = mysqli_fetch_array($res);
                                         <label class="form-check-label" for="transportation_metro">مترو</label>
                                     </td>
                                     <td class="col-xs-2">
-                                        <input class="form-check-input" type="checkbox" name="transportation_other" id="transportation_other" <?php echo $row['OTHER'] == 1 ? 'checked' : ''; ?> value="1">
-                                        <label class="form-check-label" for="transportation_other">أخرى</label>
+                                        <input class="form-check-input" type="checkbox" name="transportation_police" id="transportation_police" <?php echo $row['POLICE_CAR'] == 1 ? 'checked' : ''; ?> value="1">
+                                        <label class="form-check-label" for="transportation_police">سيارة شرطة</label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-xs-2 text-center">
+                                        <label class="control-label">أخرى</label>
+                                    </td>
+                                    <td class="col-xs-2" colspan="4" style="max-width: 520px;">
+                                        <textarea name="transportation_others" id="transportation_others" class="form-control" placeholder="أخرى" autocomplete="off" style="max-width: 758px; min-width: 243px; max-height: 150px; min-height: 50px;"><?php echo $row['TRANSPORTATION_OTHERS'] ?></textarea>
                                     </td>
                                 </tr>
                             </table>

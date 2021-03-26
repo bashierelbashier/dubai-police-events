@@ -43,7 +43,9 @@ $needs_query = "UPDATE `T_EVENT_NEEDS` SET `INDIVIDUALS` = '". $_POST['individua
 $needs_check = mysqli_query($connect, $needs_query);
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-$transportation_query = "UPDATE `T_EVENT_TRANSPORTATION` SET `BUS` = '". $transportation_bus ."', `CAR` = '". $transportation_car ."', `TAXI` = '". $transportation_taxi ."', `METRO` = '". $transportation_metro ."', `OTHER` = '". $transportation_other ."' WHERE EVENT_ID = " . $event_id;
+$transportation_others = mysqli_real_escape_string($connect, $_POST['transportation_others']);
+
+$transportation_query = "UPDATE `T_EVENT_TRANSPORTATION` SET `BUS` = '". $transportation_bus ."', `CAR` = '". $transportation_car ."', `TAXI` = '". $transportation_taxi ."', `METRO` = '". $transportation_metro ."', `POLICE_CAR` = '". $transportation_police ."', `TRANSPORTATION_OTHERS` = '". $transportation_others ."' WHERE EVENT_ID = " . $event_id;
 
 $transportation_check = mysqli_query($connect, $transportation_query);
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

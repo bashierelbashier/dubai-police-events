@@ -217,11 +217,11 @@ else {
     $transportation_metro = 0;
 }
 
-if (isset($_POST['transportation_other'])) {
-    $transportation_other = 1;
+if (isset($_POST['transportation_police'])) {
+    $transportation_police = 1;
 }
 else {
-    $transportation_other = 0;
+    $transportation_police = 0;
 }
 
 if (isset($_POST['emergency_plan'])) {

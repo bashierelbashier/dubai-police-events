@@ -59,30 +59,59 @@ body {
     color: white;
 }
 
+
+#events_table th {
+    text-align: center;
+}
+
+#events_table td {
+    vertical-align: top !important;
+    padding-top: 15px;
+}
+
+#events_table tbody td:nth-last-child(2) {
+    vertical-align: middle !important;
+    padding-top: 0;
+}
+
 .event-row {
     position: relative;
+    height: 88px;
+}
+
+.event-row:hover,
+#events_table tbody .event-row:nth-child(even):hover .event-tooltip {
+    background-color: #1B5E20 !important;
+    color: #ffffff;
+}
+
+#events_table tbody .event-row:hover td:nth-last-child(2) {
+    background-color: #ffffff;
 }
 
 .event-tooltip {
     position: absolute;
-    left: 16px;
+    left: 170px;
     display: flex;
     justify-content: space-between;
-    width: 97.2%;
+    width: 83.5%;
     padding: 8px 50px !important;
-    background: #1B5E20;
-    color: #f2f2f2;
     content: attr(aria-label);
     white-space: nowrap;
-    opacity: 0;
     z-index: 20;
     transition: opacity 0.5s;
     pointer-events: none;
+    margin-top: 50px;
+    background: inherit !important;
 }
 
 .event-row:hover .event-tooltip {
     opacity: 1;
     transition-delay: 1.5s;
+}
+
+#events_table tbody .event-row:nth-child(even) .event-tooltip {
+    background-color: #ffffff !important;
 }
 </style>
 
@@ -179,18 +208,16 @@ body {
         <br />
         <br />
         <div class="col-xs-12" style="margin:0px;">
-            <table id="events_table" class='table table-bordered' style="margin-bottom: 0px !important;">
+            <table id="events_table" class='table table-bordered table-striped' style="margin-bottom: 0px !important;">
                 <thead>
                     <tr align='center' style='background-color: #0c5460;color:white'>
-                        <td> متسلسل # </td>
-                        <td> الفعالية </td>
-                        <td> نوع الفعالية </td>
-                        <td> تصنيف الفعالية </td>
-                        <td> الجهة المنظمة </td>
-                        <td> موقع الفعالية </td>
-                        <td> عدد الحضور المتوقع </td>
-                        <td> عدد أفراد الشرطة </td>
-                        <td> التاريخ </td>
+                        <th> متسلسل # </th>
+                        <th> التاريخ </th>
+                        <th> الفعالية </th>
+                        <th> موقع الفعالية </th>
+                        <th> عدد الحضور المتوقع </th>
+                        <th> عدد أفراد الشرطة </th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody></tbody>
@@ -374,18 +401,22 @@ $(document).ready(function() {
 
     $("#filter_from, #filter_to, #from_date, #to_date").datepicker();
 
-    $.ajax({
-        url: "../MODEL/fetch_events.php",
-        method: "POST",
-        data: {
-            start: 0,
-            limit: 20
-        },
-        success: function(data) {
-            $("#events_table tbody").html(data);
-        }
-    });
+    fetchEvents();
+    function fetchEvents () {
+        $.ajax({
+            url: "../MODEL/fetch_events.php",
+            method: "POST",
+            data: {
+                start: 0,
+                limit: 20
+            },
+            success: function(data) {
+                $("#events_table tbody").html(data);
+            }
+        });
+    }
 
+    /*
     $(document).on('click', '.event-row', function(e) {
         window.location = "edit_event.php?ID=" + $(this).attr("id");
     });
@@ -399,6 +430,7 @@ $(document).ready(function() {
 
         $(this).css("background-color", "#2a62bc");
     });
+    */
 
     $("#filter_from").change(function() {
         var filter_from = $("#filter_from").val();
@@ -435,6 +467,50 @@ $(document).ready(function() {
             },
             success: function(data) {
                 $("#events_table tbody").html(data);
+            }
+        });
+    });
+
+    $(document).on('click', ".delete-event", function() {
+        const id = $(this).attr('data-id');
+        swal({
+            title: "تأكيد",
+            text: "هل تريد حذف هذا السجل",
+            type: "question",
+
+            confirmButtonColor: "red",
+            showCancelButton: true,
+            cancelButtonColor: "green",
+            cancelButtonText: "لا أريد الحذف <i class='fa fa-thumbs-up'></i>",
+            confirmButtonText: "نعم <i class='fa fa-trash'></i>"
+        }).then(function(isConfirm) {
+            if (isConfirm) {
+                $.ajax({
+                    url: "../MODEL/delete_event.php",
+                    method: "POST",
+                    data: {
+                        event_id: id
+                    },
+                    success: function(data) {
+                        if (data) {
+                            swal({
+                                title: "تم !",
+                                text: "تم الحذف بنجاح",
+                                type: "success",
+                                confirmButtonColor: "skyblue",
+                                confirmButtonText: "حسنا"
+                            }).then(function() {
+                                fetchEvents();
+                            });
+                        } else {
+                            swal("لم يتم حذف السجل لإرتباطه بسجلات أخرى");
+                        }
+
+                    }
+                });
+
+            } else {
+
             }
         });
     });
@@ -519,8 +595,5 @@ $(document).ready(function() {
         });
     });
     */
-    
-
-
 });
 </script>

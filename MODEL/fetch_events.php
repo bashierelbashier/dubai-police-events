@@ -49,17 +49,27 @@ if (mysqli_num_rows($result)>0)
             $modified_date_time = 'م';
         }
         
-        $output .= "<tr id= '".$event_id."' class= 'event-row' style= 'cursor:pointer;' align= 'center' aria-label='تم الإنشاء في ".$row['DATE_CREATED']."، تاريخ آخر تعديل ".$row['DATE_MODIFIED']."'>
+        $output .= "<tr id= '".$event_id."' class= 'event-row' align= 'center'>
             <td>".$count."</td>
+            <td>".date('Y/m/d', strtotime($row['EVENT_DATE']))."</td>
             <td>".$row['EVENT_NAME']."</td>
-            <td>".$row['EVENT_TYPE']."</td>
-            <td>".$row['CLASSIFICATION']."</td>
-            <td>".$row['ORGANIZER']."</td>
             <td>".$row['EVENT_LOCATION']."</td>
             <td>".$row['EXPECTED_AUDIENCE']."</td>
             <td>".$row['POLICE_COUNT']."</td>
-            <td>".date('Y-m-d', strtotime($row['EVENT_DATE']))."</td>
-            <td class='event-tooltip' colspan='8'>
+            <td class='text-center' style='width: 14%;'>";
+
+            if ($_SESSION['PRIVILEGE'] == 1 || $row['CREATOR_ID'] == $_SESSION['USER_NO']) {
+                $output .= "<a href='../REPORTS/event.php?id=".$row['ID']."' class='btn btn-info' title='إستخراج' style='margin-left: 5px;'><i class='fa fa-print'></i></a>";
+            }
+
+            $output .= "<a href='edit_event.php?ID=".$row['ID']."' class='btn btn-primary' title='تعديل ' style='margin-left: 5px;'><i class='fa fa-edit'></i></a>";
+            
+            if ($_SESSION['PRIVILEGE'] == 1) {
+                $output .= "<button type='button' class='btn btn-danger delete-event' data-id='".$row['ID']."' title='حذف'><i class='fa fa-times'></i></button>";
+            }
+
+            $output .= "</td>
+            <td id='".$count."' class='event-tooltip'>
                 <span>تم الإنشاء بواسطة: <strong>".$row['CREATOR_NAME']."</strong> - يوم: <strong>".date('Y/m/d', strtotime($row['DATE_CREATED']))."</strong> الساعة: <strong>".date('h:i', strtotime($row['DATE_CREATED'])) ." ". $created_date_time ."</strong></span>";
             if ($row['MODIFIER_NAME'] && $row['DATE_MODIFIED']) {
                 $output .= "<span>آخر تعديل بواسطة: <strong>".$row['MODIFIER_NAME']."</strong> - يوم: <strong>".date('Y/m/d', strtotime($row['DATE_MODIFIED']))."</strong> الساعة: <strong>".date('h:i', strtotime($row['DATE_MODIFIED'])) ." ". $modified_date_time ."</strong></span>";
