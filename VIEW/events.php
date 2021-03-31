@@ -74,11 +74,6 @@ body {
   font-family: 'Droid Arabic Kufi';
   font-size: 1.15em;
 }
-
-.event-tooltip {
-    display: flex;
-    justify-content: space-between;
-}
 </style>
 
 <body>
@@ -193,7 +188,7 @@ body {
 
     </div>
 
-<!-- <div class="col-xs-10 well" id="past_transactions_table" style="min-height:81.5%;margin-top:130px;background-color:white;"> </div> -->
+    <!-- <div class="col-xs-10 well" id="past_transactions_table" style="min-height:81.5%;margin-top:130px;background-color:white;"> </div> -->
 
     <input id="num_pages" value="<?php echo $pages; ?>" hidden />
 
@@ -305,8 +300,7 @@ $(document).ready(function() {
             if (end != pages) {
                 fillPages(end + 1);
             }
-        }
-        else {
+        } else {
             var filter_from = $("#filter_from").val();
             var filter_to = $("#filter_to").val();
             $.ajax({
@@ -368,7 +362,8 @@ $(document).ready(function() {
     $("#filter_from, #filter_to, #from_date, #to_date").datepicker();
 
     fetchEvents();
-    function fetchEvents () {
+
+    function fetchEvents() {
         $.ajax({
             url: "../MODEL/fetch_events.php",
             method: "POST",
