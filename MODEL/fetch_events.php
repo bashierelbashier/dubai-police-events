@@ -8,16 +8,16 @@ $start = $_POST['start'];
 
 
 if (isset($_POST['filter_from']) && $_POST['filter_from'] != '' && isset($_POST['filter_to']) && $_POST['filter_to'] != '') {
-    $query = "SELECT T_EVENT.*, CREATOR.FULL_NAME AS CREATOR_NAME, MODIFIER.FULL_NAME AS MODIFIER_NAME FROM T_EVENT JOIN T_USERS AS CREATOR ON T_EVENT.CREATOR_ID = CREATOR.USER_NO LEFT JOIN T_USERS AS MODIFIER ON T_EVENT.CREATOR_ID = MODIFIER.USER_NO WHERE EVENT_DATE >= '".$_POST['filter_from']."' AND EVENT_DATE <= '".$_POST['filter_to']."'";
+    $query = "SELECT T_EVENT.*, CREATOR.FULL_NAME AS CREATOR_NAME, MODIFIER.FULL_NAME AS MODIFIER_NAME FROM T_EVENT JOIN T_USERS AS CREATOR ON T_EVENT.CREATOR_ID = CREATOR.USER_NO LEFT JOIN T_USERS AS MODIFIER ON T_EVENT.MODIFIER_ID = MODIFIER.USER_NO WHERE EVENT_DATE >= '".$_POST['filter_from']."' AND EVENT_DATE <= '".$_POST['filter_to']."'";
 }
 else if (isset($_POST['filter_from']) && $_POST['filter_from'] != '') {
-    $query = "SELECT T_EVENT.*, CREATOR.FULL_NAME AS CREATOR_NAME, MODIFIER.FULL_NAME AS MODIFIER_NAME FROM T_EVENT JOIN T_USERS AS CREATOR ON T_EVENT.CREATOR_ID = CREATOR.USER_NO LEFT JOIN T_USERS AS MODIFIER ON T_EVENT.CREATOR_ID = MODIFIER.USER_NO WHERE EVENT_DATE >= '".$_POST['filter_from']."'";
+    $query = "SELECT T_EVENT.*, CREATOR.FULL_NAME AS CREATOR_NAME, MODIFIER.FULL_NAME AS MODIFIER_NAME FROM T_EVENT JOIN T_USERS AS CREATOR ON T_EVENT.CREATOR_ID = CREATOR.USER_NO LEFT JOIN T_USERS AS MODIFIER ON T_EVENT.MODIFIER_ID = MODIFIER.USER_NO WHERE EVENT_DATE >= '".$_POST['filter_from']."'";
 }
 else if (isset($_POST['filter_to']) && $_POST['filter_to'] != '') {
-    $query = "SELECT T_EVENT.*, CREATOR.FULL_NAME AS CREATOR_NAME, MODIFIER.FULL_NAME AS MODIFIER_NAME FROM T_EVENT JOIN T_USERS AS CREATOR ON T_EVENT.CREATOR_ID = CREATOR.USER_NO LEFT JOIN T_USERS AS MODIFIER ON T_EVENT.CREATOR_ID = MODIFIER.USER_NO WHERE EVENT_DATE <= '".$_POST['filter_to']."'";
+    $query = "SELECT T_EVENT.*, CREATOR.FULL_NAME AS CREATOR_NAME, MODIFIER.FULL_NAME AS MODIFIER_NAME FROM T_EVENT JOIN T_USERS AS CREATOR ON T_EVENT.CREATOR_ID = CREATOR.USER_NO LEFT JOIN T_USERS AS MODIFIER ON T_EVENT.MODIFIER_ID = MODIFIER.USER_NO WHERE EVENT_DATE <= '".$_POST['filter_to']."'";
 }
 else {
-    $query = "SELECT T_EVENT.*, CREATOR.FULL_NAME AS CREATOR_NAME, MODIFIER.FULL_NAME AS MODIFIER_NAME FROM T_EVENT JOIN T_USERS AS CREATOR ON T_EVENT.CREATOR_ID = CREATOR.USER_NO LEFT JOIN T_USERS AS MODIFIER ON T_EVENT.CREATOR_ID = MODIFIER.USER_NO ";
+    $query = "SELECT T_EVENT.*, CREATOR.FULL_NAME AS CREATOR_NAME, MODIFIER.FULL_NAME AS MODIFIER_NAME FROM T_EVENT JOIN T_USERS AS CREATOR ON T_EVENT.CREATOR_ID = CREATOR.USER_NO LEFT JOIN T_USERS AS MODIFIER ON T_EVENT.MODIFIER_ID = MODIFIER.USER_NO ";
 }
 
 $query .= " ORDER BY EVENT_DATE LIMIT ".$start.",".$limit;
@@ -48,8 +48,21 @@ if (mysqli_num_rows($result)>0)
         else {
             $modified_date_time = 'م';
         }
+
+        if ($_SESSION['PRIVILEGE'] == 1) {
+            $tooltip = '<div class="event-tooltip"><div> تم الإنشاء بواسطة: <strong>'. $row['CREATOR_NAME'] .'</strong> - يوم: <strong>'. date('Y/m/d', strtotime($row['DATE_CREATED'])) .'</strong> الساعة: <strong>'. date('h:i', strtotime($row['DATE_CREATED'])) .' '. $created_date_time .' </strong></div>';
+            if ($row['MODIFIER_ID']) {
+                $tooltip .= "<div>آخر تعديل بواسطة: <strong>". $row['MODIFIER_NAME']."</strong> - يوم: <strong>". date('Y/m/d', strtotime($row['DATE_MODIFIED'])) ."</strong> الساعة: <strong>". date('h:i', strtotime($row['DATE_MODIFIED'])) ." ". $modified_date_time .'</strong></div></div>';
+            }
+            else {
+                $tooltip .= '<div>لم يتم تعديل الفعالية</div>';
+            }
+        }
+        else {
+            $tooltip = '';
+        }
         
-        $output .= "<tr id= '".$event_id."' class= 'event-row' align= 'center'>
+        $output .= "<tr id= '".$event_id."' class= 'event-row' align= 'center' rel='tooltip' data-toggle='tooltip' data-placement='bottom' title='".$tooltip."' data-html='true'>
             <td>".$count."</td>
             <td>".date('Y/m/d', strtotime($row['EVENT_DATE']))."</td>
             <td>".$row['EVENT_NAME']."</td>
@@ -67,17 +80,7 @@ if (mysqli_num_rows($result)>0)
             if ($_SESSION['PRIVILEGE'] == 1) {
                 $output .= "<button type='button' class='btn btn-danger delete-event' data-id='".$row['ID']."' title='حذف'><i class='fa fa-times'></i></button>";
             }
-
             $output .= "</td>
-            <td class='event-tooltip row'>
-                <span class='col-xs-6 text-center'>تم الإنشاء بواسطة: <strong>".$row['CREATOR_NAME']."</strong> - يوم: <strong>".date('Y/m/d', strtotime($row['DATE_CREATED']))."</strong> الساعة: <strong>".date('h:i', strtotime($row['DATE_CREATED'])) ." ". $created_date_time ."</strong></span>";
-            if ($row['MODIFIER_NAME'] && $row['DATE_MODIFIED']) {
-                $output .= "<span class='col-xs-6 text-center'>آخر تعديل بواسطة: <strong>".$row['MODIFIER_NAME']."</strong> - يوم: <strong>".date('Y/m/d', strtotime($row['DATE_MODIFIED']))."</strong> الساعة: <strong>".date('h:i', strtotime($row['DATE_MODIFIED'])) ." ". $modified_date_time ."</strong></span>";
-            }
-            else {
-                $output .= "<span class='col-xs-6 text-center'>لا يوجد تعديل</span>";
-            }
-            $output .="</td>
         </tr>";
 
         $count++;
