@@ -900,8 +900,8 @@ $row = mysqli_fetch_array($res);
                         </a>
 
                     </div> -->
-                    <input type="text" hidden value="<?php echo $row['DISTRICT_NO']; ?>" id="district_no"
-                        name="district_no" />
+                    <!-- <input type="text" hidden value="<?php echo $row['DISTRICT_NO']; ?>" id="district_no"
+                        name="district_no" /> -->
                 </form>
             </div>
 
